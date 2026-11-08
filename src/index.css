@@ -335,14 +335,61 @@ body {
 }
 
 /* Astrolaabh gemstone hero */
-.lotus-mark { font-family: Georgia, serif; color: #f8f1df; font-size: 30px; line-height: 1; filter: drop-shadow(0 1px 1px rgba(74,58,33,.25)); }
+.lotus-mark { font-family: Georgia, serif; color: #a47b39; font-size: 26px; line-height: 1; filter: drop-shadow(0 1px 1px rgba(74,58,33,.25)); }
 .consult-button { color: #302c26; }
 
+@keyframes gemFloatLevitation {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-7px) rotate(1deg);
+  }
+  100% {
+    transform: translateY(4px) rotate(-1deg);
+  }
+}
+
+@keyframes gemFloat-1 {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(0.8deg); }
+  100% { transform: translateY(3px) rotate(-0.5deg); }
+}
+
+@keyframes gemFloat-2 {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-9px) rotate(-1deg); }
+  100% { transform: translateY(4px) rotate(0.6deg); }
+}
+
+@keyframes gemFloat-3 {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+  100% { transform: translateY(5px) rotate(-0.8deg); }
+}
+
+@keyframes gemFloat-4 {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(-0.6deg); }
+  100% { transform: translateY(4px) rotate(0.8deg); }
+}
+
+@keyframes gemFloat-5 {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1.2deg); }
+  100% { transform: translateY(3px) rotate(-0.7deg); }
+}
+
+@keyframes gemFloat-6 {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(-0.5deg); }
+  100% { transform: translateY(4px) rotate(0.5deg); }
+}
+
 .astrology-hero {
-  min-height: min(100vh, 820px);
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
   color: #17140f;
 }
 
