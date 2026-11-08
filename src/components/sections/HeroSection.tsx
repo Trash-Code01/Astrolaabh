@@ -1,14 +1,13 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, BadgeCheck, Flower2, Play, ShieldCheck, Sparkles, X } from 'lucide-react';
-import herobg from '../../assets/herobg.png';
-import ruby from '../../assets/ruby.png';
-import emerald from '../../assets/emerald.png';
-import sapphire from '../../assets/sapphire.png';
-import diamond from '../../assets/diamond.png';
-import gold from '../../assets/gold.png';
-import pearl from '../../assets/pearl.png';
-import { HeroCelestialCanvas } from '../canvas/HeroCelestialCanvas';
+import { ArrowRight, BadgeCheck, Flower2, Play, ShieldCheck, Sparkles, X, Compass, ExternalLink } from 'lucide-react';
+import sanctuaryBg from '../../assets/sanctuary_bg.jpg';
+import rubyImg from '../../assets/ruby.png';
+import emeraldImg from '../../assets/emerald.png';
+import sapphireImg from '../../assets/sapphire.png';
+import diamondImg from '../../assets/diamond.png';
+import goldImg from '../../assets/gold.png';
+import pearlImg from '../../assets/pearl.png';
 import { useCreativeStore } from '../../store/useCreativeStore';
 
 export interface GemstoneInfo {
@@ -25,14 +24,10 @@ export interface GemstoneInfo {
   colorName: string;
   accentHex: string;
   image: string;
-  fx: number;
-  fy: number;
-  baseSize: number;
-  rotDeg: number;
-  floatPeriod: number;
-  floatOffset: number;
-  animClass: string;
-  scrollVector: { dx: number; dy: number; scale: number };
+  // Normalized percentage coordinates within the 3D video viewport
+  vx: number;
+  vy: number;
+  size: number;
 }
 
 const GEMSTONES: GemstoneInfo[] = [
@@ -49,15 +44,10 @@ const GEMSTONES: GemstoneInfo[] = [
     description: 'The King of Gemstones. Untreated Pigeon Blood crimson hue that harnesses the solar life-force for sovereign authority, courage, and magnetic radiance.',
     colorName: 'Pigeon Blood Crimson',
     accentHex: '#ff1f5a',
-    image: ruby,
-    fx: 0.622,
-    fy: 0.473,
-    baseSize: 94,
-    rotDeg: -20,
-    floatPeriod: 3.6,
-    floatOffset: 0,
-    animClass: 'gemFloat-1',
-    scrollVector: { dx: 0, dy: -20, scale: 1.15 },
+    image: rubyImg,
+    vx: 0.465,
+    vy: 0.495,
+    size: 96,
   },
   {
     id: 'emerald',
@@ -72,15 +62,10 @@ const GEMSTONES: GemstoneInfo[] = [
     description: 'Vibrant verdant crystal channeling mercurial intelligence, sharp business acumen, and harmonious communication.',
     colorName: 'Lush Botanical Green',
     accentHex: '#00e575',
-    image: emerald,
-    fx: 0.482,
-    fy: 0.388,
-    baseSize: 60,
-    rotDeg: -32,
-    floatPeriod: 4.2,
-    floatOffset: 1.2,
-    animClass: 'gemFloat-2',
-    scrollVector: { dx: -65, dy: -35, scale: 1.08 },
+    image: emeraldImg,
+    vx: 0.285,
+    vy: 0.383,
+    size: 58,
   },
   {
     id: 'sapphire',
@@ -95,15 +80,10 @@ const GEMSTONES: GemstoneInfo[] = [
     description: 'Velvety cornflower blue gem that awakens profound discernment, unwavering patience, and spiritual protection against karmic obstacles.',
     colorName: 'Royal Cornflower Blue',
     accentHex: '#2575fc',
-    image: sapphire,
-    fx: 0.465,
-    fy: 0.554,
-    baseSize: 60,
-    rotDeg: -28,
-    floatPeriod: 3.9,
-    floatOffset: 2.5,
-    animClass: 'gemFloat-3',
-    scrollVector: { dx: -75, dy: 45, scale: 1.08 },
+    image: sapphireImg,
+    vx: 0.255,
+    vy: 0.622,
+    size: 58,
   },
   {
     id: 'diamond',
@@ -118,15 +98,10 @@ const GEMSTONES: GemstoneInfo[] = [
     description: 'Flawless brilliant crystal carrying the harmonic aesthetic energy of Venus, inspiring creative genius, magnetic allure, and prosperity.',
     colorName: 'D-Flawless Pure Ice',
     accentHex: '#d8f0ff',
-    image: diamond,
-    fx: 0.751,
-    fy: 0.282,
-    baseSize: 62,
-    rotDeg: 0,
-    floatPeriod: 4.4,
-    floatOffset: 3.8,
-    animClass: 'gemFloat-4',
-    scrollVector: { dx: 65, dy: -55, scale: 1.1 },
+    image: diamondImg,
+    vx: 0.635,
+    vy: 0.261,
+    size: 60,
   },
   {
     id: 'gold',
@@ -141,15 +116,10 @@ const GEMSTONES: GemstoneInfo[] = [
     description: 'Golden radiant crystal known as Pushparagam, channeling divine wisdom, educational mastery, and sovereign abundance.',
     colorName: 'Warm Canary Gold',
     accentHex: '#ffaa00',
-    image: gold,
-    fx: 0.819,
-    fy: 0.419,
-    baseSize: 68,
-    rotDeg: 14,
-    floatPeriod: 3.5,
-    floatOffset: 4.9,
-    animClass: 'gemFloat-5',
-    scrollVector: { dx: 80, dy: -20, scale: 1.1 },
+    image: goldImg,
+    vx: 0.720,
+    vy: 0.438,
+    size: 66,
   },
   {
     id: 'pearl',
@@ -164,69 +134,20 @@ const GEMSTONES: GemstoneInfo[] = [
     description: 'Naturally formed spherical pearl with deep iridescent orient, soothing emotional turbulence and cultivating tranquil clarity.',
     colorName: 'Lustrous Champagne White',
     accentHex: '#fff3db',
-    image: pearl,
-    fx: 0.741,
-    fy: 0.559,
-    baseSize: 64,
-    rotDeg: 0,
-    floatPeriod: 4.1,
-    floatOffset: 1.8,
-    animClass: 'gemFloat-6',
-    scrollVector: { dx: 70, dy: 50, scale: 1.08 },
+    image: pearlImg,
+    vx: 0.625,
+    vy: 0.652,
+    size: 62,
   },
 ];
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const setCurrentSection = useCreativeStore((s) => s.setCurrentSection);
-
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [hoveredStone, setHoveredStone] = useState<GemstoneInfo | null>(null);
   const [activeStone, setActiveStone] = useState<GemstoneInfo | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
-
-  // Responsive image dimensions matching object-cover math
-  const [bounds, setBounds] = useState({ width: 1440, height: 810, left: 0, top: 0, scale: 1 });
-
-  const updateBounds = useCallback(() => {
-    if (!sectionRef.current) return;
-    const w = sectionRef.current.clientWidth;
-    const h = sectionRef.current.clientHeight;
-    const imgAspect = 1000 / 562; // 1.779359
-    const containerAspect = w / h;
-
-    let renderW: number;
-    let renderH: number;
-    let left: number;
-    let top: number;
-
-    if (containerAspect > imgAspect) {
-      renderW = w;
-      renderH = w / imgAspect;
-      left = 0;
-      top = (h - renderH) / 2;
-    } else {
-      renderH = h;
-      renderW = h * imgAspect;
-      top = 0;
-      left = (w - renderW) / 2;
-    }
-
-    setBounds({
-      width: renderW,
-      height: renderH,
-      left,
-      top,
-      scale: renderW / 1000,
-    });
-  }, []);
-
-  useEffect(() => {
-    updateBounds();
-    window.addEventListener('resize', updateBounds, { passive: true });
-    return () => window.removeEventListener('resize', updateBounds);
-  }, [updateBounds]);
 
   // Smooth scroll listener for GPU-driven interactive depth parallax
   useEffect(() => {
@@ -251,7 +172,7 @@ export function HeroSection() {
     };
   }, []);
 
-  // Subtle pointer tracking for tactile interactive depth tilt
+  // Three.js-style 3D camera viewport tilt on pointer move
   const handlePointerMove = useCallback((e: React.PointerEvent<HTMLElement>) => {
     const { clientX, clientY } = e;
     const { innerWidth, innerHeight } = window;
@@ -280,18 +201,18 @@ export function HeroSection() {
       className="astrology-hero relative isolate min-h-[760px] h-screen w-full overflow-hidden text-[#17140f] select-none"
     >
       {/* 
-        LAYER 1: Pristine Dawn Himalayan Lake Sanctuary Background Plate
-        - Scaled with cover and centered
-        - Seamless subtle parallax tilt on mouse and scroll
+        LAYER 1: Panoramic Dawn Himalayan Sanctuary Lake Background
+        - Open pristine lake with morning mountain sunlight and temple pavilion
+        - Smooth subtle parallax on mouse move and scroll
       */}
       <div
         className="absolute inset-0 w-full h-full pointer-events-none transform will-change-transform"
         style={{
-          backgroundImage: `url(${herobg})`,
-          backgroundPosition: 'center center',
+          backgroundImage: `url(${sanctuaryBg})`,
+          backgroundPosition: 'center 40%',
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
-          transform: `translate3d(${mouseOffset.x * 4}px, ${scrollProgress * 40 + mouseOffset.y * 4}px, 0) scale(${1.02 + scrollProgress * 0.03})`,
+          transform: `translate3d(${mouseOffset.x * 4}px, ${scrollProgress * 35 + mouseOffset.y * 4}px, 0) scale(${1.02 + scrollProgress * 0.03})`,
           transition: 'transform 0.15s cubic-bezier(0.2, 0, 0.2, 1)',
         }}
       />
@@ -300,146 +221,134 @@ export function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-r from-[#fbf4e6]/30 via-transparent to-[#1a2e26]/18 pointer-events-none" />
 
       {/* 
-        LAYER 2 & 3: Mathematically Locked Interactive Scene Stage
-        - Bounds precisely match the rendered herobg plate pixels
-        - Contains the HTML5 Celestial Canvas and the 6 Levitation Floating Gemstones
+        LAYER 2: Interactive 3D Video Viewport (Rendered like an authentic Three.js 3D Scene)
+        - Seamless feathering around the elliptical borders
+        - 3D perspective camera tracking mouse with tactile depth
+        - Parallax depth on user scroll
       */}
-      <div
-        ref={containerRef}
-        className="absolute pointer-events-none will-change-transform"
-        style={{
-          left: `${bounds.left}px`,
-          top: `${bounds.top}px`,
-          width: `${bounds.width}px`,
-          height: `${bounds.height}px`,
-          transform: `translate3d(${mouseOffset.x * 6}px, ${scrollProgress * 55 + mouseOffset.y * 6}px, 0)`,
-          transition: 'transform 0.18s cubic-bezier(0.2, 0, 0.2, 1)',
-        }}
-      >
-        {/* HTML5 Celestial Canvas: Sunburst Rays, Golden 3D Orbits, Photons & Ripples */}
-        <HeroCelestialCanvas scrollProgress={scrollProgress} mouseOffset={mouseOffset} />
+      <div className="absolute inset-y-0 right-0 w-full lg:w-[62%] flex items-center justify-center pointer-events-none pt-12 sm:pt-4">
+        <div
+          className="relative w-[360px] h-[280px] sm:w-[520px] sm:h-[400px] md:w-[620px] md:h-[460px] lg:w-[720px] lg:h-[520px] xl:w-[820px] xl:h-[580px] will-change-transform flex items-center justify-center"
+          style={{
+            perspective: '1300px',
+            transform: `translate3d(${mouseOffset.x * 12}px, ${scrollProgress * 65 + mouseOffset.y * 10}px, 0)`,
+            transition: 'transform 0.18s cubic-bezier(0.2, 0, 0.2, 1)',
+          }}
+        >
+          {/* Inner 3D Tilt Stage with WebGL / Three.js Feel */}
+          <div
+            className="relative w-full h-full flex items-center justify-center pointer-events-auto transition-transform duration-200 ease-out"
+            style={{
+              transform: `rotateX(${mouseOffset.y * -5}deg) rotateY(${mouseOffset.x * 6}deg) scale(${1 + scrollProgress * 0.05})`,
+              transformStyle: 'preserve-3d',
+            }}
+          >
+            {/* Luminous Golden Ambient Glow Halo behind the 3D element */}
+            <div className="absolute inset-8 rounded-full bg-gradient-to-tr from-[#e5a842]/20 via-[#ffd68a]/30 to-transparent blur-3xl pointer-events-none" />
 
-        {/* 
-          LAYER 3: 6 Isolated Interactive Levitating Gemstones
-          - Continuous harmonic vertical floating ("moving up and down")
-          - Responsive hover states with radiant planetary bloom & glassmorphic tooltip
-          - Scroll expansion outwards along orbital trajectory
-        */}
-        <div className="absolute inset-0 w-full h-full pointer-events-auto">
-          {GEMSTONES.map((gem) => {
-            const isHovered = hoveredStone?.id === gem.id;
-            const isCenter = gem.id === 'ruby';
-
-            // Base position mathematically locked to plate coordinates
-            const baseX = gem.fx * bounds.width;
-            const baseY = gem.fy * bounds.height;
-
-            // Scroll expansion offset
-            const scrollDx = gem.scrollVector.dx * bounds.scale * scrollProgress;
-            const scrollDy = gem.scrollVector.dy * bounds.scale * scrollProgress;
-            const scrollScale = 1 + (gem.scrollVector.scale - 1) * scrollProgress;
-
-            // Scaled size
-            const size = gem.baseSize * bounds.scale;
-
-            return (
-              <div
-                key={gem.id}
-                className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all duration-300 group select-none"
+            {/* 
+              The 3D Element Video Viewport
+              - Smooth elliptical feathering merging into the lake and dawn sky
+              - Hardware-accelerated 60 FPS playback
+            */}
+            <div
+              className="relative w-full h-full overflow-hidden filter drop-shadow-[0_20px_45px_rgba(50,30,10,0.28)]"
+              style={{
+                maskImage: 'radial-gradient(ellipse 52% 50% at 48% 50%, black 35%, rgba(0,0,0,0.85) 55%, rgba(0,0,0,0.2) 75%, transparent 92%)',
+                WebkitMaskImage: 'radial-gradient(ellipse 52% 50% at 48% 50%, black 35%, rgba(0,0,0,0.85) 55%, rgba(0,0,0,0.2) 75%, transparent 92%)',
+              }}
+            >
+              <video
+                ref={videoRef}
+                src="/hero_gemstones.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover select-none pointer-events-none"
                 style={{
-                  left: `${baseX + scrollDx}px`,
-                  top: `${baseY + scrollDy}px`,
-                  width: `${size}px`,
-                  height: `${size}px`,
-                  zIndex: isHovered ? 60 : isCenter ? 40 : 30,
+                  filter: 'contrast(1.03) saturate(1.06) brightness(1.01)',
                 }}
-                onMouseEnter={() => setHoveredStone(gem)}
-                onMouseLeave={() => setHoveredStone((prev) => (prev?.id === gem.id ? null : prev))}
-                onClick={() => setActiveStone(gem)}
-                title={gem.name}
-              >
-                {/* 
-                  Continuous Organic Levitation Wrapper (Floating Sine Wave Animation)
-                  Uses individual duration and delay so gems bob organically at different tempos
-                */}
-                <div
-                  className="w-full h-full relative"
-                  style={{
-                    animationName: gem.animClass,
-                    animationDuration: `${gem.floatPeriod}s`,
-                    animationTimingFunction: 'ease-in-out',
-                    animationIterationCount: 'infinite',
-                    animationDirection: 'alternate',
-                    animationDelay: `-${gem.floatOffset}s`,
-                  }}
-                >
-                  {/* Hover Radiant Bloom Halo in Signature Gemstone Accent Color */}
+              />
+            </div>
+
+            {/* 
+              Interactive Gemstone Hit Targets & Tooltips overlaid on the 3D video!
+              Provides real interactive hover/click response with Vedic wisdom cards
+            */}
+            <div className="absolute inset-0 w-full h-full pointer-events-auto">
+              {GEMSTONES.map((gem) => {
+                const isHovered = hoveredStone?.id === gem.id;
+                return (
                   <div
-                    className="absolute inset-0 rounded-full transition-all duration-500 pointer-events-none"
+                    key={gem.id}
+                    className="absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-30 group"
                     style={{
-                      background: `radial-gradient(circle, ${gem.accentHex} 0%, transparent 70%)`,
-                      opacity: isHovered ? 0.7 : isCenter ? 0.22 : 0.08,
-                      transform: isHovered ? 'scale(1.85)' : 'scale(1.15)',
-                      filter: 'blur(10px)',
+                      left: `${gem.vx * 100}%`,
+                      top: `${gem.vy * 100}%`,
+                      width: `${gem.size}px`,
+                      height: `${gem.size}px`,
                     }}
-                  />
+                    onMouseEnter={() => setHoveredStone(gem)}
+                    onMouseLeave={() => setHoveredStone(null)}
+                    onClick={() => setActiveStone(gem)}
+                    title={gem.name}
+                  >
+                    {/* Hover Radiant Bloom Halo */}
+                    <div
+                      className="absolute inset-0 rounded-full transition-all duration-300 pointer-events-none"
+                      style={{
+                        background: `radial-gradient(circle, ${gem.accentHex} 0%, transparent 70%)`,
+                        opacity: isHovered ? 0.65 : 0,
+                        transform: isHovered ? 'scale(1.75)' : 'scale(0.8)',
+                        filter: 'blur(8px)',
+                      }}
+                    />
 
-                  {/* Gemstone Image with Interactive Tilt, Scale & Drop Shadow */}
-                  <img
-                    src={gem.image}
-                    alt={gem.name}
-                    className="w-full h-full object-contain filter select-none pointer-events-none transition-transform duration-300 ease-out"
-                    style={{
-                      transform: `rotate(${gem.rotDeg}deg) scale(${isHovered ? 1.18 * scrollScale : scrollScale}) ${isHovered ? 'translateY(-10px)' : ''}`,
-                      filter: isHovered
-                        ? `drop-shadow(0 20px 28px ${gem.accentHex}88) drop-shadow(0 4px 12px rgba(0,0,0,0.45)) brightness(1.12)`
-                        : `drop-shadow(0 12px 18px rgba(35, 20, 5, 0.42))`,
-                    }}
-                    draggable={false}
-                  />
+                    {/* Subtle Pulsing Hit Reticle on Hover */}
+                    <div
+                      className="w-full h-full rounded-full border transition-all duration-300"
+                      style={{
+                        borderColor: isHovered ? `${gem.accentHex}bb` : 'transparent',
+                        boxShadow: isHovered ? `0 0 18px ${gem.accentHex}99` : 'none',
+                        transform: isHovered ? 'scale(1.12)' : 'scale(1)',
+                      }}
+                    />
 
-                  {/* Sparkling Facet Glint Highlight */}
-                  <div
-                    className="absolute top-1 left-2 w-2 h-2 rounded-full bg-white/80 filter blur-[1px] pointer-events-none transition-opacity duration-300"
-                    style={{ opacity: isHovered ? 1 : 0.5 }}
-                  />
-                </div>
-
-                {/* Elegant Hover Tooltip */}
-                <AnimatePresence>
-                  {isHovered && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 12, scale: 0.92 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 8, scale: 0.92 }}
-                      transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                      className="absolute left-1/2 -top-24 -translate-x-1/2 pointer-events-none z-50 whitespace-nowrap"
-                    >
-                      <div className="px-4 py-2.5 rounded-xl bg-[#1e1913]/92 backdrop-blur-md border border-[#dfbe82]/40 shadow-[0_12px_32px_rgba(0,0,0,0.35)] text-center">
-                        <div className="flex items-center justify-center gap-1.5 text-[11px] font-medium tracking-wider text-[#d4af37]">
-                          <span className="font-serif">{gem.sanskritName}</span>
-                          <span>✦</span>
-                          <span className="uppercase text-[10px] tracking-widest">{gem.planetEn}</span>
-                        </div>
-                        <div className="text-xs font-semibold text-[#fcf8f0] font-serif mt-0.5">
-                          {gem.name}
-                        </div>
-                        <div className="text-[10px] text-[#cfc7b6] max-w-[200px] truncate mt-0.5">
-                          {gem.energy}
-                        </div>
-                      </div>
-                      <div className="w-2 h-2 rotate-45 bg-[#1e1913]/92 border-r border-b border-[#dfbe82]/40 mx-auto -mt-1" />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
+                    {/* Elegant Hover Tooltip */}
+                    <AnimatePresence>
+                      {isHovered && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.92 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 6, scale: 0.92 }}
+                          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                          className="absolute left-1/2 -top-20 -translate-x-1/2 pointer-events-none z-50 whitespace-nowrap"
+                        >
+                          <div className="px-3.5 py-2 rounded-xl bg-[#1e1913]/92 backdrop-blur-md border border-[#dfbe82]/40 shadow-[0_12px_32px_rgba(0,0,0,0.35)] text-center">
+                            <div className="flex items-center justify-center gap-1.5 text-[10px] font-medium tracking-wider text-[#d4af37]">
+                              <span className="font-serif">{gem.sanskritName}</span>
+                              <span>✦</span>
+                              <span className="uppercase text-[9px] tracking-widest">{gem.planetEn}</span>
+                            </div>
+                            <div className="text-xs font-semibold text-[#fcf8f0] font-serif mt-0.5">
+                              {gem.name}
+                            </div>
+                          </div>
+                          <div className="w-2 h-2 rotate-45 bg-[#1e1913]/92 border-r border-b border-[#dfbe82]/40 mx-auto -mt-1" />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
 
       {/* 
-        LAYER 4: Foreground Editorial & Hero Content
+        LAYER 3: Foreground Editorial & Hero Content
         - Left column text matching the reference concept art 1:1
         - Bottom floating glassmorphic trust bar
       */}
@@ -480,7 +389,7 @@ export function HeroSection() {
 
           {/* Interactive CTA Buttons */}
           <div className="mt-8 flex flex-wrap items-center gap-5 sm:gap-6">
-            {/* Primary Amber-Gold Button matching Reference Art */}
+            {/* Primary Amber-Gold Button */}
             <button
               onClick={() => scrollTo('narrative')}
               className="group h-[50px] px-8 rounded-full bg-gradient-to-b from-[#a47b39] via-[#8f6727] to-[#714f19] hover:from-[#b38842] hover:to-[#7e581e] text-[#fffdf7] font-serif text-[15px] tracking-wide shadow-[0_8px_24px_rgba(113,79,25,0.35)] hover:shadow-[0_12px_32px_rgba(113,79,25,0.48)] transition-all duration-300 flex items-center gap-3.5 active:scale-98"
