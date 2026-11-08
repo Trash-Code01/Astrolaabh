@@ -21,6 +21,8 @@ export default {
         sans: ['Space Grotesk', 'Inter', 'sans-serif'],
         display: ['Syncopate', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
+        serif: ['"Cormorant Garamond"', '"Playfair Display"', 'Georgia', 'serif'],
+        cinzel: ['Cinzel', 'serif'],
       },
       animation: {
         'spin-slow': 'spin 35s linear infinite',
