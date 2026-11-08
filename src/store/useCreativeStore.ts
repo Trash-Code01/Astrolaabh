@@ -71,3 +71,5 @@ export const useCreativeStore = create<CreativeState>((set) => ({
   setLoadingProgress: (progress) => set({ loadingProgress: progress }),
   finishLoading: () => set({ isLoading: false, loadingProgress: 100 }),
 }));
+
+(window as any).__creativeStore = useCreativeStore;

@@ -7,7 +7,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -138,8 +137,21 @@ body {
   .testimonial-marquee-set { gap: 16px; padding-right: 16px; }
   .testimonial-card { width: 278px; height: 178px; flex-basis: 278px; min-height: 178px; padding: 22px; border-radius: 18px; }
   .testimonial-quote { font-size: 15px; }
-  @keyframes testimonial-left { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
-  @keyframes testimonial-right { from { transform: translate3d(-50%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
+}
+
+.testimonial-marquee-left {
+  animation: testimonial-left 42s linear infinite;
+}
+.testimonial-marquee-right {
+  animation: testimonial-right 42s linear infinite;
+}
+@keyframes testimonial-left {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes testimonial-right {
+  from { transform: translate3d(-50%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
 }
 
 /* Hero editorial marquee */

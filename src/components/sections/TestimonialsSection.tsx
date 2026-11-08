@@ -1,7 +1,5 @@
-import Marquee from 'react-fast-marquee';
-
 const firstRow = [
-  { quote: 'The gemstone felt deeply personal â€” beautifully chosen and presented with quiet confidence.', name: 'Ananya Mehta', location: 'Mumbai', color: 'sage' },
+  { quote: 'The gemstone felt deeply personal — beautifully chosen and presented with quiet confidence.', name: 'Ananya Mehta', location: 'Mumbai', color: 'sage' },
   { quote: 'Every detail felt thoughtful. My consultation was elegant, calm and genuinely insightful.', name: 'Leena Kapoor', location: 'Delhi', color: 'ivory' },
   { quote: 'A meaningful piece that I now wear every day, chosen with care and true understanding.', name: 'Sara Rahman', location: 'Dubai', color: 'rose' },
   { quote: 'The guidance was warm, refined and completely aligned with what I was seeking.', name: 'Mira Shah', location: 'London', color: 'sage' },
@@ -19,19 +17,29 @@ const secondRow = [
 ];
 
 function MarqueeRow({ reviews, direction }: { reviews: typeof firstRow; direction: 'left' | 'right' }) {
+  const cards = (
+    <div className="testimonial-marquee-set">
+      {reviews.map((review) => (
+        <article className={`testimonial-card testimonial-card-${review.color}`} key={review.name}>
+          <p className="testimonial-quote">“{review.quote}”</p>
+          <div className="testimonial-person">
+            <div className="testimonial-avatar" aria-hidden="true" />
+            <div>
+              <h3>{review.name}</h3>
+              <p>{review.location}</p>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  );
+
   return (
     <div className="testimonial-marquee" aria-label="Client testimonials">
-      <Marquee direction={direction === 'left' ? 'left' : 'right'} gradient={false} speed={38} pauseOnHover={false} autoFill={true} className="testimonial-marquee-track">
-        {reviews.map((review) => (
-          <article className={`testimonial-card testimonial-card-${review.color}`} key={review.name}>
-            <p className="testimonial-quote">â€œ{review.quote}â€</p>
-            <div className="testimonial-person">
-              <div className="testimonial-avatar" aria-hidden="true" />
-              <div><h3>{review.name}</h3><p>{review.location}</p></div>
-            </div>
-          </article>
-        ))}
-      </Marquee>
+      <div className={`testimonial-marquee-track testimonial-marquee-${direction}`}>
+        {cards}
+        {cards}
+      </div>
     </div>
   );
 }
@@ -52,3 +60,5 @@ export function TestimonialsSection() {
     </section>
   );
 }
+
+export default TestimonialsSection;
