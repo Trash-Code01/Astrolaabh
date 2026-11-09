@@ -43,9 +43,9 @@ const GEMSTONES: GemstoneInfo[] = [
     colorName: 'Pigeon Blood Crimson',
     accentHex: '#ff1f5a',
     image: rubyImg,
-    fx: 0.619,
-    fy: 0.472,
-    size: 105,
+    fx: 0.622,
+    fy: 0.473,
+    size: 110,
   },
   {
     id: 'emerald',
@@ -61,8 +61,8 @@ const GEMSTONES: GemstoneInfo[] = [
     colorName: 'Lush Botanical Green',
     accentHex: '#00e575',
     image: emeraldImg,
-    fx: 0.481,
-    fy: 0.389,
+    fx: 0.457,
+    fy: 0.374,
     size: 65,
   },
   {
@@ -79,8 +79,8 @@ const GEMSTONES: GemstoneInfo[] = [
     colorName: 'Royal Cornflower Blue',
     accentHex: '#2575fc',
     image: sapphireImg,
-    fx: 0.466,
-    fy: 0.563,
+    fx: 0.446,
+    fy: 0.568,
     size: 65,
   },
   {
@@ -97,8 +97,8 @@ const GEMSTONES: GemstoneInfo[] = [
     colorName: 'D-Flawless Pure Ice',
     accentHex: '#d8f0ff',
     image: diamondImg,
-    fx: 0.733,
-    fy: 0.310,
+    fx: 0.769,
+    fy: 0.263,
     size: 68,
   },
   {
@@ -115,8 +115,8 @@ const GEMSTONES: GemstoneInfo[] = [
     colorName: 'Warm Canary Gold',
     accentHex: '#ffaa00',
     image: goldImg,
-    fx: 0.819,
-    fy: 0.421,
+    fx: 0.850,
+    fy: 0.416,
     size: 72,
   },
   {
@@ -133,8 +133,8 @@ const GEMSTONES: GemstoneInfo[] = [
     colorName: 'Lustrous Champagne White',
     accentHex: '#fff3db',
     image: pearlImg,
-    fx: 0.749,
-    fy: 0.564,
+    fx: 0.761,
+    fy: 0.592,
     size: 70,
   },
 ];
@@ -256,7 +256,7 @@ export function HeroSection() {
         - Pure opacity transitions: NO zoom-in/out scale jumping
       */}
       <div
-        className="absolute pointer-events-none z-25"
+        className="absolute pointer-events-none z-20"
         style={{
           left: `${bounds.left}px`,
           top: `${bounds.top}px`,
@@ -282,6 +282,8 @@ export function HeroSection() {
                   width: `${size}px`,
                   height: `${size}px`,
                 }}
+                onPointerEnter={() => setHoveredStone(gem)}
+                onPointerLeave={() => setHoveredStone(null)}
                 onMouseEnter={() => setHoveredStone(gem)}
                 onMouseLeave={() => setHoveredStone(null)}
                 onClick={() => setActiveStone(gem)}
@@ -409,25 +411,25 @@ export function HeroSection() {
         LAYER 4: Floating Glassmorphic Trust Bar ALWAYS Visible above Bottom Edge
       */}
       <div className="absolute bottom-3 sm:bottom-4 left-0 right-0 z-40 flex justify-center px-4 pointer-events-auto">
-        <div className="flex flex-wrap items-center justify-between w-full max-w-3xl lg:max-w-4xl px-6 sm:px-10 py-2.5 sm:py-3 rounded-full bg-[#fdfaf5]/45 backdrop-blur-xl border border-white/70 shadow-[0_10px_35px_rgba(50,35,15,0.08)] text-[#2d261e] font-serif text-[12px] sm:text-[13px] tracking-wide">
-          <div className="flex items-center gap-2">
-            <Flower2 className="w-4 h-4 text-[#a37c44]" />
-            <span>Vedic Guidance</span>
+        <div className="flex flex-wrap items-center justify-between w-full max-w-3xl lg:max-w-4xl px-6 sm:px-10 py-2.5 sm:py-3 rounded-full bg-[#f4e8d3]/35 hover:bg-[#f4e8d3]/45 backdrop-blur-xl border border-white/60 shadow-[0_10px_35px_rgba(45,30,10,0.1)] text-[#2d2419] font-serif text-[12px] sm:text-[13px] tracking-wide transition-all">
+          <div className="flex items-center gap-2.5">
+            <Flower2 className="w-4 h-4 text-[#a67c3b]" />
+            <span className="font-medium">Vedic Guidance</span>
           </div>
-          <div className="hidden sm:block h-3.5 w-[1px] bg-[#382f23]/20" />
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-[#a37c44]" />
-            <span>Authentic Gems</span>
+          <div className="hidden sm:block h-3.5 w-[1px] bg-[#5c4a35]/20" />
+          <div className="flex items-center gap-2.5">
+            <Sparkles className="w-4 h-4 text-[#a67c3b]" />
+            <span className="font-medium">Authentic Gems</span>
           </div>
-          <div className="hidden sm:block h-3.5 w-[1px] bg-[#382f23]/20" />
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-[#a37c44]" />
-            <span>Certified &amp; Trusted</span>
+          <div className="hidden sm:block h-3.5 w-[1px] bg-[#5c4a35]/20" />
+          <div className="flex items-center gap-2.5">
+            <ShieldCheck className="w-4 h-4 text-[#a67c3b]" />
+            <span className="font-medium">Certified &amp; Trusted</span>
           </div>
-          <div className="hidden sm:block h-3.5 w-[1px] bg-[#382f23]/20" />
-          <div className="flex items-center gap-2">
-            <BadgeCheck className="w-4 h-4 text-[#a37c44]" />
-            <span>Personalized for You</span>
+          <div className="hidden sm:block h-3.5 w-[1px] bg-[#5c4a35]/20" />
+          <div className="flex items-center gap-2.5">
+            <BadgeCheck className="w-4 h-4 text-[#a67c3b]" />
+            <span className="font-medium">Personalized for You</span>
           </div>
         </div>
       </div>

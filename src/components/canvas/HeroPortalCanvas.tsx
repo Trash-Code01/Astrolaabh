@@ -135,16 +135,17 @@ export function HeroPortalCanvas({ scrollProgress, mouseOffset, hoveredGemId }: 
         ctx.drawImage(bgImg, left, top + scrollY, renderW, renderH);
       }
 
-      // 3. Draw Rotating 3D Video on Canvas with Cosine Feather Mask (Solidly Anchored)
+      // 3. Draw Rotating 3D Video on Canvas with Smooth Horizontal Atmospheric Dissolve
       const video = videoRef.current;
       if (video && video.readyState >= 2) {
         const vBuf = offscreenVideoRef.current;
         const mBuf = offscreenMaskRef.current;
 
-        const drawW = Math.round(renderW * 0.78875);
-        const drawH = Math.round(renderH * 0.78875);
-        const drawX = Math.round(left + renderW * 0.2578125);
-        const drawY = Math.round(top + renderH * 0.0677083 + scrollY);
+        // Exactly aligned 1:1 scale with herobg.png
+        const drawW = Math.round(renderW);
+        const drawH = Math.round(renderH);
+        const drawX = Math.round(left + renderW * 0.19875);
+        const drawY = Math.round(top + scrollY);
 
         if (vBuf && mBuf && drawW > 0 && drawH > 0) {
           if (lastMaskDimRef.current.w !== drawW || lastMaskDimRef.current.h !== drawH) {
@@ -154,46 +155,26 @@ export function HeroPortalCanvas({ scrollProgress, mouseOffset, hoveredGemId }: 
             const mCtx = mBuf.getContext('2d');
             if (mCtx) {
               mCtx.clearRect(0, 0, drawW, drawH);
+
+              // In video coordinates: dissolve region between x0 = 138.4 and x1 = 398.4
+              // which in canvas coordinates lands perfectly at X = 520 to 780
+              const x0 = Math.round(drawW * 0.0721);
+              const x1 = Math.round(drawW * 0.2075);
+
+              // Smooth cosine-like linear gradient from left mist to video
+              const grad = mCtx.createLinearGradient(x0, 0, x1, 0);
+              grad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+              grad.addColorStop(0.2, 'rgba(255, 255, 255, 0.08)');
+              grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.50)');
+              grad.addColorStop(0.8, 'rgba(255, 255, 255, 0.92)');
+              grad.addColorStop(1, 'rgba(255, 255, 255, 1)');
+
+              mCtx.fillStyle = grad;
+              mCtx.fillRect(x0, 0, x1 - x0, drawH);
+
+              // Full opacity for the entire portal, gemstones, plinth, and arch
               mCtx.fillStyle = '#ffffff';
-              mCtx.fillRect(0, 0, drawW, drawH);
-
-              // 4-edge smooth cosine feathering to dissolve all edges into the plate
-              const fx = Math.round(drawW * 0.11);
-              const fy = Math.round(drawH * 0.11);
-              const fyb = Math.round(drawH * 0.15);
-              const fxr = Math.round(drawW * 0.06);
-
-              mCtx.globalCompositeOperation = 'destination-out';
-
-              // Left feather
-              const leftGrad = mCtx.createLinearGradient(0, 0, fx, 0);
-              leftGrad.addColorStop(0, 'rgba(0,0,0,1)');
-              leftGrad.addColorStop(1, 'rgba(0,0,0,0)');
-              mCtx.fillStyle = leftGrad;
-              mCtx.fillRect(0, 0, fx, drawH);
-
-              // Top feather
-              const topGrad = mCtx.createLinearGradient(0, 0, 0, fy);
-              topGrad.addColorStop(0, 'rgba(0,0,0,1)');
-              topGrad.addColorStop(1, 'rgba(0,0,0,0)');
-              mCtx.fillStyle = topGrad;
-              mCtx.fillRect(0, 0, drawW, fy);
-
-              // Bottom feather
-              const btmGrad = mCtx.createLinearGradient(0, drawH - fyb, 0, drawH);
-              btmGrad.addColorStop(0, 'rgba(0,0,0,0)');
-              btmGrad.addColorStop(1, 'rgba(0,0,0,1)');
-              mCtx.fillStyle = btmGrad;
-              mCtx.fillRect(0, drawH - fyb, drawW, fyb);
-
-              // Right feather
-              const rgtGrad = mCtx.createLinearGradient(drawW - fxr, 0, drawW, 0);
-              rgtGrad.addColorStop(0, 'rgba(0,0,0,0)');
-              rgtGrad.addColorStop(1, 'rgba(0,0,0,1)');
-              mCtx.fillStyle = rgtGrad;
-              mCtx.fillRect(drawW - fxr, 0, fxr, drawH);
-
-              mCtx.globalCompositeOperation = 'source-over';
+              mCtx.fillRect(x1, 0, drawW - x1, drawH);
             }
           }
 
@@ -214,29 +195,18 @@ export function HeroPortalCanvas({ scrollProgress, mouseOffset, hoveredGemId }: 
         }
       }
 
-      // 4. Subtle Ambient Dawn Sunlight Glow (Warm, Soft, Screen-Blended)
+      // 4. Subtle Ruby Aura Glow (Warm, Soft, Screen-Blended)
       ctx.save();
       ctx.globalCompositeOperation = 'screen';
-      const sunX = left + renderW * 0.92;
-      const sunY = top + renderH * 0.40 + scrollY;
-      const dawnGlow = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, renderW * 0.45);
-      dawnGlow.addColorStop(0, 'rgba(255, 235, 190, 0.22)');
-      dawnGlow.addColorStop(0.35, 'rgba(255, 210, 140, 0.12)');
-      dawnGlow.addColorStop(0.7, 'rgba(240, 175, 90, 0.04)');
-      dawnGlow.addColorStop(1, 'rgba(215, 140, 60, 0)');
-      ctx.fillStyle = dawnGlow;
-      ctx.fillRect(left, top + scrollY, renderW, renderH);
-
-      // Subtle warm aura around the central ruby
-      const rubyX = left + renderW * 0.619;
-      const rubyY = top + renderH * 0.472 + scrollY;
-      const rubyAura = ctx.createRadialGradient(rubyX, rubyY, 0, rubyX, rubyY, renderW * 0.10);
-      rubyAura.addColorStop(0, 'rgba(255, 200, 120, 0.25)');
-      rubyAura.addColorStop(0.4, 'rgba(255, 100, 120, 0.12)');
+      const rubyX = left + renderW * 0.622;
+      const rubyY = top + renderH * 0.473 + scrollY;
+      const rubyAura = ctx.createRadialGradient(rubyX, rubyY, 0, rubyX, rubyY, renderW * 0.08);
+      rubyAura.addColorStop(0, 'rgba(255, 180, 120, 0.18)');
+      rubyAura.addColorStop(0.4, 'rgba(255, 90, 110, 0.08)');
       rubyAura.addColorStop(1, 'rgba(215, 45, 85, 0)');
       ctx.fillStyle = rubyAura;
       ctx.beginPath();
-      ctx.arc(rubyX, rubyY, renderW * 0.10, 0, Math.PI * 2);
+      ctx.arc(rubyX, rubyY, renderW * 0.08, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
 

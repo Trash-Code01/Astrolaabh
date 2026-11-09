@@ -31,22 +31,22 @@ export function Navbar() {
         {/* Brand Logo matching Concept Art */}
         <a
           href="#hero"
-          className="pointer-events-auto flex items-center gap-2.5 text-[#1e1913] hover:opacity-90 transition-opacity whitespace-nowrap"
+          className="pointer-events-auto flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/25 hover:bg-white/40 backdrop-blur-md border border-white/40 text-white transition-all whitespace-nowrap shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
           onMouseEnter={playHover}
         >
           {/* Stylized Golden Vedic Lotus Mark */}
-          <svg viewBox="0 0 40 32" className="w-7 h-6 sm:w-8 sm:h-7 text-[#b58a44] fill-current flex-shrink-0" aria-hidden="true">
+          <svg viewBox="0 0 40 32" className="w-7 h-6 sm:w-8 sm:h-7 text-[#f5d799] fill-current flex-shrink-0 drop-shadow-[0_1px_3px_rgba(0,0,0,0.3)]" aria-hidden="true">
             <path
               d="M20 2C18 7 13 13 6 16C12 18 16 23 17 30C19 25 21 25 23 30C24 23 28 18 34 16C27 13 22 7 20 2Z"
-              opacity="0.9"
+              opacity="0.95"
             />
             <path
               d="M20 7C22 13 27 18 33 20C28 22 25 26 24 31C21 28 19 28 16 31C15 26 12 22 7 20C13 18 18 13 20 7Z"
-              opacity="0.5"
+              opacity="0.65"
             />
-            <circle cx="20" cy="18" r="2.5" fill="#f8e5bd" />
+            <circle cx="20" cy="18" r="2.5" fill="#ffffff" />
           </svg>
-          <span className="font-serif text-base sm:text-lg tracking-[0.16em] font-medium text-[#1e1913] whitespace-nowrap">
+          <span className="font-serif text-base sm:text-lg tracking-[0.18em] font-medium text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.4)] whitespace-nowrap">
             ASTRO LAABH
           </span>
         </a>
