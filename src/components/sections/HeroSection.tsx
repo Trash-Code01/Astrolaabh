@@ -23,7 +23,6 @@ export interface GemstoneInfo {
   colorName: string;
   accentHex: string;
   image: string;
-  // Normalized percentage coordinates relative to the 1024x576 scene plate
   fx: number;
   fy: number;
   size: number;
@@ -147,14 +146,14 @@ export function HeroSection() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
 
-  // Responsive image dimensions matching object-cover math
+  // Responsive image dimensions matching 16:9 aspect ratio
   const [bounds, setBounds] = useState({ width: 1440, height: 810, left: 0, top: 0, scale: 1 });
 
   const updateBounds = useCallback(() => {
     if (!sectionRef.current) return;
     const w = sectionRef.current.clientWidth;
     const h = sectionRef.current.clientHeight;
-    const imgAspect = 1024 / 576; // 16:9
+    const imgAspect = 1024 / 576;
     const containerAspect = w / h;
 
     let renderW: number;
@@ -189,7 +188,7 @@ export function HeroSection() {
     return () => window.removeEventListener('resize', updateBounds);
   }, [updateBounds]);
 
-  // Smooth scroll listener for GPU-driven interactive depth parallax
+  // Smooth scroll listener
   useEffect(() => {
     let animId: number | null = null;
     const handleScroll = () => {
@@ -212,12 +211,11 @@ export function HeroSection() {
     };
   }, []);
 
-  // Subtle pointer tracking for tactile 3D perspective depth tilt
   const handlePointerMove = useCallback((e: React.PointerEvent<HTMLElement>) => {
     const { clientX, clientY } = e;
     const { innerWidth, innerHeight } = window;
-    const normX = (clientX / innerWidth - 0.5) * 2; // -1 to 1
-    const normY = (clientY / innerHeight - 0.5) * 2; // -1 to 1
+    const normX = (clientX / innerWidth - 0.5) * 2;
+    const normY = (clientY / innerHeight - 0.5) * 2;
     setMouseOffset({ x: normX, y: normY });
   }, []);
 
@@ -238,45 +236,24 @@ export function HeroSection() {
       ref={sectionRef}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      className="astrology-hero relative isolate min-h-[760px] h-screen w-full overflow-hidden text-[#17140f] select-none"
-      style={{
-        perspective: '1200px',
-      }}
+      className="astrology-hero relative isolate min-h-[560px] h-screen w-full overflow-hidden text-[#17140f] select-none"
     >
       {/* 
-        3D Perspective Viewport wrapper:
-        Provides subtle camera pitch & yaw tilt that reacts to cursor position in true 3D space,
-        making the scene feel authentically 3D rendered without flat left-to-right layer sliding.
+        LAYER 1: Dedicated HTML5 Canvas with Seamlessly Blended 3D Video
+        - Draws the full panoramic Himalayan dawn landscape
+        - Draws the rotating gemstones & glowing orbits video with soft cosine feathering
+        - Solidly anchored with zero flat horizontal sliding
       */}
-      <div
-        className="absolute inset-0 w-full h-full pointer-events-none"
-        style={{
-          transform: `rotateX(${-mouseOffset.y * 1.4}deg) rotateY(${mouseOffset.x * 1.6}deg)`,
-          transition: 'transform 0.22s cubic-bezier(0.2, 0, 0.2, 1)',
-          transformStyle: 'preserve-3d',
-        }}
-      >
-        {/* 
-          LAYER 1: Dedicated HTML5 Canvas with Seamlessly Blended 3D Video & Radiant Lighting Engine
-          - Draws the full panoramic Himalayan dawn landscape
-          - Draws the rotating gemstones & glowing orbits video with a soft feather mask
-          - Draws volumetric dawn sunbeams, godrays, solar ruby flares, and gem specular starbursts
-        */}
-        <HeroPortalCanvas
-          scrollProgress={scrollProgress}
-          mouseOffset={mouseOffset}
-          hoveredGemId={hoveredStone?.id}
-        />
-
-        {/* Luminous Warm Dawn Ambient Glow - Zero Murky Green/Gray Dullness */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#fff9ec]/20 via-transparent to-[#ffe6be]/22 pointer-events-none z-15" />
-      </div>
+      <HeroPortalCanvas
+        scrollProgress={scrollProgress}
+        mouseOffset={mouseOffset}
+        hoveredGemId={hoveredStone?.id}
+      />
 
       {/* 
         LAYER 2: Interactive Gemstone Hit Targets & Tooltips
         - Mathematically locked to the stone portal on the right
-        - Hovering reveals the authentic prismatic gleam and Vedic insights tooltip
-        - Zero scale jumping or cartoonish zooming in/out
+        - Pure opacity transitions: NO zoom-in/out scale jumping
       */}
       <div
         className="absolute pointer-events-none z-25"
@@ -285,7 +262,7 @@ export function HeroSection() {
           top: `${bounds.top}px`,
           width: `${bounds.width}px`,
           height: `${bounds.height}px`,
-          transform: `translate3d(0, ${scrollProgress * 30}px, 0)`,
+          transform: `translate3d(0, ${scrollProgress * 25}px, 0)`,
         }}
       >
         <div className="absolute inset-0 w-full h-full pointer-events-auto">
@@ -310,40 +287,40 @@ export function HeroSection() {
                 onClick={() => setActiveStone(gem)}
                 title={gem.name}
               >
-                {/* Authentic Ethereal Refraction Gleam on Hover - NO ZOOM / NO SCALE JUMP */}
+                {/* Subtle Refractive Bloom - NO SCALE ZOOM */}
                 <div
-                  className="absolute inset-0 rounded-full transition-opacity duration-300 pointer-events-none"
+                  className="absolute inset-0 rounded-full transition-opacity duration-200 pointer-events-none"
                   style={{
-                    background: `radial-gradient(circle, ${gem.accentHex}55 0%, transparent 70%)`,
-                    opacity: isHovered ? 0.85 : 0,
-                    filter: 'blur(6px)',
+                    background: `radial-gradient(circle, ${gem.accentHex}45 0%, transparent 70%)`,
+                    opacity: isHovered ? 0.75 : 0,
+                    filter: 'blur(8px)',
                   }}
                 />
 
-                {/* Subtle Central Prismatic Sparkle on Hover */}
+                {/* Subtle Center Sparkle Point */}
                 <div
-                  className="w-full h-full rounded-full transition-opacity duration-250 flex items-center justify-center pointer-events-none"
+                  className="w-full h-full rounded-full transition-opacity duration-200 flex items-center justify-center pointer-events-none"
                   style={{
                     opacity: isHovered ? 1 : 0,
                   }}
                 >
                   <div
-                    className="w-2.5 h-2.5 rounded-full"
+                    className="w-2 h-2 rounded-full"
                     style={{
                       background: '#ffffff',
-                      boxShadow: `0 0 12px 3px ${gem.accentHex}, 0 0 20px 6px #ffffff99`,
+                      boxShadow: `0 0 10px 3px ${gem.accentHex}, 0 0 18px 5px #ffffff88`,
                     }}
                   />
                 </div>
 
-                {/* Elegant Hover Tooltip - Smooth Fade without Scale Bounce */}
+                {/* Tooltip without scale bounce */}
                 <AnimatePresence>
                   {isHovered && (
                     <motion.div
-                      initial={{ opacity: 0, y: 8 }}
+                      initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 4 }}
-                      transition={{ duration: 0.18, ease: 'easeOut' }}
+                      exit={{ opacity: 0, y: 3 }}
+                      transition={{ duration: 0.16, ease: 'easeOut' }}
                       className="absolute left-1/2 -top-20 -translate-x-1/2 pointer-events-none z-50 whitespace-nowrap"
                     >
                       <div className="px-3.5 py-2 rounded-xl bg-[#1e1913]/94 backdrop-blur-md border border-[#dfbe82]/40 shadow-[0_12px_32px_rgba(0,0,0,0.35)] text-center">
@@ -367,28 +344,25 @@ export function HeroSection() {
       </div>
 
       {/* 
-        LAYER 3: Foreground Editorial & Hero Content
-        - Left column text matching the reference concept art 1:1
-        - Bottom floating glassmorphic trust bar
+        LAYER 3: Foreground Editorial Hero Content matching Concept Art 1:1
       */}
-      <div className="relative z-30 h-full w-full max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-16 flex flex-col justify-between pt-32 pb-8 sm:pb-10 pointer-events-none">
-        {/* Left Editorial Copy matching Concept Art 1:1 */}
+      <div className="relative z-30 h-full w-full max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-16 flex flex-col justify-start pt-20 sm:pt-24 lg:pt-26 pointer-events-none">
         <div
-          className="max-w-xl lg:w-[48%] pt-6 lg:pt-10 pointer-events-auto transition-transform duration-200"
+          className="max-w-xl lg:w-[46%] pointer-events-auto transition-transform duration-200"
           style={{
-            transform: `translate3d(0, ${-scrollProgress * 60}px, 0)`,
-            opacity: Math.max(0, 1 - scrollProgress * 1.4),
+            transform: `translate3d(0, ${-scrollProgress * 50}px, 0)`,
+            opacity: Math.max(0, 1 - scrollProgress * 1.5),
           }}
         >
           {/* Eyebrow Subtitle */}
-          <p className="flex items-center gap-3 text-[11px] sm:text-xs font-serif font-medium uppercase tracking-[0.35em] text-[#554b3d] mb-6">
+          <p className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-serif font-medium uppercase tracking-[0.32em] text-[#554b3d] mb-4 sm:mb-5">
             <span>ANCIENT WISDOM</span>
-            <span className="text-[#a47b39] text-sm leading-none">✦</span>
+            <span className="text-[#a47b39] text-xs leading-none">✦</span>
             <span>MODERN GUIDANCE</span>
           </p>
 
-          {/* Main Headline */}
-          <h1 className="font-serif text-[4rem] sm:text-[4.8rem] lg:text-[5.4rem] xl:text-[6rem] font-normal leading-[0.96] tracking-[-0.03em] text-[#1c1813]">
+          {/* Main Headline matching Reference Concept Art */}
+          <h1 className="font-serif text-[2.6rem] sm:text-[3.5rem] lg:text-[4.2rem] xl:text-[4.8rem] font-normal leading-[0.95] tracking-[-0.03em] text-[#1c1813]">
             Gemstones
             <br />
             That{' '}
@@ -400,18 +374,18 @@ export function HeroSection() {
           </h1>
 
           {/* Delicate Star Hairline Flourish */}
-          <div className="flex items-center gap-3 my-7 w-48 text-[#a8864f]">
+          <div className="flex items-center gap-3 my-5 sm:my-6 w-48 text-[#a8864f]">
             <div className="h-[1px] flex-1 bg-gradient-to-r from-[#a8864f] to-transparent opacity-70" />
             <span className="text-xs">✦</span>
             <div className="h-[1px] flex-1 bg-gradient-to-l from-[#a8864f] to-transparent opacity-70" />
           </div>
 
           {/* Interactive CTA Buttons */}
-          <div className="mt-8 flex flex-wrap items-center gap-5 sm:gap-6">
+          <div className="mt-6 flex flex-wrap items-center gap-5 sm:gap-6">
             {/* Primary Amber-Gold Button */}
             <button
               onClick={() => scrollTo('narrative')}
-              className="group h-[52px] px-8 rounded-full bg-gradient-to-b from-[#a67c3b] via-[#926829] to-[#73501a] hover:from-[#b58a44] hover:to-[#825a20] text-[#fffdf7] font-serif text-[15px] tracking-wide shadow-[0_8px_24px_rgba(113,79,25,0.38)] hover:shadow-[0_12px_32px_rgba(113,79,25,0.5)] transition-all duration-300 flex items-center gap-3.5 active:scale-98 border border-[#e5c387]/40"
+              className="group h-[48px] px-7 sm:px-8 rounded-full bg-gradient-to-b from-[#a67c3b] via-[#926829] to-[#73501a] hover:from-[#b58a44] hover:to-[#825a20] text-[#fffdf7] font-serif text-[14px] sm:text-[15px] tracking-wide shadow-[0_8px_24px_rgba(113,79,25,0.38)] hover:shadow-[0_12px_32px_rgba(113,79,25,0.5)] transition-all duration-300 flex items-center gap-3 active:scale-98 border border-[#e5c387]/40"
             >
               <span>Explore Collection</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -420,44 +394,40 @@ export function HeroSection() {
             {/* Secondary Frosted Glass Play Button */}
             <button
               onClick={() => scrollTo('craftsmanship')}
-              className="group flex items-center gap-3.5 text-[#241e16] font-serif text-[15px] hover:text-[#8f6727] transition-colors"
+              className="group flex items-center gap-3 text-[#241e16] font-serif text-[14px] sm:text-[15px] hover:text-[#8f6727] transition-colors"
             >
-              <span className="w-11 h-11 rounded-full border-[1.5px] border-[#382f23]/70 group-hover:border-[#8f6727] flex items-center justify-center bg-white/40 backdrop-blur-sm shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:bg-white/60">
+              <span className="w-10 h-10 rounded-full border-[1.5px] border-[#382f23]/70 group-hover:border-[#8f6727] flex items-center justify-center bg-white/40 backdrop-blur-sm shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:bg-white/60">
                 <Play className="w-3.5 h-3.5 fill-[#241e16] text-[#241e16] ml-0.5 group-hover:fill-[#8f6727] group-hover:text-[#8f6727] transition-colors" />
               </span>
               <span>How It Works</span>
             </button>
           </div>
         </div>
+      </div>
 
-        {/* Floating Glassmorphic Trust Bar matching Concept Art 1:1 */}
-        <div
-          className="w-full flex justify-center pb-2 pointer-events-auto transition-transform duration-200"
-          style={{
-            transform: `translate3d(0, ${-scrollProgress * 25}px, 0)`,
-            opacity: Math.max(0, 1 - scrollProgress * 1.8),
-          }}
-        >
-          <div className="flex flex-wrap items-center justify-between w-full max-w-4xl px-8 sm:px-12 py-3.5 rounded-full bg-[#fdfaf5]/40 backdrop-blur-xl border border-white/70 shadow-[0_12px_40px_rgba(50,35,15,0.08)] text-[#2d261e] font-serif text-xs sm:text-[14px] tracking-wide">
-            <div className="flex items-center gap-3">
-              <Flower2 className="w-4 h-4 text-[#a37c44]" />
-              <span>Vedic Guidance</span>
-            </div>
-            <div className="hidden sm:block h-4 w-[1px] bg-[#382f23]/20" />
-            <div className="flex items-center gap-3">
-              <Sparkles className="w-4 h-4 text-[#a37c44]" />
-              <span>Authentic Gems</span>
-            </div>
-            <div className="hidden sm:block h-4 w-[1px] bg-[#382f23]/20" />
-            <div className="flex items-center gap-3">
-              <ShieldCheck className="w-4 h-4 text-[#a37c44]" />
-              <span>Certified &amp; Trusted</span>
-            </div>
-            <div className="hidden sm:block h-4 w-[1px] bg-[#382f23]/20" />
-            <div className="flex items-center gap-3">
-              <BadgeCheck className="w-4 h-4 text-[#a37c44]" />
-              <span>Personalized for You</span>
-            </div>
+      {/* 
+        LAYER 4: Floating Glassmorphic Trust Bar ALWAYS Visible above Bottom Edge
+      */}
+      <div className="absolute bottom-3 sm:bottom-4 left-0 right-0 z-40 flex justify-center px-4 pointer-events-auto">
+        <div className="flex flex-wrap items-center justify-between w-full max-w-3xl lg:max-w-4xl px-6 sm:px-10 py-2.5 sm:py-3 rounded-full bg-[#fdfaf5]/45 backdrop-blur-xl border border-white/70 shadow-[0_10px_35px_rgba(50,35,15,0.08)] text-[#2d261e] font-serif text-[12px] sm:text-[13px] tracking-wide">
+          <div className="flex items-center gap-2">
+            <Flower2 className="w-4 h-4 text-[#a37c44]" />
+            <span>Vedic Guidance</span>
+          </div>
+          <div className="hidden sm:block h-3.5 w-[1px] bg-[#382f23]/20" />
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-[#a37c44]" />
+            <span>Authentic Gems</span>
+          </div>
+          <div className="hidden sm:block h-3.5 w-[1px] bg-[#382f23]/20" />
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-[#a37c44]" />
+            <span>Certified &amp; Trusted</span>
+          </div>
+          <div className="hidden sm:block h-3.5 w-[1px] bg-[#382f23]/20" />
+          <div className="flex items-center gap-2">
+            <BadgeCheck className="w-4 h-4 text-[#a37c44]" />
+            <span>Personalized for You</span>
           </div>
         </div>
       </div>
@@ -473,9 +443,9 @@ export function HeroSection() {
             onClick={() => setActiveStone(null)}
           >
             <motion.div
-              initial={{ scale: 0.9, y: 20 }}
+              initial={{ scale: 0.95, y: 16 }}
               animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
+              exit={{ scale: 0.95, y: 16 }}
               onClick={(e) => e.stopPropagation()}
               className="relative w-full max-w-lg rounded-3xl bg-[#fdfaf5] border border-[#d9ba7d]/50 p-6 sm:p-8 shadow-2xl text-[#241e16]"
             >

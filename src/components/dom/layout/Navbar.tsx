@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { ArrowRight, Menu, Search, ShoppingBag, X } from 'lucide-react';
-import { AudioController } from '../ui/AudioController';
 import { useCreativeStore } from '../../../store/useCreativeStore';
 import { useCartStore } from '../../../store/useCartStore';
 import { useSoundEffects } from '../../../hooks/useSoundEffects';
@@ -32,11 +31,11 @@ export function Navbar() {
         {/* Brand Logo matching Concept Art */}
         <a
           href="#hero"
-          className="pointer-events-auto flex items-center gap-3 text-[#1e1913] hover:opacity-90 transition-opacity"
+          className="pointer-events-auto flex items-center gap-2.5 text-[#1e1913] hover:opacity-90 transition-opacity whitespace-nowrap"
           onMouseEnter={playHover}
         >
           {/* Stylized Golden Vedic Lotus Mark */}
-          <svg viewBox="0 0 40 32" className="w-8 h-7 text-[#b58a44] fill-current" aria-hidden="true">
+          <svg viewBox="0 0 40 32" className="w-7 h-6 sm:w-8 sm:h-7 text-[#b58a44] fill-current flex-shrink-0" aria-hidden="true">
             <path
               d="M20 2C18 7 13 13 6 16C12 18 16 23 17 30C19 25 21 25 23 30C24 23 28 18 34 16C27 13 22 7 20 2Z"
               opacity="0.9"
@@ -47,18 +46,18 @@ export function Navbar() {
             />
             <circle cx="20" cy="18" r="2.5" fill="#f8e5bd" />
           </svg>
-          <span className="font-serif text-lg tracking-[0.16em] font-medium text-[#1e1913] sm:text-xl">
+          <span className="font-serif text-base sm:text-lg tracking-[0.16em] font-medium text-[#1e1913] whitespace-nowrap">
             ASTRO LAABH
           </span>
         </a>
 
         {/* Navigation Links */}
-        <nav className="pointer-events-auto hidden items-center gap-9 lg:flex">
+        <nav className="pointer-events-auto hidden items-center gap-6 xl:gap-8 lg:flex">
           {links.map(([label, id]) => (
             <button
               key={id}
               onClick={() => scrollToSection(id)}
-              className="font-serif text-[15px] font-normal text-[#383129] transition-colors hover:text-[#9b7337]"
+              className="font-serif text-[14px] xl:text-[15px] font-normal text-[#383129] transition-colors hover:text-[#9b7337] whitespace-nowrap"
               onMouseEnter={playHover}
             >
               {label}
@@ -66,8 +65,8 @@ export function Navbar() {
           ))}
         </nav>
 
-        {/* Right Action Controls */}
-        <div className="pointer-events-auto flex items-center gap-2 sm:gap-3.5">
+        {/* Right Action Controls matching Reference Concept Art */}
+        <div className="pointer-events-auto flex items-center gap-2 sm:gap-3 flex-shrink-0">
           <button
             aria-label="Search"
             className="hidden h-10 w-10 items-center justify-center rounded-full border border-[#382f23]/20 bg-white/40 text-[#29251f] hover:bg-white/70 transition-all backdrop-blur-sm sm:flex"
@@ -100,9 +99,6 @@ export function Navbar() {
               <ArrowRight className="h-4 w-4" />
             </span>
           </button>
-          <div className="hidden sm:block">
-            <AudioController />
-          </div>
           <button
             className="grid h-10 w-10 place-items-center rounded-full bg-white/60 lg:hidden"
             aria-label="Toggle navigation"
