@@ -55,20 +55,64 @@ body {
 
 @keyframes floatBobbing {
   0%, 100% {
-    transform: translateY(-12px) scale(1.05);
+    transform: translateY(-12px) scale(1.04);
   }
   50% {
-    transform: translateY(-20px) scale(1.06);
+    transform: translateY(-22px) scale(1.05);
   }
 }
 
 .story-floating-element {
-  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1), filter 0.5s ease;
+  transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.3, 1), filter 0.6s ease;
   will-change: transform, filter;
 }
 
 .group:hover .story-floating-element {
-  animation: floatBobbing 3.2s ease-in-out infinite;
+  animation: floatBobbing 3.4s ease-in-out infinite;
+}
+
+/* Dynamic Vedic Arch Line-Drawing Reveal */
+.vedic-arch-canvas {
+  clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
+  opacity: 0;
+  transform: scale(0.985);
+  transition:
+    clip-path 1.15s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.4s ease,
+    transform 1.15s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: clip-path, opacity, transform;
+}
+
+.group:hover .vedic-arch-canvas {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Arch Line Drawing Tracer Sparkle */
+@keyframes archTracerSpark {
+  0% {
+    top: 100%;
+    opacity: 0;
+    transform: scaleX(0.2);
+  }
+  12% {
+    opacity: 0.85;
+    transform: scaleX(0.9);
+  }
+  85% {
+    opacity: 0.85;
+    transform: scaleX(0.9);
+  }
+  100% {
+    top: 0%;
+    opacity: 0;
+    transform: scaleX(0.3);
+  }
+}
+
+.group:hover .arch-tracer-line {
+  animation: archTracerSpark 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Ways to wear your gemstone — vertical-scroll-driven editorial sequence */
