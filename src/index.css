@@ -43,48 +43,33 @@ body {
   text-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
 }
 
-/* Astrolaabh gemstone story */
+/* White Ivory Narrative / Vedic Philosophy Story Section */
 .story-section {
-  --story-gold: #a96f20;
-  min-height: 760px;
-  box-sizing: border-box;
-  padding: 42px 5% 64px;
-  color: #3a2616;
-  background:
-    radial-gradient(ellipse at 50% 34%, rgba(255, 241, 196, .9) 0%, rgba(247, 221, 170, .48) 38%, transparent 68%),
-    radial-gradient(ellipse at 50% 100%, #f7ddaA 0%, transparent 44%),
-    linear-gradient(115deg, #e8b968 0%, #f3d39a 18%, #f7ddaA 50%, #f3d39a 82%, #e8b968 100%);
+  position: relative;
+  width: 100%;
+  background: #FAF8F5;
+  color: #1A1816;
+  padding: 100px 5% 120px;
+  overflow: hidden;
 }
-.story-pattern { position:absolute; inset:0; pointer-events:none; opacity:.16; background-image: linear-gradient(30deg, transparent 49%, rgba(169,111,32,.16) 50%, transparent 51%), linear-gradient(150deg, transparent 49%, rgba(169,111,32,.16) 50%, transparent 51%); background-size: 76px 132px; -webkit-mask-image: radial-gradient(ellipse at center, transparent 0 20%, black 72%, transparent 100%); mask-image: radial-gradient(ellipse at center, transparent 0 20%, black 72%, transparent 100%); }
-.story-header { position: relative; z-index: 2; text-align: center; }
-.story-brand { height: 95px; margin-bottom: 12px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; width:100%; }
-.story-brand img { display:block; width:250px; max-height:64px; margin:0 auto; object-fit:contain; filter:sepia(.25) contrast(.95); }
-.story-lotus { display:block; width:118px; height:40px; margin:0 auto -2px; fill:none; stroke:#a96f20; stroke-width:1.25; }
-.story-eyebrow { margin:0 0 9px; color:#76511d; font-family:Georgia,serif; font-size:10px; letter-spacing:.34em; }
-.story-header h2 { margin:0; font-family:Georgia,'Times New Roman',serif; font-size:clamp(38px,4vw,58px); font-weight:400; line-height:1.05; letter-spacing:-.025em; }
-.story-header h2 em { font-weight:400; }
-.story-subtitle { margin:9px 0 0; font-family:Georgia,serif; font-size:17px; }
-.story-divider { width:min(320px,70vw); margin:18px auto 16px; display:flex; align-items:center; justify-content:center; gap:12px; }
-.story-divider span { width:80px; height:1px; background:rgba(169,111,32,.55); }
-.story-divider i { width:9px; height:9px; background:#b17922; transform:rotate(45deg); box-shadow:0 0 0 4px rgba(255,232,181,.25); }
-.story-gallery { position:relative; z-index:2; width:min(1180px,100%); margin:0 auto; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:24px; }
-.story-item { min-width:0; width:100%; display:flex; flex-direction:column; align-items:center; text-align:center; }
-.story-niche { position:relative; width:100%; aspect-ratio:300/370; filter:drop-shadow(0 14px 24px rgba(210,155,55,.12)); }
-.story-arch { width:100%; height:100%; overflow:visible; }
-.story-arch image { filter:drop-shadow(0 9px 8px rgba(111,67,14,.16)); }
-.story-arch-fill { stroke:none; }
-.story-arch-outer,.story-arch-inner { fill:rgba(255,232,181,.05); stroke:#a96f20; stroke-width:1.25; vector-effect:non-scaling-stroke; }
-.story-arch-inner { stroke:rgba(169,111,32,.55); stroke-width:.8; }
-.story-platform { position:absolute; left:16%; right:16%; bottom:3.2%; height:5.8%; border-radius:50%; border-top:1px solid rgba(169,111,32,.55); background:linear-gradient(180deg,#ffe7ad 0%,#c99436 62%,#e9bd68 100%); box-shadow:0 5px 12px rgba(114,69,16,.16),0 0 24px rgba(255,232,181,.72); }
-.story-stage-icon { height:30px; margin-top:-4px; }
-.story-stage-icon svg { width:34px; height:34px; fill:none; stroke:#9a6420; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
-.story-stage-number { display:none; }
-.story-item h3 { margin:1px 0 3px; color:#7c391f; font-family:Georgia,'Times New Roman',serif; font-size:clamp(23px,2vw,30px); font-weight:700; line-height:1; }
-.story-item p { width:min(220px,90%); margin:0 auto; font-family:Georgia,serif; font-size:clamp(13px,1.15vw,16px); line-height:1.32; }
-.story-bottom-wave { position:absolute; left:-8%; bottom:-52px; width:116%; height:100px; opacity:.14; border-top:1px solid #a96f20; border-radius:50%; }
-.story-bottom-wave::before { content:''; position:absolute; left:0; right:0; top:13px; height:1px; background:#a96f20; transform:scaleY(.5); }
-@media (max-width:1023px) { .story-section { padding-inline:8%; } .story-gallery { grid-template-columns:repeat(2,minmax(0,300px)); justify-content:center; gap:48px 30px; } }
-@media (max-width:767px) { .story-section { padding:36px 10% 54px; } .story-brand { height:82px; } .story-brand img { width:210px; } .story-header h2 { font-size:38px; } .story-subtitle { font-size:15px; } .story-gallery { grid-template-columns:minmax(0,310px); gap:38px; } .story-item h3 { font-size:30px; } .story-item p { font-size:16px; } }
+
+@keyframes floatBobbing {
+  0%, 100% {
+    transform: translateY(-12px) scale(1.05);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.06);
+  }
+}
+
+.story-floating-element {
+  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1), filter 0.5s ease;
+  will-change: transform, filter;
+}
+
+.group:hover .story-floating-element {
+  animation: floatBobbing 3.2s ease-in-out infinite;
+}
 
 /* Ways to wear your gemstone — vertical-scroll-driven editorial sequence */
 .wear-scroll-section { min-height: 100vh; position: relative; background: #304d43; }
