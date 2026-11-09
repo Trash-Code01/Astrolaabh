@@ -71,17 +71,15 @@ body {
   animation: floatBobbing 3.4s ease-in-out infinite;
 }
 
-/* Vedic Arch Hover Line-Art Reveal */
-.vedic-arch-hover {
-  opacity: 0;
-  transform: scale(0.95) translateY(6px);
-  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
+/* Vedic Arch Alcove Framing */
+.vedic-arch-frame {
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+  will-change: opacity;
 }
 
-.group:hover .vedic-arch-hover {
+.group:hover .vedic-arch-frame {
   opacity: 1;
-  transform: scale(1) translateY(0);
 }
 
 /* Ways to wear your gemstone — vertical-scroll-driven editorial sequence */

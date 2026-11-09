@@ -123,11 +123,6 @@ export function NarrativeSection() {
 
         {/* 4 Story Stations — Clean open layout (cards removed!) */}
         <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 items-stretch">
-          {/* Continuous Horizontal Journey Axis Line */}
-          <div
-            className="hidden lg:block absolute left-[4%] right-[4%] top-[205px] h-[1px] border-t border-dashed border-[#DFD7CB] pointer-events-none z-0"
-            aria-hidden="true"
-          />
 
           {stories.map((story, index) => (
             <motion.article
@@ -145,15 +140,15 @@ export function NarrativeSection() {
               {/* Visual Showcase Stage — No card boxes! */}
               <div className="relative w-full aspect-[280/350] flex flex-col justify-end items-center p-2 z-10">
                 
-                {/* THAT ONE CHOSEN DESIGN — Shows ONLY on hover, completely hidden when not hovering */}
+                {/* Sacred Vedic Floral Arch Alcove — Elegantly framing each artifact */}
                 <div
-                  className="vedic-arch-hover pointer-events-none absolute inset-0 z-10 flex items-center justify-center p-1 sm:p-2"
+                  className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center p-1 sm:p-2"
                   aria-hidden="true"
                 >
                   <img
                     src={vedicArchDesign}
                     alt=""
-                    className="w-full h-full object-contain pointer-events-none select-none filter contrast-125 drop-shadow-[0_4px_16px_rgba(24,21,18,0.06)]"
+                    className="w-full h-full object-contain pointer-events-none select-none opacity-85 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-[0_4px_16px_rgba(24,21,18,0.04)]"
                     loading="lazy"
                     draggable={false}
                   />
