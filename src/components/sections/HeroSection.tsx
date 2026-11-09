@@ -239,23 +239,44 @@ export function HeroSection() {
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       className="astrology-hero relative isolate min-h-[760px] h-screen w-full overflow-hidden text-[#17140f] select-none"
+      style={{
+        perspective: '1200px',
+      }}
     >
       {/* 
-        LAYER 1: Dedicated HTML5 Canvas with Seamlessly Blended 3D Video & Stardust Code Engine
-        - Draws the full panoramic Himalayan dawn landscape
-        - Draws the rotating gemstones & glowing orbits video with a soft feather mask
-        - Draws stardust photon sparkles & water ripples in real-time
+        3D Perspective Viewport wrapper:
+        Provides subtle camera pitch & yaw tilt that reacts to cursor position in true 3D space,
+        making the scene feel authentically 3D rendered without flat left-to-right layer sliding.
       */}
-      <HeroPortalCanvas scrollProgress={scrollProgress} mouseOffset={mouseOffset} />
+      <div
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        style={{
+          transform: `rotateX(${-mouseOffset.y * 1.4}deg) rotateY(${mouseOffset.x * 1.6}deg)`,
+          transition: 'transform 0.22s cubic-bezier(0.2, 0, 0.2, 1)',
+          transformStyle: 'preserve-3d',
+        }}
+      >
+        {/* 
+          LAYER 1: Dedicated HTML5 Canvas with Seamlessly Blended 3D Video & Radiant Lighting Engine
+          - Draws the full panoramic Himalayan dawn landscape
+          - Draws the rotating gemstones & glowing orbits video with a soft feather mask
+          - Draws volumetric dawn sunbeams, godrays, solar ruby flares, and gem specular starbursts
+        */}
+        <HeroPortalCanvas
+          scrollProgress={scrollProgress}
+          mouseOffset={mouseOffset}
+          hoveredGemId={hoveredStone?.id}
+        />
 
-      {/* Atmospheric Dawn Warmth & Sunbeam Vignette */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#fbf4e6]/30 via-transparent to-[#1a2e26]/15 pointer-events-none z-15" />
+        {/* Luminous Warm Dawn Ambient Glow - Zero Murky Green/Gray Dullness */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#fff9ec]/20 via-transparent to-[#ffe6be]/22 pointer-events-none z-15" />
+      </div>
 
       {/* 
         LAYER 2: Interactive Gemstone Hit Targets & Tooltips
         - Mathematically locked to the stone portal on the right
-        - Hovering reveals the Vedic insights tooltip
-        - Clicking opens the full consultation modal
+        - Hovering reveals the authentic prismatic gleam and Vedic insights tooltip
+        - Zero scale jumping or cartoonish zooming in/out
       */}
       <div
         className="absolute pointer-events-none z-25"
@@ -264,8 +285,7 @@ export function HeroSection() {
           top: `${bounds.top}px`,
           width: `${bounds.width}px`,
           height: `${bounds.height}px`,
-          transform: `translate3d(${mouseOffset.x * 6}px, ${scrollProgress * 45 + mouseOffset.y * 5}px, 0)`,
-          transition: 'transform 0.18s cubic-bezier(0.2, 0, 0.2, 1)',
+          transform: `translate3d(0, ${scrollProgress * 30}px, 0)`,
         }}
       >
         <div className="absolute inset-0 w-full h-full pointer-events-auto">
@@ -290,38 +310,43 @@ export function HeroSection() {
                 onClick={() => setActiveStone(gem)}
                 title={gem.name}
               >
-                {/* Hover Radiant Bloom Halo */}
+                {/* Authentic Ethereal Refraction Gleam on Hover - NO ZOOM / NO SCALE JUMP */}
                 <div
-                  className="absolute inset-0 rounded-full transition-all duration-300 pointer-events-none"
+                  className="absolute inset-0 rounded-full transition-opacity duration-300 pointer-events-none"
                   style={{
-                    background: `radial-gradient(circle, ${gem.accentHex} 0%, transparent 70%)`,
-                    opacity: isHovered ? 0.65 : 0,
-                    transform: isHovered ? 'scale(1.75)' : 'scale(0.8)',
-                    filter: 'blur(8px)',
+                    background: `radial-gradient(circle, ${gem.accentHex}55 0%, transparent 70%)`,
+                    opacity: isHovered ? 0.85 : 0,
+                    filter: 'blur(6px)',
                   }}
                 />
 
-                {/* Subtle Pulsing Hit Reticle on Hover */}
+                {/* Subtle Central Prismatic Sparkle on Hover */}
                 <div
-                  className="w-full h-full rounded-full border transition-all duration-300"
+                  className="w-full h-full rounded-full transition-opacity duration-250 flex items-center justify-center pointer-events-none"
                   style={{
-                    borderColor: isHovered ? `${gem.accentHex}bb` : 'transparent',
-                    boxShadow: isHovered ? `0 0 18px ${gem.accentHex}99` : 'none',
-                    transform: isHovered ? 'scale(1.12)' : 'scale(1)',
+                    opacity: isHovered ? 1 : 0,
                   }}
-                />
+                >
+                  <div
+                    className="w-2.5 h-2.5 rounded-full"
+                    style={{
+                      background: '#ffffff',
+                      boxShadow: `0 0 12px 3px ${gem.accentHex}, 0 0 20px 6px #ffffff99`,
+                    }}
+                  />
+                </div>
 
-                {/* Elegant Hover Tooltip */}
+                {/* Elegant Hover Tooltip - Smooth Fade without Scale Bounce */}
                 <AnimatePresence>
                   {isHovered && (
                     <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.92 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 6, scale: 0.92 }}
-                      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 4 }}
+                      transition={{ duration: 0.18, ease: 'easeOut' }}
                       className="absolute left-1/2 -top-20 -translate-x-1/2 pointer-events-none z-50 whitespace-nowrap"
                     >
-                      <div className="px-3.5 py-2 rounded-xl bg-[#1e1913]/92 backdrop-blur-md border border-[#dfbe82]/40 shadow-[0_12px_32px_rgba(0,0,0,0.35)] text-center">
+                      <div className="px-3.5 py-2 rounded-xl bg-[#1e1913]/94 backdrop-blur-md border border-[#dfbe82]/40 shadow-[0_12px_32px_rgba(0,0,0,0.35)] text-center">
                         <div className="flex items-center justify-center gap-1.5 text-[10px] font-medium tracking-wider text-[#d4af37]">
                           <span className="font-serif">{gem.sanskritName}</span>
                           <span>✦</span>
@@ -331,7 +356,7 @@ export function HeroSection() {
                           {gem.name}
                         </div>
                       </div>
-                      <div className="w-2 h-2 rotate-45 bg-[#1e1913]/92 border-r border-b border-[#dfbe82]/40 mx-auto -mt-1" />
+                      <div className="w-2 h-2 rotate-45 bg-[#1e1913]/94 border-r border-b border-[#dfbe82]/40 mx-auto -mt-1" />
                     </motion.div>
                   )}
                 </AnimatePresence>
