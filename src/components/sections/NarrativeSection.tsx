@@ -4,10 +4,7 @@ import story1 from '../../assets/story1.webp';
 import story2 from '../../assets/story2.webp';
 import story3 from '../../assets/story3.webp';
 import story4 from '../../assets/story4.webp';
-import vedicArch1 from '../../assets/vedic_arch_1.png';
-import vedicArch2 from '../../assets/vedic_arch_2.png';
-import vedicArch3 from '../../assets/vedic_arch_3.png';
-import vedicArch4 from '../../assets/vedic_arch_4.png';
+import grandVedicArch from '../../assets/grand_vedic_arch_panoramic.png';
 import { useCreativeStore } from '../../store/useCreativeStore';
 import { ScrollTrigger } from '../../lib/gsap';
 
@@ -17,7 +14,6 @@ interface StoryItem {
   title: string;
   description: string;
   image: string;
-  arch: string;
   alt: string;
   imageStyle?: string;
 }
@@ -29,9 +25,8 @@ const stories: StoryItem[] = [
     title: 'It begins with a story',
     description: 'Every design starts from a moment in scripture.',
     image: story1,
-    arch: vedicArch1,
     alt: 'Ancient open Vedic scripture with sacred radiant gemstones',
-    imageStyle: 'w-[88%] max-w-[240px] drop-shadow-[0_16px_24px_rgba(24,21,18,0.12)]',
+    imageStyle: 'w-[88%] max-w-[230px] drop-shadow-[0_16px_24px_rgba(24,21,18,0.12)]',
   },
   {
     number: '२',
@@ -39,9 +34,8 @@ const stories: StoryItem[] = [
     title: 'The story becomes a shape',
     description: 'That meaning is drawn into the form of the piece.',
     image: story2,
-    arch: vedicArch2,
     alt: 'Raw natural crystal stone emerging from sacred Himalayan rock',
-    imageStyle: 'w-[76%] max-w-[210px] drop-shadow-[0_18px_28px_rgba(24,21,18,0.14)]',
+    imageStyle: 'w-[75%] max-w-[200px] drop-shadow-[0_18px_28px_rgba(24,21,18,0.14)]',
   },
   {
     number: '३',
@@ -49,9 +43,8 @@ const stories: StoryItem[] = [
     title: 'Your stone sits at its heart',
     description: 'Chosen for your chart, never just for its look.',
     image: story3,
-    arch: vedicArch3,
     alt: 'Precision cut faceted gemstone with master jeweler tools',
-    imageStyle: 'w-[80%] max-w-[220px] drop-shadow-[0_18px_28px_rgba(24,21,18,0.14)]',
+    imageStyle: 'w-[78%] max-w-[210px] drop-shadow-[0_18px_28px_rgba(24,21,18,0.14)]',
   },
   {
     number: '४',
@@ -59,9 +52,8 @@ const stories: StoryItem[] = [
     title: 'A blessing stays hidden',
     description: 'A small detail only you will know is there.',
     image: story4,
-    arch: vedicArch4,
     alt: 'Handcrafted Astrolaabh gold ring with secret Vedic lotus blessing',
-    imageStyle: 'w-[80%] max-w-[220px] drop-shadow-[0_20px_30px_rgba(24,21,18,0.15)]',
+    imageStyle: 'w-[78%] max-w-[210px] drop-shadow-[0_20px_30px_rgba(24,21,18,0.15)]',
   },
 ];
 
@@ -103,7 +95,7 @@ export function NarrativeSection() {
       <div className="relative max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div
-          className="text-center max-w-3xl mx-auto mb-20 md:mb-24"
+          className="text-center max-w-3xl mx-auto mb-16 md:mb-20"
           initial={{ opacity: 0, y: 22 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
@@ -129,91 +121,94 @@ export function NarrativeSection() {
           </p>
         </motion.div>
 
-        {/* 4 Architectural Story Stages */}
-        <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 items-stretch">
+        {/* MONUMENTAL VEDIC ARCH SANCTUARY PORTAL — Covers all elements in one grand canopy */}
+        <div className="group/gallery relative w-full">
+          
+          {/* THE BIG SKETCH DESIGN COVERING ALL ELEMENTS — Lines come and form the grand canopy on hover */}
+          <div
+            className="grand-vedic-arch-canvas pointer-events-none absolute inset-x-0 -top-8 sm:-top-12 md:-top-14 bottom-24 sm:bottom-28 z-0 flex items-center justify-center overflow-visible"
+            aria-hidden="true"
+          >
+            <img
+              src={grandVedicArch}
+              alt=""
+              className="w-full h-full object-fill pointer-events-none select-none filter contrast-125 drop-shadow-[0_8px_30px_rgba(24,21,18,0.06)]"
+              loading="lazy"
+              draggable={false}
+            />
+            {/* Real-time Inking Tracer Spark traveling across the arch sweep */}
+            <div className="grand-arch-tracer absolute inset-x-4 sm:inset-x-8 h-[2.5px] bg-gradient-to-r from-transparent via-[#181512]/65 to-transparent pointer-events-none z-10 opacity-0" />
+          </div>
+
           {/* Continuous Horizontal Journey Hairline uniting cards */}
           <div
-            className="hidden lg:block absolute left-[8%] right-[8%] top-[240px] h-[1px] border-t border-dashed border-[#DFD7CB] pointer-events-none z-0"
+            className="hidden lg:block absolute left-[4%] right-[4%] top-[190px] h-[1px] border-t border-dashed border-[#DFD7CB] pointer-events-none z-0"
             aria-hidden="true"
           />
 
-          {stories.map((story, index) => (
-            <motion.article
-              key={story.title}
-              className="group relative flex flex-col items-center text-center cursor-pointer select-none"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{
-                duration: 0.85,
-                delay: index * 0.12,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-            >
-              {/* Pure Editorial Visual Stage — Existing heavy arch container removed! */}
-              <div className="relative w-full aspect-[280/380] flex flex-col justify-end items-center p-2 z-10">
-                
-                {/* MAIN SKETCH ARCH DESIGN ON HOVER — Lines come and form the design as the main architectural portal */}
-                <div
-                  className="vedic-arch-canvas absolute inset-0 z-10 pointer-events-none flex items-center justify-center p-2"
-                  aria-hidden="true"
-                >
-                  <img
-                    src={story.arch}
-                    alt=""
-                    className="w-full h-full object-contain pointer-events-none select-none filter contrast-125 drop-shadow-[0_4px_16px_rgba(24,21,18,0.06)]"
-                    loading="lazy"
-                    draggable={false}
-                  />
-                  {/* Leading edge line-draw tracer spark that sweeps upward with the drawing front */}
-                  <div className="arch-tracer-line absolute inset-x-6 h-[2px] bg-gradient-to-r from-transparent via-[#181512]/65 to-transparent pointer-events-none z-20 opacity-0" />
-                </div>
+          {/* The 4 Story Milestones housed inside the grand arch */}
+          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 items-stretch pt-8 sm:pt-12 px-2 sm:px-6">
+            {stories.map((story, index) => (
+              <motion.article
+                key={story.title}
+                className="group/card relative flex flex-col items-center text-center cursor-pointer select-none"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{
+                  duration: 0.85,
+                  delay: index * 0.12,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                {/* Visual Showcase Stage */}
+                <div className="relative w-full aspect-[280/320] flex flex-col justify-end items-center p-2 z-10">
+                  {/* Floating Element Showcase Container ("hover the elements upside down") */}
+                  <div className="relative z-20 w-full flex-1 flex flex-col items-center justify-end pb-3">
+                    {/* Floating Object Image */}
+                    <div className="story-floating-element w-full flex items-center justify-center">
+                      <img
+                        src={story.image}
+                        alt={story.alt}
+                        className={`object-contain transition-transform duration-500 select-none pointer-events-none ${story.imageStyle}`}
+                        loading="lazy"
+                        draggable={false}
+                      />
+                    </div>
 
-                {/* Floating Element Showcase Container ("hover the elements upside down") */}
-                <div className="relative z-20 w-full flex-1 flex flex-col items-center justify-end pb-4">
-                  {/* Floating Object Image */}
-                  <div className="story-floating-element w-full flex items-center justify-center">
-                    <img
-                      src={story.image}
-                      alt={story.alt}
-                      className={`object-contain transition-transform duration-500 select-none pointer-events-none ${story.imageStyle}`}
-                      loading="lazy"
-                      draggable={false}
+                    {/* Dynamic Soft Levitation Shadow underneath */}
+                    <div
+                      className="w-32 h-3.5 mx-auto rounded-full bg-black/20 blur-md transition-all duration-500 ease-out group-hover/card:w-44 group-hover/card:h-4 group-hover/card:bg-black/12 group-hover/card:blur-xl group-hover/card:scale-110 mt-1 pointer-events-none"
+                      aria-hidden="true"
                     />
                   </div>
-
-                  {/* Dynamic Soft Levitation Shadow underneath */}
-                  <div
-                    className="w-32 h-3.5 mx-auto rounded-full bg-black/20 blur-md transition-all duration-500 ease-out group-hover:w-44 group-hover:h-4 group-hover:bg-black/12 group-hover:blur-xl group-hover:scale-110 mt-1 pointer-events-none"
-                    aria-hidden="true"
-                  />
-                </div>
-              </div>
-
-              {/* Card Metadata & Editorial Story Info Below Arch */}
-              <div className="w-full pt-4 flex flex-col items-center">
-                {/* Devanagari Numeral Badge & Sanskrit Root */}
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="w-7 h-7 rounded-full border border-[#DCD5C9] group-hover:border-[#181512] bg-[#FAF8F5] group-hover:bg-[#181512] text-[#8C6D37] group-hover:text-white text-xs font-serif flex items-center justify-center transition-all duration-400">
-                    {story.number}
-                  </span>
-                  <span className="text-[12px] font-serif tracking-[0.22em] text-[#8C6D37] uppercase font-semibold">
-                    {story.sanskrit}
-                  </span>
                 </div>
 
-                {/* Stage English Title */}
-                <h3 className="font-serif text-xl sm:text-2xl text-[#181512] font-normal tracking-tight leading-snug mb-2 group-hover:text-[#9E773A] transition-colors duration-300">
-                  {story.title}
-                </h3>
+                {/* Card Metadata & Editorial Story Info */}
+                <div className="w-full pt-4 flex flex-col items-center">
+                  {/* Devanagari Numeral Badge & Sanskrit Root */}
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="w-7 h-7 rounded-full border border-[#DCD5C9] group-hover/card:border-[#181512] bg-[#FAF8F5] group-hover/card:bg-[#181512] text-[#8C6D37] group-hover/card:text-white text-xs font-serif flex items-center justify-center transition-all duration-400">
+                      {story.number}
+                    </span>
+                    <span className="text-[12px] font-serif tracking-[0.22em] text-[#8C6D37] uppercase font-semibold">
+                      {story.sanskrit}
+                    </span>
+                  </div>
 
-                {/* Stage Editorial Description */}
-                <p className="font-sans text-sm text-[#635B53] leading-relaxed max-w-[240px]">
-                  {story.description}
-                </p>
-              </div>
-            </motion.article>
-          ))}
+                  {/* Stage English Title */}
+                  <h3 className="font-serif text-xl sm:text-2xl text-[#181512] font-normal tracking-tight leading-snug mb-2 group-hover/card:text-[#9E773A] transition-colors duration-300">
+                    {story.title}
+                  </h3>
+
+                  {/* Stage Editorial Description */}
+                  <p className="font-sans text-sm text-[#635B53] leading-relaxed max-w-[240px]">
+                    {story.description}
+                  </p>
+                </div>
+              </motion.article>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -71,19 +71,20 @@ body {
   animation: floatBobbing 3.4s ease-in-out infinite;
 }
 
-/* Dynamic Vedic Arch Line-Drawing Reveal */
-.vedic-arch-canvas {
+/* Grand Monumental Vedic Arch Line-Drawing Reveal */
+.grand-vedic-arch-canvas {
   clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
   opacity: 0;
-  transform: scale(0.985);
+  transform: scale(0.99);
   transition:
-    clip-path 1.15s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.4s ease,
-    transform 1.15s cubic-bezier(0.16, 1, 0.3, 1);
+    clip-path 1.25s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.45s ease,
+    transform 1.25s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: clip-path, opacity, transform;
 }
 
-.group:hover .vedic-arch-canvas {
+.group\/gallery:hover .grand-vedic-arch-canvas,
+.grand-vedic-arch-canvas.is-active {
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
   opacity: 1;
   transform: scale(1);
@@ -111,8 +112,8 @@ body {
   }
 }
 
-.group:hover .arch-tracer-line {
-  animation: archTracerSpark 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.group\/gallery:hover .grand-arch-tracer {
+  animation: archTracerSpark 1.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Ways to wear your gemstone — vertical-scroll-driven editorial sequence */
