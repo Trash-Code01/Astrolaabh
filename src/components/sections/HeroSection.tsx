@@ -43,9 +43,9 @@ const GEMSTONES: GemstoneInfo[] = [
     colorName: 'Pigeon Blood Crimson',
     accentHex: '#ff1f5a',
     image: rubyImg,
-    fx: 0.622,
-    fy: 0.473,
-    size: 110,
+    fx: 0.6552,
+    fy: 0.5046,
+    size: 85,
   },
   {
     id: 'emerald',
@@ -61,9 +61,9 @@ const GEMSTONES: GemstoneInfo[] = [
     colorName: 'Lush Botanical Green',
     accentHex: '#00e575',
     image: emeraldImg,
-    fx: 0.457,
-    fy: 0.374,
-    size: 65,
+    fx: 0.5360,
+    fy: 0.4333,
+    size: 50,
   },
   {
     id: 'sapphire',
@@ -79,9 +79,9 @@ const GEMSTONES: GemstoneInfo[] = [
     colorName: 'Royal Cornflower Blue',
     accentHex: '#2575fc',
     image: sapphireImg,
-    fx: 0.446,
-    fy: 0.568,
-    size: 65,
+    fx: 0.5285,
+    fy: 0.5733,
+    size: 50,
   },
   {
     id: 'diamond',
@@ -97,9 +97,9 @@ const GEMSTONES: GemstoneInfo[] = [
     colorName: 'D-Flawless Pure Ice',
     accentHex: '#d8f0ff',
     image: diamondImg,
-    fx: 0.769,
-    fy: 0.263,
-    size: 68,
+    fx: 0.7610,
+    fy: 0.3533,
+    size: 52,
   },
   {
     id: 'gold',
@@ -115,9 +115,9 @@ const GEMSTONES: GemstoneInfo[] = [
     colorName: 'Warm Canary Gold',
     accentHex: '#ffaa00',
     image: goldImg,
-    fx: 0.850,
-    fy: 0.416,
-    size: 72,
+    fx: 0.8191,
+    fy: 0.4633,
+    size: 55,
   },
   {
     id: 'pearl',
@@ -133,9 +133,9 @@ const GEMSTONES: GemstoneInfo[] = [
     colorName: 'Lustrous Champagne White',
     accentHex: '#fff3db',
     image: pearlImg,
-    fx: 0.761,
-    fy: 0.592,
-    size: 70,
+    fx: 0.7553,
+    fy: 0.5900,
+    size: 52,
   },
 ];
 
@@ -153,7 +153,7 @@ export function HeroSection() {
     if (!sectionRef.current) return;
     const w = sectionRef.current.clientWidth;
     const h = sectionRef.current.clientHeight;
-    const imgAspect = 1024 / 576;
+    const imgAspect = 1376 / 768;
     const containerAspect = w / h;
 
     let renderW: number;
@@ -178,7 +178,7 @@ export function HeroSection() {
       height: renderH,
       left,
       top,
-      scale: renderW / 1024,
+      scale: renderW / 1376,
     });
   }, []);
 
@@ -346,25 +346,25 @@ export function HeroSection() {
       </div>
 
       {/* 
-        LAYER 3: Foreground Editorial Hero Content matching Concept Art 1:1
+        LAYER 3: Foreground Editorial Hero Content - Centered & Balanced
       */}
-      <div className="relative z-30 h-full w-full max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-16 flex flex-col justify-start pt-20 sm:pt-24 lg:pt-26 pointer-events-none">
+      <div className="relative z-30 h-full w-full max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-16 flex flex-col justify-center pt-8 pb-16 pointer-events-none">
         <div
-          className="max-w-xl lg:w-[46%] pointer-events-auto transition-transform duration-200"
+          className="max-w-md sm:max-w-lg lg:max-w-[46%] pointer-events-auto transition-transform duration-200"
           style={{
             transform: `translate3d(0, ${-scrollProgress * 50}px, 0)`,
             opacity: Math.max(0, 1 - scrollProgress * 1.5),
           }}
         >
           {/* Eyebrow Subtitle */}
-          <p className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-serif font-medium uppercase tracking-[0.32em] text-[#554b3d] mb-4 sm:mb-5">
+          <p className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-serif font-medium uppercase tracking-[0.32em] text-[#554b3d] mb-3 sm:mb-4">
             <span>ANCIENT WISDOM</span>
             <span className="text-[#a47b39] text-xs leading-none">✦</span>
             <span>MODERN GUIDANCE</span>
           </p>
 
           {/* Main Headline matching Reference Concept Art */}
-          <h1 className="font-serif text-[2.6rem] sm:text-[3.5rem] lg:text-[4.2rem] xl:text-[4.8rem] font-normal leading-[0.95] tracking-[-0.03em] text-[#1c1813]">
+          <h1 className="font-serif text-[2.5rem] sm:text-[3.3rem] lg:text-[4.0rem] xl:text-[4.4rem] font-normal leading-[0.98] tracking-[-0.03em] text-[#1c1813]">
             Gemstones
             <br />
             That{' '}
@@ -376,18 +376,18 @@ export function HeroSection() {
           </h1>
 
           {/* Delicate Star Hairline Flourish */}
-          <div className="flex items-center gap-3 my-5 sm:my-6 w-48 text-[#a8864f]">
+          <div className="flex items-center gap-3 my-4 sm:my-5 w-44 text-[#a8864f]">
             <div className="h-[1px] flex-1 bg-gradient-to-r from-[#a8864f] to-transparent opacity-70" />
             <span className="text-xs">✦</span>
             <div className="h-[1px] flex-1 bg-gradient-to-l from-[#a8864f] to-transparent opacity-70" />
           </div>
 
           {/* Interactive CTA Buttons */}
-          <div className="mt-6 flex flex-wrap items-center gap-5 sm:gap-6">
+          <div className="mt-5 flex flex-wrap items-center gap-4 sm:gap-5">
             {/* Primary Amber-Gold Button */}
             <button
               onClick={() => scrollTo('narrative')}
-              className="group h-[48px] px-7 sm:px-8 rounded-full bg-gradient-to-b from-[#a67c3b] via-[#926829] to-[#73501a] hover:from-[#b58a44] hover:to-[#825a20] text-[#fffdf7] font-serif text-[14px] sm:text-[15px] tracking-wide shadow-[0_8px_24px_rgba(113,79,25,0.38)] hover:shadow-[0_12px_32px_rgba(113,79,25,0.5)] transition-all duration-300 flex items-center gap-3 active:scale-98 border border-[#e5c387]/40"
+              className="group h-[46px] px-6 sm:px-7 rounded-full bg-gradient-to-b from-[#a67c3b] via-[#926829] to-[#73501a] hover:from-[#b58a44] hover:to-[#825a20] text-[#fffdf7] font-serif text-[13px] sm:text-[14px] tracking-wide shadow-[0_8px_24px_rgba(113,79,25,0.38)] hover:shadow-[0_12px_32px_rgba(113,79,25,0.5)] transition-all duration-300 flex items-center gap-2.5 active:scale-98 border border-[#e5c387]/40"
             >
               <span>Explore Collection</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -396,10 +396,10 @@ export function HeroSection() {
             {/* Secondary Frosted Glass Play Button */}
             <button
               onClick={() => scrollTo('craftsmanship')}
-              className="group flex items-center gap-3 text-[#241e16] font-serif text-[14px] sm:text-[15px] hover:text-[#8f6727] transition-colors"
+              className="group flex items-center gap-2.5 text-[#241e16] font-serif text-[13px] sm:text-[14px] hover:text-[#8f6727] transition-colors"
             >
-              <span className="w-10 h-10 rounded-full border-[1.5px] border-[#382f23]/70 group-hover:border-[#8f6727] flex items-center justify-center bg-white/40 backdrop-blur-sm shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:bg-white/60">
-                <Play className="w-3.5 h-3.5 fill-[#241e16] text-[#241e16] ml-0.5 group-hover:fill-[#8f6727] group-hover:text-[#8f6727] transition-colors" />
+              <span className="w-9 h-9 rounded-full border-[1.5px] border-[#382f23]/70 group-hover:border-[#8f6727] flex items-center justify-center bg-white/40 backdrop-blur-sm shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:bg-white/60">
+                <Play className="w-3 h-3 fill-[#241e16] text-[#241e16] ml-0.5 group-hover:fill-[#8f6727] group-hover:text-[#8f6727] transition-colors" />
               </span>
               <span>How It Works</span>
             </button>

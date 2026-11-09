@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import herobg from '../../assets/herobg.png';
+import cleanHerobg from '../../assets/clean_herobg.png';
 
 interface HeroPortalCanvasProps {
   scrollProgress: number;
@@ -46,7 +46,7 @@ export function HeroPortalCanvas({ scrollProgress, mouseOffset, hoveredGemId }: 
         angle: Math.random() * Math.PI * 2,
         radiusFactor: 0.7 + Math.random() * 0.3,
         speed: 0.0014 + Math.random() * 0.0018,
-        size: 1.0 + Math.random() * 1.5,
+        size: 0.9 + Math.random() * 1.3,
         alpha: 0.35 + Math.random() * 0.55,
         phase: Math.random() * Math.PI * 2,
       });
@@ -66,7 +66,7 @@ export function HeroPortalCanvas({ scrollProgress, mouseOffset, hoveredGemId }: 
   // Preload background image & video
   useEffect(() => {
     const img = new Image();
-    img.src = herobg;
+    img.src = cleanHerobg;
     bgImgRef.current = img;
 
     const video = document.createElement('video');
@@ -105,8 +105,8 @@ export function HeroPortalCanvas({ scrollProgress, mouseOffset, hoveredGemId }: 
 
       ctx.clearRect(0, 0, width, height);
 
-      // 1. Calculate responsive background aspect-ratio (1024x576 = 16:9)
-      const imgAspect = 1024 / 576;
+      // 1. Calculate responsive background aspect-ratio
+      const imgAspect = 1376 / 768;
       const canvasAspect = width / height;
 
       let renderW: number;
@@ -135,17 +135,31 @@ export function HeroPortalCanvas({ scrollProgress, mouseOffset, hoveredGemId }: 
         ctx.drawImage(bgImg, left, top + scrollY, renderW, renderH);
       }
 
-      // 3. Draw Rotating 3D Video on Canvas with Smooth Horizontal Atmospheric Dissolve
+      // 3. Draw Rotating 3D Video on Canvas with Scaled Proportions (~28% smaller wheel & gems)
       const video = videoRef.current;
       if (video && video.readyState >= 2) {
         const vBuf = offscreenVideoRef.current;
         const mBuf = offscreenMaskRef.current;
 
-        // Exactly aligned 1:1 scale with herobg.png
-        const drawW = Math.round(renderW);
-        const drawH = Math.round(renderH);
-        const drawX = Math.round(left + renderW * 0.19875);
-        const drawY = Math.round(top + scrollY);
+        // Crop box in video source coordinates (1920x1080), center is (813, 502)
+        const cropX = 213;
+        const cropY = 32;
+        const cropW = 1200;
+        const cropH = 950;
+        const portalScale = 0.72; // Refined luxury proportion
+
+        const drawW = Math.max(1, Math.round(renderW * (cropW / 1920) * portalScale));
+        const drawH = Math.max(1, Math.round(renderH * (cropH / 1080) * portalScale));
+
+        // Target center position on canvas (right hemisphere, resting gracefully on the lake)
+        const targetCenterX = left + renderW * 0.6552;
+        const targetCenterY = top + renderH * 0.5046 + scrollY;
+
+        const centerRelX = drawW * ((813 - cropX) / cropW);
+        const centerRelY = drawH * ((502 - cropY) / cropH);
+
+        const drawX = Math.round(targetCenterX - centerRelX);
+        const drawY = Math.round(targetCenterY - centerRelY);
 
         if (vBuf && mBuf && drawW > 0 && drawH > 0) {
           if (lastMaskDimRef.current.w !== drawW || lastMaskDimRef.current.h !== drawH) {
@@ -156,25 +170,37 @@ export function HeroPortalCanvas({ scrollProgress, mouseOffset, hoveredGemId }: 
             if (mCtx) {
               mCtx.clearRect(0, 0, drawW, drawH);
 
-              // In video coordinates: dissolve region between x0 = 138.4 and x1 = 398.4
-              // which in canvas coordinates lands perfectly at X = 520 to 780
-              const x0 = Math.round(drawW * 0.0721);
-              const x1 = Math.round(drawW * 0.2075);
+              const rx = drawW * (490 / cropW);
+              const ry = drawH * (400 / cropH);
 
-              // Smooth cosine-like linear gradient from left mist to video
-              const grad = mCtx.createLinearGradient(x0, 0, x1, 0);
-              grad.addColorStop(0, 'rgba(255, 255, 255, 0)');
-              grad.addColorStop(0.2, 'rgba(255, 255, 255, 0.08)');
-              grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.50)');
-              grad.addColorStop(0.8, 'rgba(255, 255, 255, 0.92)');
-              grad.addColorStop(1, 'rgba(255, 255, 255, 1)');
+              mCtx.save();
+              mCtx.translate(centerRelX, centerRelY);
+              mCtx.scale(1, ry / rx);
+
+              const grad = mCtx.createRadialGradient(0, 0, rx * 0.72, 0, 0, rx);
+              grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+              grad.addColorStop(0.72, 'rgba(255, 255, 255, 1)');
+              grad.addColorStop(0.90, 'rgba(255, 255, 255, 0.45)');
+              grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
               mCtx.fillStyle = grad;
-              mCtx.fillRect(x0, 0, x1 - x0, drawH);
+              mCtx.beginPath();
+              mCtx.arc(0, 0, rx, 0, Math.PI * 2);
+              mCtx.fill();
+              mCtx.restore();
 
-              // Full opacity for the entire portal, gemstones, plinth, and arch
-              mCtx.fillStyle = '#ffffff';
-              mCtx.fillRect(x1, 0, drawW - x1, drawH);
+              // Soft water dissolve at the bottom of the plinth
+              const waterFadeTop = centerRelY + drawH * (240 / cropH);
+              const waterFadeBottom = centerRelY + drawH * (410 / cropH);
+              if (waterFadeBottom > waterFadeTop) {
+                mCtx.globalCompositeOperation = 'destination-out';
+                const waterGrad = mCtx.createLinearGradient(0, waterFadeTop, 0, waterFadeBottom);
+                waterGrad.addColorStop(0, 'rgba(0,0,0,0)');
+                waterGrad.addColorStop(1, 'rgba(0,0,0,1)');
+                mCtx.fillStyle = waterGrad;
+                mCtx.fillRect(0, waterFadeTop, drawW, waterFadeBottom - waterFadeTop + 20);
+                mCtx.globalCompositeOperation = 'source-over';
+              }
             }
           }
 
@@ -185,7 +211,7 @@ export function HeroPortalCanvas({ scrollProgress, mouseOffset, hoveredGemId }: 
           const vbCtx = vBuf.getContext('2d');
           if (vbCtx) {
             vbCtx.clearRect(0, 0, drawW, drawH);
-            vbCtx.drawImage(video, 0, 0, drawW, drawH);
+            vbCtx.drawImage(video, cropX, cropY, cropW, cropH, 0, 0, drawW, drawH);
             vbCtx.globalCompositeOperation = 'destination-in';
             vbCtx.drawImage(mBuf, 0, 0);
             vbCtx.globalCompositeOperation = 'source-over';
@@ -198,20 +224,20 @@ export function HeroPortalCanvas({ scrollProgress, mouseOffset, hoveredGemId }: 
       // 4. Subtle Ruby Aura Glow (Warm, Soft, Screen-Blended)
       ctx.save();
       ctx.globalCompositeOperation = 'screen';
-      const rubyX = left + renderW * 0.622;
-      const rubyY = top + renderH * 0.473 + scrollY;
-      const rubyAura = ctx.createRadialGradient(rubyX, rubyY, 0, rubyX, rubyY, renderW * 0.08);
+      const rubyX = left + renderW * 0.6552;
+      const rubyY = top + renderH * 0.5046 + scrollY;
+      const rubyAura = ctx.createRadialGradient(rubyX, rubyY, 0, rubyX, rubyY, renderW * 0.06);
       rubyAura.addColorStop(0, 'rgba(255, 180, 120, 0.18)');
       rubyAura.addColorStop(0.4, 'rgba(255, 90, 110, 0.08)');
       rubyAura.addColorStop(1, 'rgba(215, 45, 85, 0)');
       ctx.fillStyle = rubyAura;
       ctx.beginPath();
-      ctx.arc(rubyX, rubyY, renderW * 0.08, 0, Math.PI * 2);
+      ctx.arc(rubyX, rubyY, renderW * 0.06, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
 
-      // 5. Code-Generated Golden Stardust Sparkles Trailing in 3D Space
-      const orbitRadius = renderW * 0.185;
+      // 5. Code-Generated Golden Stardust Sparkles Trailing in 3D Space (scaled to match)
+      const orbitRadius = renderW * 0.185 * 0.72;
       for (let i = 0; i < sparklesRef.current.length; i++) {
         const s = sparklesRef.current[i];
         s.angle += s.speed;
@@ -224,25 +250,25 @@ export function HeroPortalCanvas({ scrollProgress, mouseOffset, hoveredGemId }: 
         const ex = rx * Math.cos(s.angle);
         const ey = ry * Math.sin(s.angle);
         // Foreground 3D depth parallax relative to mouse (subtle 3D shift)
-        const px = rubyX + ex * Math.cos(rot) - ey * Math.sin(rot) + mouseOffset.x * 2.5;
-        const py = rubyY + ex * Math.sin(rot) + ey * Math.cos(rot) + mouseOffset.y * 2.0;
+        const px = rubyX + ex * Math.cos(rot) - ey * Math.sin(rot) + mouseOffset.x * 2.0;
+        const py = rubyY + ex * Math.sin(rot) + ey * Math.cos(rot) + mouseOffset.y * 1.5;
 
         const shimmer = 0.6 + 0.4 * Math.sin(time * 0.0035 + s.phase);
         const currentAlpha = s.alpha * shimmer;
 
-        const pGrad = ctx.createRadialGradient(px, py, 0, px, py, s.size * 2.5);
+        const pGrad = ctx.createRadialGradient(px, py, 0, px, py, s.size * 2.2);
         pGrad.addColorStop(0, `rgba(255, 255, 245, ${currentAlpha})`);
         pGrad.addColorStop(0.4, `rgba(255, 220, 130, ${currentAlpha * 0.7})`);
         pGrad.addColorStop(1, 'rgba(255, 185, 75, 0)');
 
         ctx.fillStyle = pGrad;
         ctx.beginPath();
-        ctx.arc(px, py, s.size * 2.5, 0, Math.PI * 2);
+        ctx.arc(px, py, s.size * 2.2, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
-        ctx.arc(px, py, Math.max(0.5, s.size * 0.4), 0, Math.PI * 2);
+        ctx.arc(px, py, Math.max(0.5, s.size * 0.35), 0, Math.PI * 2);
         ctx.fill();
       }
 
