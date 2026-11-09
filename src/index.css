@@ -71,49 +71,28 @@ body {
   animation: floatBobbing 3.4s ease-in-out infinite;
 }
 
-/* Grand Monumental Vedic Arch Line-Drawing Reveal */
-.grand-vedic-arch-canvas {
-  clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
-  opacity: 0;
-  transform: scale(0.99);
-  transition:
-    clip-path 1.25s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.45s ease,
-    transform 1.25s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: clip-path, opacity, transform;
+/* Pure Vector Vedic Arch Animated Drawing */
+.arch-vector-stroke {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  transition: stroke-dashoffset 1.1s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+  will-change: stroke-dashoffset;
 }
 
-.group\/gallery:hover .grand-vedic-arch-canvas,
-.grand-vedic-arch-canvas.is-active {
-  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+.group:hover .arch-vector-stroke {
+  stroke-dashoffset: 0;
+}
+
+.arch-vector-flourish {
+  opacity: 0;
+  transform: scale(0.94);
+  transition: opacity 0.6s ease 0.35s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.35s;
+  will-change: opacity, transform;
+}
+
+.group:hover .arch-vector-flourish {
   opacity: 1;
   transform: scale(1);
-}
-
-/* Arch Line Drawing Tracer Sparkle */
-@keyframes archTracerSpark {
-  0% {
-    top: 100%;
-    opacity: 0;
-    transform: scaleX(0.2);
-  }
-  12% {
-    opacity: 0.85;
-    transform: scaleX(0.9);
-  }
-  85% {
-    opacity: 0.85;
-    transform: scaleX(0.9);
-  }
-  100% {
-    top: 0%;
-    opacity: 0;
-    transform: scaleX(0.3);
-  }
-}
-
-.group\/gallery:hover .grand-arch-tracer {
-  animation: archTracerSpark 1.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Ways to wear your gemstone — vertical-scroll-driven editorial sequence */
