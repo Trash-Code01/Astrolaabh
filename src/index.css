@@ -71,28 +71,17 @@ body {
   animation: floatBobbing 3.4s ease-in-out infinite;
 }
 
-/* Pure Vector Vedic Arch Animated Drawing */
-.arch-vector-stroke {
-  stroke-dasharray: 1200;
-  stroke-dashoffset: 1200;
-  transition: stroke-dashoffset 1.1s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
-  will-change: stroke-dashoffset;
-}
-
-.group:hover .arch-vector-stroke {
-  stroke-dashoffset: 0;
-}
-
-.arch-vector-flourish {
+/* Vedic Arch Hover Line-Art Reveal */
+.vedic-arch-hover {
   opacity: 0;
-  transform: scale(0.94);
-  transition: opacity 0.6s ease 0.35s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.35s;
+  transform: scale(0.95) translateY(6px);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
 
-.group:hover .arch-vector-flourish {
+.group:hover .vedic-arch-hover {
   opacity: 1;
-  transform: scale(1);
+  transform: scale(1) translateY(0);
 }
 
 /* Ways to wear your gemstone — vertical-scroll-driven editorial sequence */
