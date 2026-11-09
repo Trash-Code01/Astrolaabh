@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react';
-import model1 from '../../assets/model1.png';
-import model2 from '../../assets/model2.png';
-import model3 from '../../assets/model3.png';
-import model4 from '../../assets/model4.png';
-import ruby from '../../assets/ruby.png';
-import sapphire from '../../assets/sapphire.png';
-import gold from '../../assets/gold.png';
-import emerald from '../../assets/emerald.png';
-import { gsap } from '../../lib/gsap';
+import model1 from '../../assets/model1.webp';
+import model2 from '../../assets/model2.webp';
+import model3 from '../../assets/model3.webp';
+import model4 from '../../assets/model4.webp';
+import ruby from '../../assets/ruby.webp';
+import sapphire from '../../assets/sapphire.webp';
+import gold from '../../assets/gold.webp';
+import emerald from '../../assets/emerald.webp';
+import { gsap, ScrollTrigger } from '../../lib/gsap';
 
 const panels = [
   {
@@ -57,18 +57,19 @@ export function WearGemstoneSection() {
     const track = trackRef.current;
     if (!section || !track) return;
 
-    // Use GPU-accelerated horizontal pin with pure transform percentage
+    // Use clean GSAP context with GPU-accelerated horizontal pin
     const ctx = gsap.context(() => {
       gsap.to(track, {
-        xPercent: -75,
+        x: () => -(track.scrollWidth - window.innerWidth),
         ease: 'none',
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: () => '+=' + (window.innerHeight * 2.5),
-          scrub: 1,
+          end: () => '+=' + (track.scrollWidth - window.innerWidth),
+          scrub: 0.8,
           pin: true,
           anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
       });
     }, section);
@@ -93,11 +94,11 @@ export function WearGemstoneSection() {
                   <strong>{panel.style}</strong>
                   <small>{panel.caption}</small>
                 </div>
-                <div className="wear-product-image"><img src={panel.gemstone} alt={`${panel.caption} gemstone`} /></div>
+                <div className="wear-product-image"><img src={panel.gemstone} alt={`${panel.caption} gemstone`} loading="lazy" decoding="async" /></div>
               </div>
 
               <figure className="wear-panel-model">
-                <img src={panel.model} alt={`${panel.style} gemstone editorial portrait`} />
+                <img src={panel.model} alt={`${panel.style} gemstone editorial portrait`} loading="lazy" decoding="async" />
               </figure>
 
               <div className="wear-panel-product wear-panel-product-right">
@@ -106,7 +107,7 @@ export function WearGemstoneSection() {
                   <strong>Meaning</strong>
                   <small>Beauty · Energy<br />Lasting Value</small>
                 </div>
-                <div className="wear-product-image"><img src={panel.gemstone} alt="" aria-hidden="true" /></div>
+                <div className="wear-product-image"><img src={panel.gemstone} alt="" aria-hidden="true" loading="lazy" decoding="async" /></div>
               </div>
 
               <p className="wear-panel-description">{panel.copy}</p>

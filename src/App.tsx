@@ -1,14 +1,44 @@
+import { lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Navbar } from './components/dom/layout/Navbar';
 import { Footer } from './components/dom/layout/Footer';
 import { Preloader } from './components/dom/ui/Preloader';
 import { CartDrawer } from './components/dom/ui/CartDrawer';
 import { HeroSection } from './components/sections/HeroSection';
-import { NarrativeSection } from './components/sections/NarrativeSection';
-import { GallerySection } from './components/sections/GallerySection';
-import { WearGemstoneSection } from './components/sections/WearGemstoneSection';
 import { HeroMarquee } from './components/sections/HeroMarquee';
-import { AppointmentSection } from './components/sections/AppointmentSection';
-import { TestimonialsSection } from './components/sections/TestimonialsSection';
+
+const NarrativeSection = lazy(() => import('./components/sections/NarrativeSection').then((module) => ({ default: module.NarrativeSection })));
+const GemstoneCollectionSection = lazy(() => import('./components/sections/GemstoneCollectionSection'));
+const GemstoneShowcaseSection = lazy(() => import('./components/sections/GemstoneShowcaseSection'));
+const GallerySection = lazy(() => import('./components/sections/GallerySection').then((module) => ({ default: module.GallerySection })));
+const WearGemstoneSection = lazy(() => import('./components/sections/WearGemstoneSection'));
+const AppointmentSection = lazy(() => import('./components/sections/AppointmentSection').then((module) => ({ default: module.AppointmentSection })));
+const TestimonialsSection = lazy(() => import('./components/sections/TestimonialsSection').then((module) => ({ default: module.TestimonialsSection })));
+
+function LazyMount({ children }: { children: ReactNode }) {
+  const hostRef = useRef<HTMLDivElement>(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setShouldLoad(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: '800px 0px' });
+
+    observer.observe(host);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={hostRef}>
+      {shouldLoad ? <Suspense fallback={null}>{children}</Suspense> : null}
+    </div>
+  );
+}
 
 export function App() {
   return (
@@ -26,11 +56,13 @@ export function App() {
       <main className="relative z-10">
         <HeroSection />
         <HeroMarquee />
-        <NarrativeSection />
-        <GallerySection />
-        <WearGemstoneSection />
-        <AppointmentSection />
-        <TestimonialsSection />
+        <LazyMount><NarrativeSection /></LazyMount>
+        <LazyMount><GemstoneCollectionSection /></LazyMount>
+        <LazyMount><GemstoneShowcaseSection /></LazyMount>
+        <LazyMount><GallerySection /></LazyMount>
+        <LazyMount><WearGemstoneSection /></LazyMount>
+        <LazyMount><AppointmentSection /></LazyMount>
+        <LazyMount><TestimonialsSection /></LazyMount>
       </main>
 
       {/* Footer */}

@@ -49,7 +49,7 @@ export function AppointmentSection() {
 
   if (submitted && selectedDate) {
     return (
-      <section className="appointment-section" aria-labelledby="appointment-heading">
+      <section id="appointment" className="appointment-section" aria-labelledby="appointment-heading">
         <div className="appointment-confirmation">
           <div className="appointment-confirmation-icon"><Check /></div>
           <p>ASTROLAABH · CONSULTATION</p>
@@ -63,7 +63,7 @@ export function AppointmentSection() {
   }
 
   return (
-    <section className="appointment-section" aria-labelledby="appointment-heading">
+    <section id="appointment" className="appointment-section" aria-labelledby="appointment-heading">
       <header className="appointment-heading">
         <p>ASTROLAABH CONSULTATIONS</p>
         <h2 id="appointment-heading">Book Your Gemstone Consultation</h2>

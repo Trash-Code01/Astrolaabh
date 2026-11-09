@@ -20,6 +20,8 @@ export function WaterMovingCanvas() {
     if (!ctx) return;
 
     let animId: number;
+    let isVisible = true;
+    let lastFrame = 0;
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
@@ -56,6 +58,15 @@ export function WaterMovingCanvas() {
     canvas.addEventListener('touchstart', handlePointerDown, { passive: true });
 
     const render = (now: number) => {
+      if (!isVisible || document.hidden) {
+        animId = requestAnimationFrame(render);
+        return;
+      }
+      if (now - lastFrame < 33) {
+        animId = requestAnimationFrame(render);
+        return;
+      }
+      lastFrame = now;
       const t = now * 0.001;
 
       const centerX = width / 2;
@@ -151,10 +162,15 @@ export function WaterMovingCanvas() {
       animId = requestAnimationFrame(render);
     };
 
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+    });
+    observer.observe(canvas);
     animId = requestAnimationFrame(render);
 
     return () => {
       cancelAnimationFrame(animId);
+      observer.disconnect();
       window.removeEventListener('resize', handleResize);
       canvas.removeEventListener('mousedown', handlePointerDown);
       canvas.removeEventListener('touchstart', handlePointerDown);
