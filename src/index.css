@@ -184,15 +184,73 @@ body {
 }
 
 /* Hero editorial marquee */
-.hero-marquee { width: 100%; overflow: hidden; background: #e8dcc3; border-top: 1px solid rgba(48,77,67,.12); border-bottom: 1px solid rgba(48,77,67,.12); }
-.hero-marquee-track { display: flex; width: max-content; animation: hero-marquee 32s linear infinite; will-change: transform; }
-.hero-marquee-item { height: 52px; flex: 0 0 auto; display: flex; align-items: center; padding-left: 34px; color: #304d43; font-family: Georgia, serif; font-size: 10px; letter-spacing: .18em; white-space: nowrap; }
-.hero-marquee-item i { width: 5px; height: 5px; margin-left: 34px; border: 1px solid #b89c66; transform: rotate(45deg); }
-@keyframes hero-marquee { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
+.hero-marquee {
+  width: 100%;
+  overflow: hidden;
+  background: #E8DCC3;
+  border-top: 1.5px solid #000000;
+  border-bottom: 1.5px solid #000000;
+  position: relative;
+  z-index: 20;
+}
+.hero-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: hero-marquee 36s linear infinite;
+  will-change: transform;
+}
+.hero-marquee-track:hover {
+  animation-play-state: paused;
+}
+.hero-marquee-item {
+  height: 72px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  padding-left: 32px;
+  padding-right: 32px;
+  color: #181512;
+  font-family: Georgia, 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  white-space: nowrap;
+}
+.hero-marquee-text {
+  display: inline-block;
+}
+.hero-marquee-star {
+  margin-left: 32px;
+  color: #9E773A;
+  font-size: 15px;
+  display: inline-block;
+  line-height: 1;
+}
+@keyframes hero-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
 
 @keyframes testimonial-left { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(calc(-50% - 12px), 0, 0); } }
 @keyframes testimonial-right { from { transform: translate3d(calc(-50% - 12px), 0, 0); } to { transform: translate3d(0, 0, 0); } }
-@media (max-width: 767px) { .hero-marquee-item { height: 46px; padding-left: 24px; font-size: 9px; } .hero-marquee-item i { margin-left: 24px; } }
+
+@media (max-width: 767px) {
+  .hero-marquee {
+    border-top: 1.5px solid #000000;
+    border-bottom: 1.5px solid #000000;
+  }
+  .hero-marquee-item {
+    height: 56px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+  }
+  .hero-marquee-star {
+    margin-left: 20px;
+    font-size: 12px;
+  }
+}
 
 /* Appointment consultation */
 .appointment-section { padding: 112px 7% 120px; background: #304d43; color: #f6f1e7; }

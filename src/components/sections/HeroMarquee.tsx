@@ -1,24 +1,25 @@
 const phrases = [
-  'VEDIC WISDOM',
-  'PERSONALIZED GEMSTONES',
-  'AUTHENTIC STONES',
-  'ENERGY & INTENTION',
-  'ASTROLOGICAL GUIDANCE',
-  'HANDPICKED GEMSTONES',
-  'ANCIENT WISDOM',
-  'PERSONALIZED GUIDANCE',
+  'ASTROLOGY GUIDES THE CHOICE',
+  'GEMOLOGY REVEALS THE STONE',
+  'YOU DECIDE HOW TO WEAR IT',
 ];
 
 export function HeroMarquee() {
-  const content = phrases.map((phrase, index) => (
+  // Repeat items 4 times to ensure seamless infinite looping on all screen sizes up to 4K
+  const repeatedPhrases = [...phrases, ...phrases, ...phrases, ...phrases];
+
+  const content = repeatedPhrases.map((phrase, index) => (
     <span className="hero-marquee-item" key={`${phrase}-${index}`}>
-      {phrase}<i aria-hidden="true" />
+      <span className="hero-marquee-text">{phrase}</span>
+      <span className="hero-marquee-star" aria-hidden="true">✦</span>
     </span>
   ));
 
   return (
-    <div className="hero-marquee" aria-label="Astrolaabh gemstone guidance">
+    <div className="hero-marquee" aria-label="Astrolaabh philosophy">
       <div className="hero-marquee-track">{content}{content}</div>
     </div>
   );
 }
+
+export default HeroMarquee;
