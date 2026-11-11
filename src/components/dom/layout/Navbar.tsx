@@ -18,27 +18,30 @@ const navLinks: NavLinkItem[] = [
   { label: 'Our Story', id: 'narrative' },
 ];
 
-const gemstoneCategories = [
-  {
-    title: 'Sacred Navaratna',
-    desc: 'The 9 Vedic celestial gemstones aligned with planetary energies',
-    tag: 'Planetary Vedic',
-  },
-  {
-    title: 'Natural Rough Crystals',
-    desc: 'Untreated earth stones radiating pure mineral resonance',
-    tag: 'Uncut & Raw',
-  },
-  {
-    title: 'Master-Cut Faceted Jewels',
-    desc: 'Astrologically calibrated facets for maximum light refraction',
-    tag: 'Certified Authentic',
-  },
-  {
-    title: 'Bespoke Sacred Jewelry',
-    desc: 'Handcrafted gold rings and amulets with secret lotus blessings',
-    tag: 'Custom Crafted',
-  },
+const navaratnaGems = [
+  { name: 'Pukhraj', eng: 'Yellow Sapphire', planet: 'Jupiter', color: '#D4A338', badge: 'TOP' },
+  { name: 'Neelam', eng: 'Blue Sapphire', planet: 'Saturn', color: '#254E9B' },
+  { name: 'Manik', eng: 'Ruby', planet: 'Sun', color: '#C02636' },
+  { name: 'Panna', eng: 'Emerald', planet: 'Mercury', color: '#1B8A5A' },
+  { name: 'Heera', eng: 'Diamond', planet: 'Venus', color: '#7EA2C7' },
+  { name: 'Moonga', eng: 'Red Coral', planet: 'Mars', color: '#C23D2E' },
+  { name: 'Moti', eng: 'Pearl', planet: 'Moon', color: '#E8E2D2' },
+  { name: 'Gomed', eng: 'Hessonite', planet: 'Rahu', color: '#A85A2A' },
+  { name: 'Lehsunia', eng: "Cat's Eye", planet: 'Ketu', color: '#8A9E38' },
+];
+
+const intentList = [
+  { goal: 'Wealth & fortune', stone: 'PUKHRAJ' },
+  { goal: 'Marriage & harmony', stone: 'MOTI' },
+  { goal: 'Wisdom & learning', stone: 'PANNA' },
+  { goal: 'Authority & confidence', stone: 'MANIK' },
+  { goal: 'Health & vitality', stone: 'MOONGA' },
+  { goal: 'Career acceleration', stone: 'NEELAM' },
+];
+
+const rashis = [
+  'Mesha', 'Vrishabha', 'Mithuna', 'Karka', 'Simha', 'Kanya',
+  'Tula', 'Vrischika', 'Dhanu', 'Makara', 'Kumbha', 'Meena'
 ];
 
 export function Navbar() {
@@ -46,7 +49,6 @@ export function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [gemstonesDropdownOpen, setGemstonesDropdownOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
 
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -56,13 +58,10 @@ export function Navbar() {
   const { playHover, playClick } = useSoundEffects();
   const cartCount = items.reduce((acc, i) => acc + i.quantity, 0);
 
-  // Scroll detection and active section observation
+  // Active section observation on scroll
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      setIsScrolled(scrollY > 20);
-
-      // Determine active section based on scroll offset
       const sections = ['hero', 'narrative', 'gemstone-collection', 'gallery', 'ways-to-wear', 'appointment'];
       const scrollPosition = scrollY + 120;
 
@@ -101,7 +100,7 @@ export function Navbar() {
 
     const el = document.getElementById(id);
     if (el) {
-      const navOffset = isScrolled ? 70 : 80;
+      const navOffset = 76;
       const targetPosition = el.getBoundingClientRect().top + window.pageYOffset - navOffset;
       window.scrollTo({ top: targetPosition, behavior: 'smooth' });
     }
@@ -116,43 +115,62 @@ export function Navbar() {
   const handleDropdownLeave = () => {
     dropdownTimeoutRef.current = setTimeout(() => {
       setGemstonesDropdownOpen(false);
-    }, 180);
+    }, 220);
   };
 
   return (
     <>
-      <header
-        className={`fixed left-0 top-0 z-50 w-full transition-all duration-400 ease-out ${
-          isScrolled
-            ? 'bg-[#FAF8F5]/90 backdrop-blur-2xl border-b border-[#E8E1D5]/70 shadow-[0_4px_28px_rgba(24,21,18,0.04)] py-3 sm:py-3.5'
-            : 'bg-gradient-to-b from-black/20 via-transparent to-transparent py-5 sm:py-6'
-        }`}
-      >
-        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-14 flex items-center justify-between">
+      {/* SOLID, HIGH-CONTRAST LUXURY HEADER — 100% VISIBLE ON EVERY PIXEL */}
+      <header className="fixed left-0 top-0 z-50 w-full bg-[#FAF8F5] border-b border-[#E2D8C8] shadow-[0_2px_16px_rgba(24,21,18,0.06)] transition-all">
+        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-14 h-[72px] sm:h-[78px] flex items-center justify-between">
           
-          {/* Brand Name as Pure Typographic Logo (Awwwards Luxury Maison Standard) */}
-          <a
-            href="#hero"
-            className="flex flex-col group select-none transition-transform duration-300 hover:scale-[1.01]"
-            onMouseEnter={playHover}
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('hero');
-            }}
-          >
-            <div className="flex items-center gap-2">
-              <span className="font-serif text-lg sm:text-xl lg:text-[22px] tracking-[0.24em] font-medium text-[#181512] transition-colors leading-none uppercase">
-                ASTRO LAABH
-              </span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#9E773A] opacity-80" />
-            </div>
-            <span className="font-serif text-[8.5px] sm:text-[9.5px] tracking-[0.28em] text-[#8C6D37] uppercase font-normal mt-1 opacity-85 transition-opacity leading-none">
-              Sacred Vedic Gemstones
-            </span>
-          </a>
+          {/* Brand Logo & Authority Badge */}
+          <div className="flex items-center gap-3.5 sm:gap-5">
+            <a
+              href="#hero"
+              className="flex items-center gap-2.5 select-none transition-transform duration-300 hover:scale-[1.01]"
+              onMouseEnter={playHover}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('hero');
+              }}
+            >
+              {/* Golden Sacred Lotus Mark */}
+              <svg
+                viewBox="0 0 40 32"
+                className="w-7 h-6 sm:w-8 sm:h-7 text-[#9E773A] fill-current flex-shrink-0"
+                aria-hidden="true"
+              >
+                <path
+                  d="M20 2C18 7 13 13 6 16C12 18 16 23 17 30C19 25 21 25 23 30C24 23 28 18 34 16C27 13 22 7 20 2Z"
+                  opacity="0.95"
+                />
+                <path
+                  d="M20 7C22 13 27 18 33 20C28 22 25 26 24 31C21 28 19 28 16 31C15 26 12 22 7 20C13 18 18 13 20 7Z"
+                  opacity="0.65"
+                />
+                <circle cx="20" cy="18" r="2.5" fill="#181512" />
+              </svg>
 
-          {/* Center Navigation Links with Dropdown & Active Scroll Highlighting */}
-          <nav className="hidden lg:flex items-center gap-8 xl:gap-10 relative">
+              <div className="flex flex-col">
+                <span className="font-serif text-lg sm:text-xl lg:text-[22px] tracking-[0.24em] font-bold text-[#181512] uppercase leading-tight">
+                  ASTRO LAABH
+                </span>
+                <span className="font-serif text-[8.5px] sm:text-[9.5px] tracking-[0.28em] text-[#8C6D37] uppercase font-medium leading-none mt-0.5">
+                  Sacred Vedic Gemstones
+                </span>
+              </div>
+            </a>
+
+            {/* AstroLaabh Guarantee Badge (matching reference art) */}
+            <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-full bg-[#F3EDE2] border border-[#DFD6C7] text-[11px] font-serif tracking-[0.14em] uppercase text-[#6B5A45] font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#9E773A]" />
+              <span>AstroLaabh Guarantee · Authentic Certified Gems</span>
+            </div>
+          </div>
+
+          {/* Center Navigation Links with Dropdown */}
+          <nav className="hidden lg:flex items-center gap-7 xl:gap-9 relative">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
 
@@ -166,73 +184,178 @@ export function Navbar() {
                   >
                     <button
                       onClick={() => scrollToSection(link.id)}
-                      className={`font-serif text-[12.5px] xl:text-[13px] tracking-[0.18em] uppercase transition-colors whitespace-nowrap py-1.5 flex items-center gap-1.5 group select-none ${
+                      className={`font-serif text-[13px] xl:text-[13.5px] tracking-[0.18em] uppercase transition-colors whitespace-nowrap py-2 flex items-center gap-1.5 group select-none ${
                         isActive
-                          ? 'text-[#9E773A] font-semibold'
-                          : 'text-[#2C241C] hover:text-[#9E773A] font-normal'
+                          ? 'text-[#9E773A] font-bold'
+                          : 'text-[#181512] hover:text-[#9E773A] font-semibold'
                       }`}
                     >
                       <span>{link.label}</span>
                       <ChevronDown
-                        className={`w-3.5 h-3.5 opacity-60 transition-transform duration-300 group-hover:rotate-180 group-hover:opacity-100 ${
+                        className={`w-3.5 h-3.5 text-[#181512] transition-transform duration-300 group-hover:rotate-180 group-hover:text-[#9E773A] ${
                           gemstonesDropdownOpen ? 'rotate-180 text-[#9E773A]' : ''
                         }`}
                       />
                       {/* Active indicator underline */}
                       <span
-                        className={`absolute bottom-0 left-0 h-[1.5px] bg-[#9E773A] transition-all duration-300 ${
+                        className={`absolute bottom-0 left-0 h-[2px] bg-[#9E773A] transition-all duration-300 ${
                           isActive ? 'w-full' : 'w-0 group-hover:w-full'
                         }`}
                       />
                     </button>
 
-                    {/* Luxury Gemstones Mega-Dropdown Popover Card */}
+                    {/* SOLID OPAQUE LUXURY MEGA-DROPDOWN — ZERO BACKGROUND BLEED */}
                     {gemstonesDropdownOpen && (
                       <div
-                        className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-80 sm:w-96 rounded-2xl border border-[#E8E1D5] bg-[#FAF8F5]/98 shadow-[0_16px_40px_rgba(24,21,18,0.12)] backdrop-blur-2xl p-4 transition-all duration-200 z-50 animate-in fade-in zoom-in-95 duration-150"
+                        className="fixed left-1/2 -translate-x-1/2 top-[76px] w-[95vw] max-w-[1180px] bg-[#FAF8F5] border border-[#DFD6C7] shadow-[0_24px_60px_rgba(24,21,18,0.18)] rounded-2xl p-6 sm:p-8 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
                         onMouseEnter={handleDropdownEnter}
                         onMouseLeave={handleDropdownLeave}
                       >
-                        <div className="px-3 pt-2 pb-2.5 border-b border-[#EFE8DC] flex items-center justify-between">
-                          <span className="font-serif text-[11px] tracking-[0.2em] uppercase text-[#8C6D37] font-semibold">
-                            Sacred Vedic Catalog
-                          </span>
-                          <span className="text-[11px] text-[#8A8177] font-serif">
-                            Certified 100% Natural
-                          </span>
-                        </div>
-
-                        <div className="grid grid-cols-1 gap-1.5 py-2">
-                          {gemstoneCategories.map((cat) => (
-                            <button
-                              key={cat.title}
-                              onClick={() => scrollToSection('gemstone-collection')}
-                              className="w-full text-left p-2.5 rounded-xl hover:bg-white/80 transition-all group flex items-start justify-between"
-                            >
-                              <div className="pr-2">
-                                <div className="font-serif text-[13.5px] font-medium text-[#181512] group-hover:text-[#9E773A] transition-colors flex items-center gap-1.5">
-                                  <Sparkles className="w-3 h-3 text-[#9E773A] opacity-70 group-hover:opacity-100" />
-                                  <span>{cat.title}</span>
-                                </div>
-                                <p className="font-sans text-[11.5px] text-[#6E6459] leading-snug mt-0.5">
-                                  {cat.desc}
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                          
+                          {/* Column 1: Featured Quick Assessment Cards */}
+                          <div className="lg:col-span-3 space-y-4">
+                            <div className="p-4 rounded-xl bg-gradient-to-br from-[#F5EDE1] to-[#EBE0CF] border border-[#DDD3C2] flex flex-col justify-between">
+                              <div>
+                                <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-[#8C6D37] font-bold">
+                                  Free · AI-Kundli Scored
+                                </span>
+                                <h4 className="font-serif text-base font-bold text-[#181512] mt-1 mb-1">
+                                  Check My Stone
+                                </h4>
+                                <p className="font-sans text-xs text-[#5C5349] leading-relaxed">
+                                  Seven questions, one precise astrological match for your chart.
                                 </p>
                               </div>
-                              <span className="text-[9.5px] tracking-wider uppercase font-serif text-[#8C6D37] bg-[#F2EBDE] px-2 py-0.5 rounded-md flex-shrink-0 mt-0.5">
-                                {cat.tag}
-                              </span>
-                            </button>
-                          ))}
-                        </div>
+                              <button
+                                onClick={() => scrollToSection('gemstone-collection')}
+                                className="mt-4 font-serif text-xs font-bold text-[#8C6D37] hover:text-[#181512] flex items-center gap-1.5 transition-colors"
+                              >
+                                <span>Start free assessment</span>
+                                <ArrowRight className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
 
-                        <div className="pt-2 border-t border-[#EFE8DC]">
-                          <button
-                            onClick={() => scrollToSection('gemstone-collection')}
-                            className="w-full py-2 px-3 rounded-lg bg-[#F0E5D3] hover:bg-[#EADBC4] text-[#221A10] font-serif text-xs font-medium tracking-wide flex items-center justify-center gap-1.5 transition-colors"
-                          >
-                            <span>Explore Full Gemstone Collection</span>
-                            <ArrowRight className="w-3.5 h-3.5" />
-                          </button>
+                            <div className="p-4 rounded-xl bg-[#F0E7D8] border border-[#DDD3C2] flex flex-col justify-between">
+                              <div>
+                                <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-[#8C6D37] font-bold">
+                                  1-on-1 Astrologer Reading
+                                </span>
+                                <h4 className="font-serif text-base font-bold text-[#181512] mt-1 mb-1">
+                                  Book a Consultation
+                                </h4>
+                                <p className="font-sans text-xs text-[#5C5349] leading-relaxed">
+                                  A real Vedic reading with certified masters before you choose a stone.
+                                </p>
+                              </div>
+                              <button
+                                onClick={() => scrollToSection('appointment')}
+                                className="mt-4 font-serif text-xs font-bold text-[#8C6D37] hover:text-[#181512] flex items-center gap-1.5 transition-colors"
+                              >
+                                <span>Book consultation</span>
+                                <ArrowRight className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Column 2: The 9 Navaratna Gems */}
+                          <div className="lg:col-span-6 border-x border-[#EAE2D5] px-6">
+                            <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#EAE2D5]">
+                              <span className="font-serif text-xs font-bold uppercase tracking-[0.22em] text-[#181512]">
+                                THE NAVARATNA · Nine Planetary Gems
+                              </span>
+                              <span className="text-[11px] font-serif text-[#8C6D37] font-medium">
+                                100% Certified Untreated
+                              </span>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                              {navaratnaGems.map((gem) => (
+                                <button
+                                  key={gem.name}
+                                  onClick={() => scrollToSection('gemstone-collection')}
+                                  className="p-2.5 rounded-xl hover:bg-[#F3EDE2] border border-transparent hover:border-[#E0D7C8] transition-all flex items-center justify-between text-left group"
+                                >
+                                  <div className="flex items-center gap-2.5">
+                                    <span
+                                      className="w-3.5 h-3.5 rounded-full flex-shrink-0 shadow-sm"
+                                      style={{ backgroundColor: gem.color }}
+                                    />
+                                    <div>
+                                      <div className="font-serif text-[14px] font-bold text-[#181512] group-hover:text-[#9E773A] transition-colors flex items-center gap-2">
+                                        <span>{gem.name}</span>
+                                        {gem.badge && (
+                                          <span className="text-[9px] bg-[#EAD4B0] text-[#181512] px-1.5 py-0.2 rounded font-sans font-bold">
+                                            {gem.badge}
+                                          </span>
+                                        )}
+                                      </div>
+                                      <div className="font-sans text-[11px] text-[#635B53]">
+                                        {gem.eng} · {gem.planet}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <ArrowRight className="w-3.5 h-3.5 text-[#181512] opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </button>
+                              ))}
+                            </div>
+
+                            <div className="pt-4 mt-3 border-t border-[#EAE2D5] flex items-center justify-between">
+                              <span className="text-[11px] font-serif uppercase tracking-wider text-[#8C6D37] font-semibold">
+                                UPARATNA (Substitutes): Amethyst, Citrine, Moonstone, Opal
+                              </span>
+                              <button
+                                onClick={() => scrollToSection('gemstone-collection')}
+                                className="font-serif text-xs font-bold text-[#181512] hover:text-[#9E773A] flex items-center gap-1.5 transition-colors"
+                              >
+                                <span>Explore all stones</span>
+                                <ArrowRight className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Column 3: Shop by Intent & By Your Rashi */}
+                          <div className="lg:col-span-3 space-y-5">
+                            <div>
+                              <span className="font-serif text-xs font-bold uppercase tracking-[0.22em] text-[#181512] block mb-3">
+                                SHOP BY INTENT
+                              </span>
+                              <div className="space-y-2">
+                                {intentList.map((item) => (
+                                  <button
+                                    key={item.goal}
+                                    onClick={() => scrollToSection('gemstone-collection')}
+                                    className="w-full text-left flex items-center justify-between text-xs py-1 group"
+                                  >
+                                    <span className="font-serif text-[#332C24] group-hover:text-[#9E773A] font-medium">
+                                      {item.goal}
+                                    </span>
+                                    <span className="text-[10px] font-serif font-bold text-[#8C6D37] tracking-wider uppercase bg-[#F3EDE2] px-2 py-0.5 rounded">
+                                      {item.stone}
+                                    </span>
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="pt-3 border-t border-[#EAE2D5]">
+                              <span className="font-serif text-xs font-bold uppercase tracking-[0.22em] text-[#181512] block mb-2">
+                                BY YOUR RASHI (ZODIAC)
+                              </span>
+                              <div className="flex flex-wrap gap-1.5">
+                                {rashis.map((rashi) => (
+                                  <button
+                                    key={rashi}
+                                    onClick={() => scrollToSection('gemstone-collection')}
+                                    className="px-2.5 py-1 rounded bg-[#F3EDE2] hover:bg-[#EAD4B0] text-[11px] font-serif text-[#181512] font-semibold transition-colors"
+                                  >
+                                    {rashi}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+
                         </div>
                       </div>
                     )}
@@ -244,17 +367,17 @@ export function Navbar() {
                 <button
                   key={link.id}
                   onClick={() => scrollToSection(link.id)}
-                  className={`font-serif text-[12.5px] xl:text-[13px] tracking-[0.18em] uppercase transition-colors whitespace-nowrap py-1.5 relative group select-none ${
+                  className={`font-serif text-[13px] xl:text-[13.5px] tracking-[0.18em] uppercase transition-colors whitespace-nowrap py-2 relative group select-none ${
                     isActive
-                      ? 'text-[#9E773A] font-semibold'
-                      : 'text-[#2C241C] hover:text-[#9E773A] font-normal'
+                      ? 'text-[#9E773A] font-bold'
+                      : 'text-[#181512] hover:text-[#9E773A] font-semibold'
                   }`}
                   onMouseEnter={playHover}
                 >
                   <span>{link.label}</span>
                   {/* Underline indicator */}
                   <span
-                    className={`absolute bottom-0 left-0 h-[1.5px] bg-[#9E773A] transition-all duration-300 ${
+                    className={`absolute bottom-0 left-0 h-[2px] bg-[#9E773A] transition-all duration-300 ${
                       isActive ? 'w-full' : 'w-0 group-hover:w-full'
                     }`}
                   />
@@ -272,7 +395,7 @@ export function Navbar() {
                 playClick();
                 setSearchOpen(true);
               }}
-              className="h-9 w-9 sm:h-10 sm:w-10 rounded-full border border-[#2D241B]/15 hover:border-[#9E773A] bg-white/50 hover:bg-white text-[#29251F] transition-all flex items-center justify-center shadow-sm backdrop-blur-sm"
+              className="h-10 w-10 rounded-full border border-[#DFD6C7] bg-[#F5EDE1] hover:bg-[#ECE1D0] text-[#181512] transition-all flex items-center justify-center shadow-sm"
             >
               <Search className="h-4 w-4" />
             </button>
@@ -284,66 +407,66 @@ export function Navbar() {
                 playClick();
                 toggleCart();
               }}
-              className="relative h-9 w-9 sm:h-10 sm:w-10 rounded-full border border-[#2D241B]/15 hover:border-[#9E773A] bg-white/50 hover:bg-white text-[#29251F] transition-all flex items-center justify-center shadow-sm backdrop-blur-sm"
+              className="relative h-10 w-10 rounded-full border border-[#DFD6C7] bg-[#F5EDE1] hover:bg-[#ECE1D0] text-[#181512] transition-all flex items-center justify-center shadow-sm"
             >
               <ShoppingBag className="h-4 w-4" />
               {cartCount > 0 && (
-                <span className="absolute -right-1 -top-1 grid h-4 w-4 place-items-center rounded-full bg-[#9E773A] text-[9px] text-white font-medium shadow-sm animate-pulse">
+                <span className="absolute -right-1 -top-1 grid h-4 w-4 place-items-center rounded-full bg-[#181512] text-[9px] text-[#EAD4B0] font-bold shadow-sm">
                   {cartCount}
                 </span>
               )}
             </button>
 
-            {/* Signature "Consult an Astrologer" Luxury Gold Pill Button */}
+            {/* High-Contrast "Consult an Astrologer" Gold Pill Button */}
             <button
               onClick={() => scrollToSection('appointment')}
-              className="consult-button hidden sm:flex items-center gap-3 rounded-full bg-gradient-to-r from-[#F0DEC2] via-[#EAD4B0] to-[#E2C79E] hover:from-[#EAD4B0] hover:to-[#D8BC8E] py-2 pl-5 pr-2 shadow-sm transition-all duration-300 group border border-[#D5BB8E]"
+              className="consult-button hidden sm:flex items-center gap-3 rounded-full bg-[#EAD4B0] hover:bg-[#DECA9E] py-2.5 pl-6 pr-2.5 shadow-sm transition-all duration-300 group border border-[#D5BB8E]"
             >
-              <span className="font-serif text-[12.5px] font-medium text-[#221910] tracking-wide uppercase">
-                Consult an Astrologer
+              <span className="font-serif text-[12.5px] font-bold text-[#181512] tracking-wider uppercase">
+                Talk to an Astrologer
               </span>
-              <span className="grid h-7 w-7 place-items-center rounded-full bg-[#221910] text-[#EAD4B0] transition-transform duration-300 group-hover:translate-x-0.5">
+              <span className="grid h-7 w-7 place-items-center rounded-full bg-[#181512] text-[#EAD4B0] transition-transform duration-300 group-hover:translate-x-0.5">
                 <ArrowRight className="h-3.5 w-3.5" />
               </span>
             </button>
 
             {/* Mobile Navigation Toggle Button */}
             <button
-              className="grid h-9 w-9 place-items-center rounded-full border border-[#2D241B]/15 bg-white/60 text-[#29251F] backdrop-blur-sm lg:hidden"
+              className="grid h-10 w-10 place-items-center rounded-full border border-[#DFD6C7] bg-[#F5EDE1] text-[#181512] lg:hidden"
               aria-label="Toggle navigation menu"
               onClick={() => {
                 playClick();
                 setMenuOpen((open) => !open);
               }}
             >
-              {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4 text-inherit" />}
+              {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation Drawer */}
         {menuOpen && (
-          <nav className="absolute left-4 right-4 top-[64px] rounded-2xl border border-[#E5DDD0] bg-[#FAF8F5]/98 p-5 shadow-2xl backdrop-blur-xl lg:hidden animate-in fade-in slide-in-from-top-3 duration-200">
+          <nav className="absolute left-4 right-4 top-[78px] rounded-2xl border border-[#DFD6C7] bg-[#FAF8F5] p-6 shadow-2xl lg:hidden">
             <div className="flex flex-col divide-y divide-[#EFEAE1]">
               {navLinks.map((link) => (
                 <button
                   key={link.id}
                   onClick={() => scrollToSection(link.id)}
-                  className="w-full py-3.5 text-left font-serif text-[15px] font-medium text-[#2C251D] hover:text-[#9E773A] transition-colors flex items-center justify-between"
+                  className="w-full py-4 text-left font-serif text-[16px] font-bold text-[#181512] hover:text-[#9E773A] transition-colors flex items-center justify-between"
                 >
                   <span>{link.label}</span>
-                  <ArrowRight className="h-3.5 w-3.5 opacity-40" />
+                  <ArrowRight className="h-4 w-4 opacity-50" />
                 </button>
               ))}
             </div>
 
-            <div className="pt-4 mt-2 space-y-2.5">
+            <div className="pt-4 mt-2 space-y-3">
               <button
                 onClick={() => {
                   setMenuOpen(false);
                   toggleCart();
                 }}
-                className="w-full py-2.5 px-4 rounded-xl border border-[#E0D7C8] bg-white text-[#29251F] font-serif text-xs font-medium flex items-center justify-center gap-2"
+                className="w-full py-3 px-4 rounded-xl border border-[#DFD6C7] bg-[#F5EDE1] text-[#181512] font-serif text-sm font-bold flex items-center justify-center gap-2"
               >
                 <ShoppingBag className="h-4 w-4" />
                 <span>View Sacred Bag ({cartCount})</span>
@@ -351,9 +474,9 @@ export function Navbar() {
 
               <button
                 onClick={() => scrollToSection('appointment')}
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#F0DEC2] to-[#E2C79E] text-[#221910] font-serif text-sm font-medium flex items-center justify-center gap-2 shadow-sm"
+                className="w-full py-3.5 px-4 rounded-xl bg-[#EAD4B0] text-[#181512] font-serif text-sm font-bold flex items-center justify-center gap-2 shadow-sm"
               >
-                <span>Consult an Astrologer</span>
+                <span>Talk to an Astrologer</span>
                 <ArrowRight className="h-4 w-4" />
               </button>
             </div>
@@ -363,36 +486,36 @@ export function Navbar() {
 
       {/* Luxury Interactive Search Modal Overlay */}
       {searchOpen && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-md flex items-start justify-center pt-24 px-4 sm:px-6">
-          <div className="w-full max-w-2xl rounded-2xl border border-[#E5DDD0] bg-[#FAF8F5] shadow-2xl p-6 relative animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between pb-4 border-b border-[#EFE8DC]">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-start justify-center pt-24 px-4 sm:px-6">
+          <div className="w-full max-w-2xl rounded-2xl border border-[#DFD6C7] bg-[#FAF8F5] shadow-2xl p-6 sm:p-8 relative animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between pb-4 border-b border-[#EAE2D5]">
               <div className="flex items-center gap-2.5">
                 <Search className="w-5 h-5 text-[#9E773A]" />
-                <span className="font-serif text-sm uppercase tracking-[0.16em] text-[#8C6D37] font-semibold">
+                <span className="font-serif text-sm uppercase tracking-[0.2em] text-[#181512] font-bold">
                   AstroLaabh Vedic Gemstone Finder
                 </span>
               </div>
               <button
                 onClick={() => setSearchOpen(false)}
-                className="w-8 h-8 rounded-full border border-[#E0D7C8] flex items-center justify-center hover:bg-black/5 text-[#5A5147]"
+                className="w-8 h-8 rounded-full border border-[#DFD6C7] bg-[#F5EDE1] flex items-center justify-center hover:bg-[#ECE1D0] text-[#181512]"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="py-4">
+            <div className="py-5">
               <input
                 type="text"
                 autoFocus
                 placeholder="Search natural gemstones, birthstones, astrological charts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white border border-[#DFD6C7] rounded-xl px-4 py-3 font-serif text-base text-[#181512] placeholder-[#8A8177] focus:outline-none focus:border-[#9E773A] shadow-inner"
+                className="w-full bg-white border border-[#DFD6C7] rounded-xl px-4 py-3.5 font-serif text-base text-[#181512] placeholder-[#7A7167] focus:outline-none focus:border-[#9E773A] shadow-inner font-medium"
               />
             </div>
 
             <div className="pt-2">
-              <span className="text-[11px] font-serif tracking-wider uppercase text-[#8A8177] block mb-2">
+              <span className="text-[11px] font-serif tracking-wider uppercase text-[#8C6D37] block mb-2.5 font-bold">
                 Popular Searches
               </span>
               <div className="flex flex-wrap gap-2">
@@ -409,7 +532,7 @@ export function Navbar() {
                     onClick={() => {
                       scrollToSection('gemstone-collection');
                     }}
-                    className="px-3 py-1.5 rounded-full border border-[#E5DCD0] bg-white hover:border-[#9E773A] hover:bg-[#FAF4EB] text-xs font-serif text-[#332B22] transition-colors"
+                    className="px-3.5 py-1.5 rounded-full border border-[#DFD6C7] bg-[#F5EDE1] hover:border-[#9E773A] hover:bg-[#EAD4B0] text-xs font-serif text-[#181512] font-semibold transition-colors"
                   >
                     {tag}
                   </button>
