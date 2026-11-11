@@ -1,36 +1,91 @@
-import { useEffect, useRef, useState } from 'react';
+type Review = {
+  quote: string;
+  name: string;
+  location: string;
+  image: string;
+};
 
-const firstRow = [
-  { quote: 'The gemstone felt deeply personal â€” beautifully chosen and presented with quiet confidence.', name: 'Ananya Mehta', location: 'Mumbai', color: 'sage' },
-  { quote: 'Every detail felt thoughtful. My consultation was elegant, calm and genuinely insightful.', name: 'Leena Kapoor', location: 'Delhi', color: 'ivory' },
-  { quote: 'A meaningful piece that I now wear every day, chosen with care and true understanding.', name: 'Sara Rahman', location: 'Dubai', color: 'rose' },
-  { quote: 'The guidance was warm, refined and completely aligned with what I was seeking.', name: 'Mira Shah', location: 'London', color: 'sage' },
-  { quote: 'Beautifully crafted, deeply considered and unlike any jewellery experience I have known.', name: 'Ishita Rao', location: 'Bangalore', color: 'ivory' },
-  { quote: 'My gemstone carries both elegance and intention. I treasure it beyond measure.', name: 'Amelia Grant', location: 'Sydney', color: 'rose' },
+const reviews = [
+  {
+    quote: 'The stone feels deeply personal. From the consultation to the final piece, everything felt thoughtful and beautifully considered.',
+    name: 'Ananya Mehta',
+    location: 'Mumbai',
+    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
+  },
+  {
+    quote: 'I loved how intentional the entire experience felt. The gemstone was beautifully chosen and presented with such quiet elegance.',
+    name: 'Rhea Malhotra',
+    location: 'Delhi',
+    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+  },
+  {
+    quote: 'The consultation gave me clarity without ever feeling overwhelming. My gemstone now feels like something truly meaningful to wear.',
+    name: 'Aarav Sharma',
+    location: 'Bengaluru',
+    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+  },
+  {
+    quote: 'Beautiful craftsmanship, thoughtful guidance and a gemstone that feels completely my own. The experience was exceptional.',
+    name: 'Meera Kapoor',
+    location: 'Pune',
+    image: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=200&q=80',
+  },
+  {
+    quote: 'Everything from the selection to the final presentation felt refined and personal. It was much more than simply buying a gemstone.',
+    name: 'Sara Rahman',
+    location: 'Dubai',
+    image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
+  },
+  {
+    quote: 'The meaning behind my stone made the experience special. I wear it every day and it feels like a quiet reminder of my intention.',
+    name: 'Ishita Verma',
+    location: 'Jaipur',
+    image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',
+  },
+  {
+    quote: 'The entire process was calm, elegant and incredibly personal. I finally found a gemstone that felt right for me.',
+    name: 'Noor Ahmed',
+    location: 'Doha',
+    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80',
+  },
+  {
+    quote: 'A timeless piece with a beautiful story behind it. The attention to detail is visible in every part of the experience.',
+    name: 'Clara Bennett',
+    location: 'New York',
+    image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80',
+  },
 ];
 
-const secondRow = [
-  { quote: 'Astrolaabh made the entire process feel personal, serene and wonderfully considered.', name: 'Devika Sethi', location: 'Singapore', color: 'ivory' },
-  { quote: 'The most beautiful balance of ancient wisdom and modern, understated design.', name: 'Rhea Malhotra', location: 'Jaipur', color: 'rose' },
-  { quote: 'From the consultation to the final piece, the experience was exceptional in every way.', name: 'Noor Ahmed', location: 'Doha', color: 'sage' },
-  { quote: 'I received a piece that feels timeless, distinctive and truly mine.', name: 'Clara Bennett', location: 'New York', color: 'ivory' },
-  { quote: 'Their understanding of meaning and beauty is reflected in every detail.', name: 'Tara Iyer', location: 'Chennai', color: 'rose' },
-  { quote: 'Quiet luxury, sincere guidance and a gemstone I will cherish for years.', name: 'Elena Rossi', location: 'Milan', color: 'sage' },
-];
-
-function MarqueeRow({ reviews, direction }: { reviews: typeof firstRow; direction: 'left' | 'right' }) {
-  const cards = [...reviews, ...reviews];
+function ReviewCard({ review }: { review: Review }) {
   return (
-    <div className="testimonial-marquee" aria-label="Client testimonials">
-      <div className={`testimonial-marquee-track testimonial-marquee-${direction}`}>
-        {cards.map((review, index) => (
-          <article className={`testimonial-card testimonial-card-${review.color}`} key={`${review.name}-${index}`}>
-            <p className="testimonial-quote">â€œ{review.quote}â€</p>
-            <div className="testimonial-person">
-              <div className="testimonial-avatar" aria-hidden="true" />
-              <div><h3>{review.name}</h3><p>{review.location}</p></div>
-            </div>
-          </article>
+    <article className="testimonial-card">
+      <span className="testimonial-detail" aria-hidden="true">✦</span>
+      <p className="testimonial-quote">“{review.quote}”</p>
+      <div className="testimonial-person">
+        <img
+          className="testimonial-avatar"
+          src={review.image}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+        <div>
+          <h3>{review.name}</h3>
+          <p>{review.location}</p>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function ReviewTrack({ items, direction }: { items: Review[]; direction: 'down' | 'up' }) {
+  return (
+    <div className={`testimonial-track-window testimonial-track-${direction}`}>
+      <div className="testimonial-track">
+        {[0, 1].map((copy) => (
+          <div className="testimonial-track-set" key={copy} aria-hidden={copy === 1}>
+            {items.map((review) => <ReviewCard review={review} key={review.name} />)}
+          </div>
         ))}
       </div>
     </div>
@@ -38,31 +93,28 @@ function MarqueeRow({ reviews, direction }: { reviews: typeof firstRow; directio
 }
 
 export function TestimonialsSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isInView, setIsInView] = useState(false);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const observer = new IntersectionObserver(([entry]) => setIsInView(entry.isIntersecting), {
-      rootMargin: '100px 0px',
-    });
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section ref={sectionRef} className={`testimonials-section${isInView ? ' is-visible' : ''}`} aria-labelledby="testimonials-heading">
-      <header className="testimonials-heading">
-        <p>Client Stories</p>
-        <h2 id="testimonials-heading">What people are saying?</h2>
-        <span>Real experiences from people who found their stone with Astro Laabh.</span>
-      </header>
+    <section className="testimonials-section" aria-labelledby="testimonials-heading">
+      <div className="testimonials-editorial-layout">
+        <div className="testimonial-lane testimonial-lane-left" aria-label="Client reviews">
+          <ReviewTrack items={reviews.slice(0, 4)} direction="down" />
+        </div>
 
-      <div className="testimonial-rows">
-        <MarqueeRow reviews={firstRow} direction="right" />
-        <MarqueeRow reviews={secondRow} direction="left" />
+        <header className="testimonials-heading">
+          <p><span aria-hidden="true" />Client Stories<span aria-hidden="true" /></p>
+          <h2 id="testimonials-heading">What people are saying</h2>
+          <span>Real experiences from people who found their stone with Astro Laabh.</span>
+          <div className="testimonial-heading-mark" aria-hidden="true"><i />✦<i /></div>
+          <p className="testimonial-brand-mark">Astro Laabh · Fine Gemstones</p>
+        </header>
+
+        <div className="testimonial-lane testimonial-lane-right" aria-label="More client reviews">
+          <ReviewTrack items={reviews.slice(4)} direction="up" />
+        </div>
+
+        <div className="testimonial-lane testimonial-lane-mobile" aria-label="Client reviews">
+          <ReviewTrack items={reviews} direction="up" />
+        </div>
       </div>
     </section>
   );

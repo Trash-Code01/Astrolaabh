@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import Lenis from 'lenis';
 import { gsap, ScrollTrigger } from '../lib/gsap';
-import { createLenis } from '../lib/lenis';
+import { createLenis, setLenisInstance } from '../lib/lenis';
 import { useCreativeStore } from '../store/useCreativeStore';
 
 export function useLenis() {
@@ -11,6 +11,7 @@ export function useLenis() {
   useEffect(() => {
     const lenis = createLenis();
     lenisRef.current = lenis;
+    setLenisInstance(lenis);
 
     // Sync Lenis with GSAP ScrollTrigger
     lenis.on('scroll', (e: { progress: number }) => {
@@ -23,12 +24,13 @@ export function useLenis() {
     };
 
     gsap.ticker.add(updateTicker);
-    gsap.ticker.lagSmoothing(500, 33);
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
       gsap.ticker.remove(updateTicker);
       lenis.destroy();
       lenisRef.current = null;
+      setLenisInstance(null);
     };
   }, [setScrollProgress]);
 

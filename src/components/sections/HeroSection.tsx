@@ -9,6 +9,7 @@ import diamond from '../../assets/diamond.webp';
 import gold from '../../assets/gold.webp';
 import { useCreativeStore } from '../../store/useCreativeStore';
 import { ScrollTrigger } from '../../lib/gsap';
+import { scrollToTarget } from '../../lib/lenis';
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -26,7 +27,7 @@ export function HeroSection() {
     return () => trigger.kill();
   }, [setCurrentSection]);
 
-  const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  const scrollTo = (id: string) => scrollToTarget(id);
 
   return (
     <section

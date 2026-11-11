@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import doorway from "../../assets/door'.webp";
 import stone from '../../assets/stone.webp';
 import { gemstones, type Gemstone } from '../../lib/gemstones';
+import { scrollToTarget } from '../../lib/lenis';
 
 const orbitPositions = ['ruby', 'blue-sapphire', 'emerald', 'yellow-sapphire', 'pearl', 'diamond'];
 const automaticSequence = ['ruby', 'blue-sapphire', 'emerald', 'yellow-sapphire', 'pearl'];
@@ -81,7 +82,7 @@ export function GemstoneShowcaseSection() {
 
   const handleViewStone = () => {
     window.dispatchEvent(new CustomEvent<Gemstone>('astrolaabh:consult-gemstone', { detail: activeGemstone }));
-    document.getElementById('appointment')?.scrollIntoView({ behavior: 'smooth' });
+    scrollToTarget('appointment');
   };
 
   return (

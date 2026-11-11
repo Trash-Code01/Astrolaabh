@@ -4,6 +4,7 @@ import { AudioController } from '../ui/AudioController';
 import { useCreativeStore } from '../../../store/useCreativeStore';
 import { useCartStore } from '../../../store/useCartStore';
 import { useSoundEffects } from '../../../hooks/useSoundEffects';
+import { scrollToTarget } from '../../../lib/lenis';
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -15,7 +16,7 @@ export function Navbar() {
   const scrollToSection = (id: string) => {
     playClick();
     setMenuOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    scrollToTarget(id);
   };
 
   const links = [
@@ -24,7 +25,7 @@ export function Navbar() {
   ];
 
   return (
-    <header className="fixed left-0 top-0 z-50 flex w-full items-center justify-between px-5 py-5 text-[#242019] sm:px-9 lg:px-12 lg:py-6 pointer-events-none">
+    <header className="site-navbar fixed left-0 top-0 z-50 flex w-full items-center justify-between px-5 py-5 text-[#242019] sm:px-9 lg:px-12 lg:py-6 pointer-events-none">
       <a href="#hero" className="pointer-events-auto flex items-center gap-3 text-white drop-shadow-[0_1px_3px_rgba(0,0,0,.25)]" onMouseEnter={playHover}>
         <span className="lotus-mark" aria-hidden="true">❀</span>
         <span className="font-serif text-lg tracking-[0.12em] sm:text-xl">ASTRO LAABH</span>
