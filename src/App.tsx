@@ -8,6 +8,7 @@ import { HeroSection } from './components/sections/HeroSection';
 import { HeroMarquee } from './components/sections/HeroMarquee';
 
 const NarrativeSection = lazy(() => import('./components/sections/NarrativeSection').then((module) => ({ default: module.NarrativeSection })));
+const GemstoneCollectionSection = lazy(() => import('./components/sections/GemstoneCollectionSection'));
 const GemstoneShowcaseSection = lazy(() => import('./components/sections/GemstoneShowcaseSection'));
 const GallerySection = lazy(() => import('./components/sections/GallerySection').then((module) => ({ default: module.GallerySection })));
 const WearGemstoneSection = lazy(() => import('./components/sections/WearGemstoneSection'));
@@ -59,6 +60,7 @@ export function App() {
         <HeroSection />
         <HeroMarquee />
         <LazyMount minHeight="760px"><NarrativeSection /></LazyMount>
+        <LazyMount minHeight="1000px"><GemstoneCollectionSection /></LazyMount>
         <LazyMount minHeight="760px"><GemstoneShowcaseSection /></LazyMount>
         <LazyMount minHeight="760px"><GallerySection /></LazyMount>
         <LazyMount minHeight="100vh" className="bg-[#f6f1e7]"><WearGemstoneSection /></LazyMount>
