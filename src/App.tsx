@@ -6,6 +6,7 @@ import { Preloader } from './components/dom/ui/Preloader';
 import { CartDrawer } from './components/dom/ui/CartDrawer';
 import { HeroSection } from './components/sections/HeroSection';
 import { HeroMarquee } from './components/sections/HeroMarquee';
+import { ProductPage } from './components/sections/ProductPage';
 
 const NarrativeSection = lazy(() => import('./components/sections/NarrativeSection').then((module) => ({ default: module.NarrativeSection })));
 const GemstoneCollectionSection = lazy(() => import('./components/sections/GemstoneCollectionSection'));
@@ -30,7 +31,7 @@ function LazyMount({ children, minHeight, className }: { children: ReactNode; mi
         setShouldLoad(true);
         observer.disconnect();
       }
-    }, { rootMargin: '250px 0px' });
+    }, { rootMargin: '300px 0px' });
 
     observer.observe(host);
     return () => observer.disconnect();
@@ -45,6 +46,30 @@ function LazyMount({ children, minHeight, className }: { children: ReactNode; mi
 
 export function App() {
   useLenis();
+  const [route, setRoute] = useState(() => {
+    if (typeof window !== 'undefined') {
+      if (window.location.hash.startsWith('#product') || window.location.pathname.startsWith('/product')) {
+        return 'product';
+      }
+    }
+    return 'home';
+  });
+
+  useEffect(() => {
+    const handleHash = () => {
+      if (window.location.hash.startsWith('#product') || window.location.pathname.startsWith('/product')) {
+        setRoute('product');
+      } else {
+        setRoute('home');
+      }
+    };
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
+  if (route === 'product') {
+    return <ProductPage />;
+  }
 
   return (
     <div className="relative min-h-screen bg-[#FAF8F5] text-[#2C1F14] selection:bg-[#D4AF37] selection:text-black">
@@ -83,13 +108,13 @@ export function App() {
         {/* 8. Customer Reviews & Testimonials (Themed with interactive animation) */}
         <LazyMount minHeight="850px"><TestimonialsSection /></LazyMount>
 
-        {/* 9. Book an Appointment (Astrologer Consultation) */}
+        {/* 9. Book an Appointment (Interactive Scroll-Based Hero Banner & Astrologer Call) */}
         <LazyMount minHeight="850px"><AppointmentSection /></LazyMount>
 
         {/* 10. Final CTA Section (Find Your Gemstone / Explore Collection) */}
         <LazyMount minHeight="650px"><CTASection /></LazyMount>
 
-        {/* 11. Frequently Asked Questions (FAQs) */}
+        {/* 11. Frequently Asked Questions (Redesigned 2-Column Luxury Layout & Spring Animations) */}
         <LazyMount minHeight="750px"><FAQSection /></LazyMount>
       </main>
 
