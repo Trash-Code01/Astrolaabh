@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import doorway from "../../assets/door'.webp";
 import stone from '../../assets/stone.webp';
-import { gemstones, type Gemstone } from '../../lib/gemstones';
-import { scrollToTarget } from '../../lib/lenis';
+import { gemstones as catalog } from '../../lib/gemstones';
+import { navigateToProduct } from '../../lib/navigation';
 
 const orbitPositions = ['ruby', 'blue-sapphire', 'emerald', 'yellow-sapphire', 'pearl', 'diamond'];
+const gemstones = orbitPositions.map(id => catalog.find(gem => gem.id === id)!);
 
 const gemLineColor: Record<string, string> = {
   'ruby':           '#D81B43',
@@ -92,8 +93,7 @@ export function GemstoneShowcaseSection() {
   }, [selectGemstone]);
 
   const handleViewStone = () => {
-    window.dispatchEvent(new CustomEvent<Gemstone>('astrolaabh:consult-gemstone', { detail: activeGemstone }));
-    scrollToTarget('appointment');
+    navigateToProduct(activeGemstone.id);
   };
 
   return (

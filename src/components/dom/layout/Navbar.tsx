@@ -1,8 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
-import { ArrowRight, ChevronDown, Menu, Search, ShoppingBag, Sparkles, X } from 'lucide-react';
-import { useCreativeStore } from '../../../store/useCreativeStore';
+import { ArrowRight, ChevronDown, Menu, Search, ShoppingBag, X } from 'lucide-react';
 import { useCartStore } from '../../../store/useCartStore';
+import { navigateToCart, navigateToProduct } from '../../../lib/navigation';
 import { useSoundEffects } from '../../../hooks/useSoundEffects';
+
+// Real authentic Vedic gemstones for navigation and menu
+import blueSapphire from '../../../assets/sapphire.webp';
+import diamond from '../../../assets/diamond.webp';
+import emerald from '../../../assets/emerald.webp';
+import pearl from '../../../assets/pearl.webp';
+import ruby from '../../../assets/ruby.webp';
+import yellowSapphire from '../../../assets/gold.webp';
+import moonga from '../../../assets/moonga.webp';
+import gomed from '../../../assets/gomed.webp';
+import lehsunia from '../../../assets/lehsunia.webp';
 
 interface NavLinkItem {
   label: string;
@@ -18,16 +29,33 @@ const navLinks: NavLinkItem[] = [
   { label: 'Our Story', id: 'narrative' },
 ];
 
-const navaratnaGems = [
-  { name: 'Pukhraj', eng: 'Yellow Sapphire', planet: 'Jupiter', color: '#D4A338', badge: 'TOP' },
-  { name: 'Neelam', eng: 'Blue Sapphire', planet: 'Saturn', color: '#254E9B' },
-  { name: 'Manik', eng: 'Ruby', planet: 'Sun', color: '#C02636' },
-  { name: 'Panna', eng: 'Emerald', planet: 'Mercury', color: '#1B8A5A' },
-  { name: 'Heera', eng: 'Diamond', planet: 'Venus', color: '#7EA2C7' },
-  { name: 'Moonga', eng: 'Red Coral', planet: 'Mars', color: '#C23D2E' },
-  { name: 'Moti', eng: 'Pearl', planet: 'Moon', color: '#E8E2D2' },
-  { name: 'Gomed', eng: 'Hessonite', planet: 'Rahu', color: '#A85A2A' },
-  { name: 'Lehsunia', eng: "Cat's Eye", planet: 'Ketu', color: '#8A9E38' },
+const productNavLinks: NavLinkItem[] = [
+  { label: 'Gemstones', id: 'gemstone-collection', hasDropdown: true },
+  { label: 'The Stone', id: 'details' },
+  { label: 'Our Promise', id: 'journey' },
+  { label: 'Vedic Wisdom', id: 'ritual' },
+];
+
+interface NavaratnaGem {
+  id: string;
+  name: string;
+  eng: string;
+  planet: string;
+  color: string;
+  image: string;
+  badge?: string;
+}
+
+const navaratnaGems: NavaratnaGem[] = [
+  { id: 'yellow-sapphire', name: 'Pukhraj', eng: 'Yellow Sapphire', planet: 'Jupiter', color: '#D4A338', image: yellowSapphire, badge: 'TOP' },
+  { id: 'blue-sapphire', name: 'Neelam', eng: 'Blue Sapphire', planet: 'Saturn', color: '#254E9B', image: blueSapphire },
+  { id: 'ruby', name: 'Manik', eng: 'Ruby', planet: 'Sun', color: '#C02636', image: ruby },
+  { id: 'emerald', name: 'Panna', eng: 'Emerald', planet: 'Mercury', color: '#1B8A5A', image: emerald },
+  { id: 'diamond', name: 'Heera', eng: 'Diamond', planet: 'Venus', color: '#7EA2C7', image: diamond },
+  { id: 'red-coral', name: 'Moonga', eng: 'Red Coral', planet: 'Mars', color: '#C23D2E', image: moonga },
+  { id: 'pearl', name: 'Moti', eng: 'Pearl', planet: 'Moon', color: '#E8E2D2', image: pearl },
+  { id: 'hessonite', name: 'Gomed', eng: 'Hessonite', planet: 'Rahu', color: '#A85A2A', image: gomed },
+  { id: 'cats-eye', name: 'Lehsunia', eng: "Cat's Eye", planet: 'Ketu', color: '#8A9E38', image: lehsunia },
 ];
 
 const intentList = [
@@ -44,7 +72,9 @@ const rashis = [
   'Tula', 'Vrischika', 'Dhanu', 'Makara', 'Kumbha', 'Meena'
 ];
 
-export function Navbar() {
+export function Navbar({ productPage = false, bagCountOverride, onBagClick }: { productPage?: boolean; bagCountOverride?: number; onBagClick?: () => void }) {
+  const menuRef = useRef<HTMLElement>(null);
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -52,17 +82,65 @@ export function Navbar() {
   const [activeSection, setActiveSection] = useState('hero');
 
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const navItemRef = useRef<HTMLDivElement | null>(null);
 
-  const toggleCart = useCreativeStore((s) => s.toggleCart);
   const items = useCartStore((s) => s.items);
   const { playHover, playClick } = useSoundEffects();
   const cartCount = items.reduce((acc, i) => acc + i.quantity, 0);
+  const visibleCartCount = bagCountOverride ?? cartCount;
+  const visibleNavLinks = productPage ? productNavLinks : navLinks;
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const menu = menuRef.current;
+    menu?.querySelector<HTMLElement>('button, a')?.focus();
+    const keyboard = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') { setMenuOpen(false); return; }
+      if (event.key !== 'Tab' || !menu) return;
+      const controls = Array.from(menu.querySelectorAll<HTMLElement>('button, a[href], input'));
+      const first = controls[0], last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    const desktop = matchMedia('(min-width: 1280px)');
+    const resize = () => { if (desktop.matches) setMenuOpen(false); };
+    desktop.addEventListener('change', resize);
+    document.addEventListener('keydown', keyboard);
+    return () => {
+      document.body.style.overflow = previous;
+      document.removeEventListener('keydown', keyboard);
+      desktop.removeEventListener('change', resize);
+      menuToggleRef.current?.focus({ preventScroll: true });
+    };
+  }, [menuOpen]);
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(target) &&
+        navItemRef.current &&
+        !navItemRef.current.contains(target)
+      ) {
+        setGemstonesDropdownOpen(false);
+      }
+    };
+    if (gemstonesDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [gemstonesDropdownOpen]);
 
   // Active section observation on scroll
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const sections = ['hero', 'narrative', 'gemstone-collection', 'gallery', 'ways-to-wear', 'appointment'];
+      const sections = productPage ? ['details', 'journey', 'ritual'] : ['hero', 'narrative', 'gemstone-collection', 'gallery', 'ways-to-wear', 'appointment'];
       const scrollPosition = scrollY + 120;
 
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -77,7 +155,7 @@ export function Navbar() {
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [productPage]);
 
   // Keyboard shortcut: Escape closes modals
   useEffect(() => {
@@ -98,12 +176,19 @@ export function Navbar() {
     setSearchOpen(false);
     setGemstonesDropdownOpen(false);
 
+    if (id === 'find-gem') { window.location.assign('/#find-gem'); return; }
+    if (id === 'appointment') { window.location.assign('/find-gem#consultation'); return; }
     const el = document.getElementById(id);
+    if (!el) { window.location.assign('/#' + id); return; }
     if (el) {
       const navOffset = 76;
       const targetPosition = el.getBoundingClientRect().top + window.pageYOffset - navOffset;
       window.scrollTo({ top: targetPosition, behavior: 'smooth' });
     }
+  };
+
+  const openGemstone = (id: string) => {
+    playClick(); setMenuOpen(false); setSearchOpen(false); setGemstonesDropdownOpen(false); navigateToProduct(id);
   };
 
   const handleDropdownEnter = () => {
@@ -124,54 +209,30 @@ export function Navbar() {
       <header className="site-navbar fixed left-0 top-0 z-50 w-full bg-[#FAF8F5] border-b border-[#E2D8C8] shadow-[0_2px_16px_rgba(24,21,18,0.06)] transition-all">
         <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-14 h-[72px] sm:h-[78px] flex items-center justify-between">
           
-          {/* Brand Logo & Authority Badge */}
-          <div className="flex items-center gap-3.5 sm:gap-5">
+          {/* Brand Logo (Official Gold Master Logo) */}
+          <div className="flex items-center">
             <a
-              href="#hero"
-              className="flex items-center gap-2.5 select-none transition-transform duration-300 hover:scale-[1.01]"
+              href={productPage ? '/' : '#hero'}
+              className="flex items-center select-none transition-transform duration-300 hover:scale-[1.02]"
               onMouseEnter={playHover}
               onClick={(e) => {
                 e.preventDefault();
+                if (productPage) { window.location.href = '/'; return; }
                 scrollToSection('hero');
               }}
+              aria-label="ASTROLAABH - Vedic Gemstones"
             >
-              {/* Golden Sacred Lotus Mark */}
-              <svg
-                viewBox="0 0 40 32"
-                className="w-7 h-6 sm:w-8 sm:h-7 text-[#9E773A] fill-current flex-shrink-0"
-                aria-hidden="true"
-              >
-                <path
-                  d="M20 2C18 7 13 13 6 16C12 18 16 23 17 30C19 25 21 25 23 30C24 23 28 18 34 16C27 13 22 7 20 2Z"
-                  opacity="0.95"
-                />
-                <path
-                  d="M20 7C22 13 27 18 33 20C28 22 25 26 24 31C21 28 19 28 16 31C15 26 12 22 7 20C13 18 18 13 20 7Z"
-                  opacity="0.65"
-                />
-                <circle cx="20" cy="18" r="2.5" fill="#181512" />
-              </svg>
-
-              <div className="flex flex-col">
-                <span className="font-serif text-lg sm:text-xl lg:text-[22px] tracking-[0.24em] font-bold text-[#181512] uppercase leading-tight">
-                  ASTRO LAABH
-                </span>
-                <span className="font-serif text-[8.5px] sm:text-[9.5px] tracking-[0.28em] text-[#8C6D37] uppercase font-medium leading-none mt-0.5">
-                  Sacred Vedic Gemstones
-                </span>
-              </div>
+              <img
+                src="/astrolaabh-logo.png"
+                alt="ASTROLAABH"
+                className="h-9 sm:h-10 lg:h-11 w-auto object-contain select-none filter drop-shadow-sm"
+              />
             </a>
-
-            {/* AstroLaabh Guarantee Badge (matching reference art) */}
-            <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-full bg-[#F3EDE2] border border-[#DFD6C7] text-[11px] font-serif tracking-[0.14em] uppercase text-[#6B5A45] font-semibold">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#9E773A]" />
-              <span>AstroLaabh Guarantee · Authentic Certified Gems</span>
-            </div>
           </div>
 
           {/* Center Navigation Links with Dropdown */}
-          <nav className="hidden lg:flex items-center gap-7 xl:gap-9 relative">
-            {navLinks.map((link) => {
+          <nav className="hidden xl:flex items-center gap-7 xl:gap-9 relative">
+            {visibleNavLinks.map((link) => {
               const isActive = activeSection === link.id;
 
               if (link.hasDropdown) {
@@ -183,13 +244,27 @@ export function Navbar() {
                     onMouseLeave={handleDropdownLeave}
                   >
                     <button
-                      onClick={() => scrollToSection(link.id)}
-                      className={`font-serif text-[13px] xl:text-[13.5px] tracking-[0.18em] uppercase transition-colors whitespace-nowrap py-2 flex items-center gap-1.5 group select-none ${
+                      onClick={(e) => {
+                        e.preventDefault();
+                        playClick();
+                        setGemstonesDropdownOpen(true);
+                      }}
+                      aria-expanded={gemstonesDropdownOpen}
+                      className={`font-serif text-[13px] xl:text-[13.5px] tracking-[0.18em] uppercase transition-colors whitespace-nowrap py-2 flex items-center gap-2 group select-none ${
                         isActive
                           ? 'text-[#9E773A] font-bold'
                           : 'text-[#181512] hover:text-[#9E773A] font-semibold'
                       }`}
                     >
+                      {/* Very small authentic real gemstone in navbar */}
+                      <span className="relative flex items-center justify-center w-3.5 h-3.5 flex-shrink-0">
+                        <img
+                          src={ruby}
+                          alt=""
+                          aria-hidden="true"
+                          className="w-3.5 h-3.5 object-contain filter drop-shadow-[0_1px_2px_rgba(216,27,67,0.35)] transition-transform duration-300 group-hover:scale-125"
+                        />
+                      </span>
                       <span>{link.label}</span>
                       <ChevronDown
                         className={`w-3.5 h-3.5 text-[#181512] transition-transform duration-300 group-hover:rotate-180 group-hover:text-[#9E773A] ${
@@ -207,7 +282,8 @@ export function Navbar() {
                     {/* SOLID OPAQUE LUXURY MEGA-DROPDOWN — ZERO BACKGROUND BLEED */}
                     {gemstonesDropdownOpen && (
                       <div
-                        className="fixed left-1/2 -translate-x-1/2 top-[76px] w-[95vw] max-w-[1180px] bg-[#FAF8F5] border border-[#DFD6C7] shadow-[0_24px_60px_rgba(24,21,18,0.18)] rounded-2xl p-6 sm:p-8 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+                        ref={dropdownRef}
+                        className="fixed left-1/2 -translate-x-1/2 top-[72px] sm:top-[76px] w-[95vw] max-w-[1180px] bg-[#FAF8F5] border border-[#DFD6C7] shadow-[0_24px_60px_rgba(24,21,18,0.18)] rounded-2xl p-6 sm:p-8 z-50 animate-in fade-in slide-in-from-top-2 duration-150 before:absolute before:-top-3 before:left-0 before:w-full before:h-3"
                         onMouseEnter={handleDropdownEnter}
                         onMouseLeave={handleDropdownLeave}
                       >
@@ -224,11 +300,11 @@ export function Navbar() {
                                   Check My Stone
                                 </h4>
                                 <p className="font-sans text-xs text-[#5C5349] leading-relaxed">
-                                  Seven questions, one precise astrological match for your chart.
+                                  A few thoughtful questions to begin your personal gemstone journey.
                                 </p>
                               </div>
                               <button
-                                onClick={() => scrollToSection('gemstone-collection')}
+                                onClick={() => scrollToSection('find-gem')}
                                 className="mt-4 font-serif text-xs font-bold text-[#8C6D37] hover:text-[#181512] flex items-center gap-1.5 transition-colors"
                               >
                                 <span>Start free assessment</span>
@@ -273,14 +349,18 @@ export function Navbar() {
                               {navaratnaGems.map((gem) => (
                                 <button
                                   key={gem.name}
-                                  onClick={() => scrollToSection('gemstone-collection')}
+                                  onClick={() => openGemstone(gem.id)}
                                   className="p-2.5 rounded-xl hover:bg-[#F3EDE2] border border-transparent hover:border-[#E0D7C8] transition-all flex items-center justify-between text-left group"
                                 >
                                   <div className="flex items-center gap-2.5">
-                                    <span
-                                      className="w-3.5 h-3.5 rounded-full flex-shrink-0 shadow-sm"
-                                      style={{ backgroundColor: gem.color }}
-                                    />
+                                    {/* Real authentic gemstone thumbnail in luxury micro-bezel */}
+                                    <div className="w-6 h-6 rounded-md bg-[#FAF8F5] border border-[#E4DCCF] flex-shrink-0 flex items-center justify-center p-0.5 shadow-sm group-hover:border-[#9E773A] transition-colors">
+                                      <img
+                                        src={gem.image}
+                                        alt={gem.name}
+                                        className="w-4.5 h-4.5 max-h-5 object-contain filter drop-shadow-[0_1px_2px_rgba(0,0,0,0.18)] transition-transform duration-300 group-hover:scale-125"
+                                      />
+                                    </div>
                                     <div>
                                       <div className="font-serif text-[14px] font-bold text-[#181512] group-hover:text-[#9E773A] transition-colors flex items-center gap-2">
                                         <span>{gem.name}</span>
@@ -324,7 +404,7 @@ export function Navbar() {
                                 {intentList.map((item) => (
                                   <button
                                     key={item.goal}
-                                    onClick={() => scrollToSection('gemstone-collection')}
+                                    onClick={() => openGemstone(navaratnaGems.find(gem => gem.name.toUpperCase() === item.stone)!.id)}
                                     className="w-full text-left flex items-center justify-between text-xs py-1 group"
                                   >
                                     <span className="font-serif text-[#332C24] group-hover:text-[#9E773A] font-medium">
@@ -405,14 +485,14 @@ export function Navbar() {
               aria-label="Open sacred shopping bag"
               onClick={() => {
                 playClick();
-                toggleCart();
+                onBagClick ? onBagClick() : navigateToCart();
               }}
               className="relative h-10 w-10 rounded-full border border-[#DFD6C7] bg-[#F5EDE1] hover:bg-[#ECE1D0] text-[#181512] transition-all flex items-center justify-center shadow-sm"
             >
               <ShoppingBag className="h-4 w-4" />
-              {cartCount > 0 && (
+              {visibleCartCount > 0 && (
                 <span className="absolute -right-1 -top-1 grid h-4 w-4 place-items-center rounded-full bg-[#181512] text-[9px] text-[#EAD4B0] font-bold shadow-sm">
-                  {cartCount}
+                  {visibleCartCount}
                 </span>
               )}
             </button>
@@ -432,8 +512,11 @@ export function Navbar() {
 
             {/* Mobile Navigation Toggle Button */}
             <button
-              className="grid h-10 w-10 place-items-center rounded-full border border-[#DFD6C7] bg-[#F5EDE1] text-[#181512] lg:hidden"
-              aria-label="Toggle navigation menu"
+              className="grid h-10 w-10 place-items-center rounded-full border border-[#DFD6C7] bg-[#F5EDE1] text-[#181512] xl:hidden"
+              ref={menuToggleRef}
+              aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-navigation"
               onClick={() => {
                 playClick();
                 setMenuOpen((open) => !open);
@@ -446,30 +529,44 @@ export function Navbar() {
 
         {/* Mobile Navigation Drawer */}
         {menuOpen && (
-          <nav className="absolute left-4 right-4 top-[78px] rounded-2xl border border-[#DFD6C7] bg-[#FAF8F5] p-6 shadow-2xl lg:hidden">
+          <nav ref={menuRef} id="mobile-navigation" aria-label="Mobile navigation" data-lenis-prevent className="mobile-navigation absolute left-4 right-4 top-[78px] rounded-2xl border border-[#DFD6C7] bg-[#FAF8F5] p-6 shadow-2xl xl:hidden">
+            <button className="mobile-menu-close" onClick={() => setMenuOpen(false)} aria-label="Close menu"><span>Explore AstroLaabh</span><X size={20} /></button>
             <div className="flex flex-col divide-y divide-[#EFEAE1]">
-              {navLinks.map((link) => (
+              {visibleNavLinks.map((link) => (
                 <button
                   key={link.id}
                   onClick={() => scrollToSection(link.id)}
                   className="w-full py-4 text-left font-serif text-[16px] font-bold text-[#181512] hover:text-[#9E773A] transition-colors flex items-center justify-between"
                 >
-                  <span>{link.label}</span>
+                  <div className="flex items-center gap-2.5">
+                    {link.hasDropdown && (
+                      <img
+                        src={ruby}
+                        alt=""
+                        aria-hidden="true"
+                        className="w-4 h-4 object-contain filter drop-shadow-[0_1px_2px_rgba(216,27,67,0.35)]"
+                      />
+                    )}
+                    <span>{link.label}</span>
+                  </div>
                   <ArrowRight className="h-4 w-4 opacity-50" />
                 </button>
               ))}
             </div>
 
             <div className="pt-4 mt-2 space-y-3">
+              <div className="grid grid-cols-3 gap-2" aria-label="Gemstone product pages">
+                {navaratnaGems.map(gem => <button key={gem.id} onClick={() => openGemstone(gem.id)} className="flex flex-col items-center gap-2 rounded-lg border border-[#DFD6C7] p-2 text-xs text-[#332C24]"><img src={gem.image} alt="" className="h-6 w-6 object-contain" />{gem.name}</button>)}
+              </div>
               <button
                 onClick={() => {
                   setMenuOpen(false);
-                  toggleCart();
+                  onBagClick ? onBagClick() : navigateToCart();
                 }}
                 className="w-full py-3 px-4 rounded-xl border border-[#DFD6C7] bg-[#F5EDE1] text-[#181512] font-serif text-sm font-bold flex items-center justify-center gap-2"
               >
                 <ShoppingBag className="h-4 w-4" />
-                <span>View Sacred Bag ({cartCount})</span>
+                <span>View Sacred Bag ({visibleCartCount})</span>
               </button>
 
               <button
@@ -530,7 +627,9 @@ export function Navbar() {
                   <button
                     key={tag}
                     onClick={() => {
-                      scrollToSection('gemstone-collection');
+                      const gem = navaratnaGems.find(item => tag.startsWith(item.eng));
+                      if (gem) openGemstone(gem.id);
+                      else scrollToSection('appointment');
                     }}
                     className="px-3.5 py-1.5 rounded-full border border-[#DFD6C7] bg-[#F5EDE1] hover:border-[#9E773A] hover:bg-[#EAD4B0] text-xs font-serif text-[#181512] font-semibold transition-colors"
                   >

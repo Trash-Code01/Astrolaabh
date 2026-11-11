@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, BadgeCheck, Flower2, Play, ShieldCheck, Sparkles, X } from 'lucide-react';
-import rubyImg from '../../assets/ruby.png';
-import emeraldImg from '../../assets/emerald.png';
-import sapphireImg from '../../assets/sapphire.png';
-import diamondImg from '../../assets/diamond.png';
-import goldImg from '../../assets/gold.png';
-import pearlImg from '../../assets/pearl.png';
+import { ArrowRight, BadgeCheck, Flower2, ShieldCheck, Sparkles, X } from 'lucide-react';
+import rubyImg from '../../assets/optimized/ruby.webp';
+import emeraldImg from '../../assets/optimized/emerald.webp';
+import sapphireImg from '../../assets/optimized/sapphire.webp';
+import diamondImg from '../../assets/optimized/diamond.webp';
+import goldImg from '../../assets/optimized/gold.webp';
+import pearlImg from '../../assets/optimized/pearl.webp';
 import { HeroPortalCanvas } from '../canvas/HeroPortalCanvas';
 
 export interface GemstoneInfo {
@@ -212,6 +212,7 @@ export function HeroSection() {
   }, []);
 
   const handlePointerMove = useCallback((e: React.PointerEvent<HTMLElement>) => {
+    if (e.pointerType !== 'mouse' || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const { clientX, clientY } = e;
     const { innerWidth, innerHeight } = window;
     const normX = (clientX / innerWidth - 0.5) * 2;
@@ -249,6 +250,7 @@ export function HeroSection() {
         mouseOffset={mouseOffset}
         hoveredGemId={hoveredStone?.id}
       />
+      <div aria-hidden="true" className="hero-warmth absolute inset-0 z-10 pointer-events-none" />
 
       {/* 
         LAYER 2: Interactive Gemstone Hit Targets & Tooltips
@@ -256,7 +258,7 @@ export function HeroSection() {
         - Pure opacity transitions: NO zoom-in/out scale jumping
       */}
       <div
-        className="absolute pointer-events-none z-20"
+        className="hero-hit-targets absolute pointer-events-none z-20"
         style={{
           left: `${bounds.left}px`,
           top: `${bounds.top}px`,
@@ -348,9 +350,9 @@ export function HeroSection() {
       {/* 
         LAYER 3: Foreground Editorial Hero Content - Centered & Balanced
       */}
-      <div className="relative z-30 h-full w-full max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-16 flex flex-col justify-center pt-8 pb-16 pointer-events-none">
+      <div className="hero-editorial relative z-30 h-full w-full max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-16 flex flex-col justify-center pt-8 pb-16 pointer-events-none">
         <div
-          className="max-w-md sm:max-w-lg lg:max-w-[46%] pointer-events-auto transition-transform duration-200"
+          className="hero-editorial-copy max-w-md sm:max-w-lg lg:max-w-[46%] pointer-events-auto transition-transform duration-200"
           style={{
             transform: `translate3d(0, ${-scrollProgress * 50}px, 0)`,
             opacity: Math.max(0, 1 - scrollProgress * 1.5),
@@ -364,44 +366,48 @@ export function HeroSection() {
           </p>
 
           {/* Main Headline matching Reference Concept Art */}
-          <h1 className="font-serif text-[2.5rem] sm:text-[3.3rem] lg:text-[4.0rem] xl:text-[4.4rem] font-normal leading-[0.98] tracking-[-0.03em] text-[#1c1813]">
-            Gemstones
+          <h1 className="font-serif text-[2.5rem] sm:text-[3.3rem] lg:text-[4.0rem] xl:text-[4.4rem] font-normal leading-[0.96] tracking-[-0.035em] text-[#20190f] drop-shadow-[0_1px_1px_rgba(255,252,244,0.75)]">
+            Every stone
             <br />
-            That{' '}
-            <span className="italic font-serif font-light text-[#b88c4a] drop-shadow-[0_2px_12px_rgba(184,140,74,0.2)]">
-              Align
+            has a{' '}
+            <span className="italic font-serif font-light text-[#805a22]">
+              story.
             </span>
             <br />
-            With You
+            Find yours.
           </h1>
 
           {/* Delicate Star Hairline Flourish */}
-          <div className="flex items-center gap-3 my-4 sm:my-5 w-44 text-[#a8864f]">
+          <div className="flex items-center gap-3 my-3 sm:my-4 w-40 text-[#8a642c]">
             <div className="h-[1px] flex-1 bg-gradient-to-r from-[#a8864f] to-transparent opacity-70" />
             <span className="text-xs">✦</span>
             <div className="h-[1px] flex-1 bg-gradient-to-l from-[#a8864f] to-transparent opacity-70" />
           </div>
 
+          <p className="max-w-[430px] text-[14px] sm:text-[16px] leading-[1.5] text-[#21180f] font-medium font-serif drop-shadow-[0_1px_1px_rgba(255,252,244,0.9)]">
+            Formed by the earth. Chosen with Vedic wisdom. Worn in your own way.
+          </p>
+
           {/* Interactive CTA Buttons */}
-          <div className="mt-5 flex flex-wrap items-center gap-4 sm:gap-5">
+          <div className="mt-4 flex flex-wrap items-center gap-3 sm:gap-4">
             {/* Primary Amber-Gold Button */}
             <button
-              onClick={() => scrollTo('narrative')}
-              className="group h-[46px] px-6 sm:px-7 rounded-full bg-gradient-to-b from-[#a67c3b] via-[#926829] to-[#73501a] hover:from-[#b58a44] hover:to-[#825a20] text-[#fffdf7] font-serif text-[13px] sm:text-[14px] tracking-wide shadow-[0_8px_24px_rgba(113,79,25,0.38)] hover:shadow-[0_12px_32px_rgba(113,79,25,0.5)] transition-all duration-300 flex items-center gap-2.5 active:scale-98 border border-[#e5c387]/40"
+              onClick={() => scrollTo('gemstone-collection')}
+              className="group h-[48px] px-6 sm:px-7 rounded-full bg-[#332319] hover:bg-[#4a3320] text-[#fffaf0] font-serif text-[13px] sm:text-[14px] tracking-wide shadow-[0_8px_22px_rgba(42,29,16,0.3)] hover:shadow-[0_11px_28px_rgba(42,29,16,0.38)] transition-all duration-300 flex items-center gap-2.5 active:scale-98 border border-[#d6b577]/80"
             >
-              <span>Explore Collection</span>
+              <span>Explore gemstones</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
             </button>
 
-            {/* Secondary Frosted Glass Play Button */}
+            {/* Secondary guidance action */}
             <button
-              onClick={() => scrollTo('craftsmanship')}
-              className="group flex items-center gap-2.5 text-[#241e16] font-serif text-[13px] sm:text-[14px] hover:text-[#8f6727] transition-colors"
+              onClick={() => { window.location.hash = 'find-gem'; }}
+              className="group h-[48px] flex items-center gap-2.5 rounded-full border border-[#805b2a] bg-[#fbf4e8]/95 px-5 text-[#24190f] font-serif font-semibold text-[13px] sm:text-[14px] shadow-[0_6px_18px_rgba(57,39,17,0.2)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#fffaf1] hover:shadow-[0_9px_22px_rgba(57,39,17,0.25)]"
             >
-              <span className="w-9 h-9 rounded-full border-[1.5px] border-[#382f23]/70 group-hover:border-[#8f6727] flex items-center justify-center bg-white/40 backdrop-blur-sm shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:bg-white/60">
-                <Play className="w-3 h-3 fill-[#241e16] text-[#241e16] ml-0.5 group-hover:fill-[#8f6727] group-hover:text-[#8f6727] transition-colors" />
+              <span className="w-8 h-8 rounded-full border border-[#8f6727]/60 flex items-center justify-center bg-[#f1e2c6] transition-transform duration-300 group-hover:scale-105">
+                <Sparkles className="w-4 h-4 text-[#8f6727]" />
               </span>
-              <span>How It Works</span>
+              <span>Find your gem</span>
             </button>
           </div>
         </div>
@@ -410,8 +416,8 @@ export function HeroSection() {
       {/* 
         LAYER 4: Floating Glassmorphic Trust Bar ALWAYS Visible above Bottom Edge
       */}
-      <div className="absolute bottom-3 sm:bottom-4 left-0 right-0 z-40 flex justify-center px-4 pointer-events-auto">
-        <div className="flex flex-wrap items-center justify-between w-full max-w-3xl lg:max-w-4xl px-6 sm:px-10 py-2.5 sm:py-3 rounded-full bg-[#f4e8d3]/35 hover:bg-[#f4e8d3]/45 backdrop-blur-xl border border-white/60 shadow-[0_10px_35px_rgba(45,30,10,0.1)] text-[#2d2419] font-serif text-[12px] sm:text-[13px] tracking-wide transition-all">
+      <div className="hero-trust absolute bottom-3 sm:bottom-4 left-0 right-0 z-40 flex justify-center px-4 pointer-events-auto">
+        <div className="flex flex-wrap items-center justify-between w-full max-w-3xl lg:max-w-4xl px-6 sm:px-10 py-2.5 sm:py-3 rounded-full bg-[#f6ead6]/90 border border-white/80 shadow-[0_10px_35px_rgba(45,30,10,0.12)] text-[#2d2419] font-serif text-[12px] sm:text-[13px] tracking-wide transition-all">
           <div className="flex items-center gap-2.5">
             <Flower2 className="w-4 h-4 text-[#a67c3b]" />
             <span className="font-medium">Vedic Guidance</span>

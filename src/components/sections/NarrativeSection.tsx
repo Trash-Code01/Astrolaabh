@@ -4,17 +4,41 @@ import story1 from '../../assets/story1.webp';
 import story2 from '../../assets/story2.webp';
 import story3 from '../../assets/story3.webp';
 import story4 from '../../assets/story4.webp';
-import door1 from '../../assets/door1.png';
-import door2 from '../../assets/door2.png';
+import door1 from '../../assets/optimized/door1.webp';
+import door2 from '../../assets/optimized/door2.webp';
 
 import { useCreativeStore } from '../../store/useCreativeStore';
 import { ScrollTrigger } from '../../lib/gsap';
 
 const stories = [
-  { image: story1, door: door1, number: 'STORY 01', title: 'उद्गम', description: 'Born in the heart of the Earth.' },
-  { image: story2, door: door2, number: 'STORY 02', title: 'शोधन', description: 'Purified to reveal its true radiance.' },
-  { image: story3, door: door1, number: 'STORY 03', title: 'संस्कार', description: 'Energized through ancient Vedic rituals.' },
-  { image: story4, door: door2, number: 'STORY 04', title: 'संगति', description: 'Chosen to align with your intent.' },
+  {
+    image: story1,
+    door: door1,
+    number: '01',
+    title: '01 — The Vision',
+    description: "The astrologer's knowledge and the idea behind AstroLaabh.",
+  },
+  {
+    image: story2,
+    door: door2,
+    number: '02',
+    title: '02 — The Selection',
+    description: 'The individuality of natural gemstones and the care behind choosing them.',
+  },
+  {
+    image: story3,
+    door: door1,
+    number: '03',
+    title: '03 — The Craft',
+    description: 'The transformation from a gemstone into something wearable and personal.',
+  },
+  {
+    image: story4,
+    door: door2,
+    number: '04',
+    title: '04 — The Connection',
+    description: "The moment the gemstone becomes part of the customer's own story.",
+  },
 ];
 
 export function NarrativeSection() {
@@ -48,9 +72,11 @@ export function NarrativeSection() {
           </svg>
           <img src="/astrolaabh-logo.png" alt="" />
         </div>
-        <p className="story-eyebrow">THE GEMSTONE STORY</p>
-        <h2>A Journey from <em>Earth to Energy</em></h2>
-        <p className="story-subtitle">From nature’s depths to a piece that aligns with you.</p>
+        <p className="story-eyebrow">THE ASTROLAABH STORY</p>
+        <h2>From an Astrologer’s Vision to <em>Your Hands</em>.</h2>
+        <p className="story-subtitle">
+          Born from a desire to take traditional wisdom beyond the consultation, AstroLaabh brings together thoughtful gemstone selection, timeless craftsmanship, and a personal connection to every piece.
+        </p>
         <div className="story-divider" aria-hidden="true"><span /><i /><span /></div>
       </motion.div>
 
@@ -68,7 +94,7 @@ export function NarrativeSection() {
               <div className={`story-door-visual story-door-visual-${index + 1}`}>
                 <img className="story-door" src={story.door} alt="" aria-hidden="true" />
                 <div className="story-door-interior">
-                  <img src={story.image} alt={`${story.number}: ${story.description}`} loading="lazy" decoding="async" />
+                  <img src={story.image} alt={`${story.title}: ${story.description}`} loading="lazy" decoding="async" />
                 </div>
               </div>
             </div>

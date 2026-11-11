@@ -1,22 +1,8 @@
 import { gemstones as gemstoneData, type Gemstone } from '../../lib/gemstones';
+import { navigateToProduct } from '../../lib/navigation';
 
-const collectionEntries: Array<{
-  id: Gemstone['id'];
-  origin: string;
-  planet: string;
-  benefits: string[];
-  price: string;
-}> = [
-  { id: 'yellow-sapphire', origin: 'Ceylon (Sri Lanka)', planet: 'Jupiter (Guru)', benefits: ['Prosperity', 'Wisdom', 'Career growth', 'Marriage'], price: '₹14,000' },
-  { id: 'blue-sapphire', origin: 'Sri Lanka, Kashmir', planet: 'Saturn (Shani)', benefits: ['Discipline', 'Focus', 'Progress', 'Stability'], price: '₹22,000' },
-  { id: 'ruby', origin: 'Burma, Mozambique', planet: 'Sun (Surya)', benefits: ['Leadership', 'Recognition', 'Decisiveness', 'Vitality'], price: '₹18,000' },
-  { id: 'emerald', origin: 'Zambia, Colombia', planet: 'Mercury (Budh)', benefits: ['Intellect', 'Communication', 'Knowledge', 'Creativity'], price: '₹16,000' },
-  { id: 'pearl', origin: 'Japan, South Sea', planet: 'Moon (Chandra)', benefits: ['Calmness', 'Emotional balance', 'Peace', 'Clarity'], price: '₹6,000' },
-  { id: 'yellow-sapphire', origin: 'Ceylon (Sri Lanka)', planet: 'Jupiter (Guru)', benefits: ['Prosperity', 'Wisdom', 'Career growth', 'Marriage'], price: '₹14,000' },
-  { id: 'blue-sapphire', origin: 'Sri Lanka, Kashmir', planet: 'Saturn (Shani)', benefits: ['Discipline', 'Focus', 'Progress', 'Stability'], price: '₹22,000' },
-  { id: 'ruby', origin: 'Burma, Mozambique', planet: 'Sun (Surya)', benefits: ['Leadership', 'Recognition', 'Decisiveness', 'Vitality'], price: '₹18,000' },
-  { id: 'emerald', origin: 'Zambia, Colombia', planet: 'Mercury (Budh)', benefits: ['Intellect', 'Communication', 'Knowledge', 'Creativity'], price: '₹16,000' },
-];
+const collectionOrder = ['yellow-sapphire', 'blue-sapphire', 'ruby', 'emerald', 'pearl', 'diamond', 'red-coral', 'hessonite', 'cats-eye'];
+const collectionEntries = collectionOrder.map(id => gemstoneData.find(gem => gem.id === id)!);
 
 const gemstonesById = new Map(gemstoneData.map((gemstone) => [gemstone.id, gemstone]));
 
@@ -29,8 +15,21 @@ function getGemstone(id: Gemstone['id']): Gemstone {
 function GemstoneCard({ entry }: { entry: (typeof collectionEntries)[number] }) {
   const gemstone = getGemstone(entry.id);
 
+
   return (
-    <article className="collection-card">
+    <article
+      className="collection-card"
+      role="link"
+      tabIndex={0}
+      aria-label={`Open ${gemstone.name} product page`}
+      onClick={() => navigateToProduct(gemstone.id)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          navigateToProduct(gemstone.id);
+        }
+      }}
+    >
       <img
         className="collection-card-image"
         src={gemstone.image}
@@ -58,14 +57,10 @@ function GemstoneCard({ entry }: { entry: (typeof collectionEntries)[number] }) 
       </div>
 
       <div className="collection-card-footer">
-        <p><span>from</span> <strong>{entry.price}</strong></p>
-        <a
-          href="#gemstone-showcase"
-          aria-label={`View ${gemstone.name}`}
-          onClick={() => window.dispatchEvent(new CustomEvent<string>('astrolaabh:select-gemstone', { detail: gemstone.id }))}
-        >
+        <p>{entry.price !== 'Price on request' && <span>from </span>}<strong>{entry.price}</strong></p>
+        <span className="collection-card-view">
           View <span aria-hidden="true">→</span>
-        </a>
+        </span>
       </div>
     </article>
   );

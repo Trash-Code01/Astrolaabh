@@ -1,5 +1,7 @@
-import { useEffect, useRef } from 'react';
-import cleanHerobg from '../../assets/clean_herobg.png';
+import { useEffect, useRef, useState } from 'react';
+import cleanHerobg from '../../assets/optimized/clean_herobg.webp';
+
+import heroGem from '../../assets/gold.webp';
 
 interface HeroPortalCanvasProps {
   scrollProgress: number;
@@ -25,7 +27,16 @@ interface WaterRipple {
   speed: number;
 }
 
-export function HeroPortalCanvas({ scrollProgress, mouseOffset, hoveredGemId }: HeroPortalCanvasProps) {
+export function HeroPortalCanvas({ scrollProgress, mouseOffset }: HeroPortalCanvasProps) {
+  const [animated, setAnimated] = useState(() => matchMedia('(min-width: 768px) and (prefers-reduced-motion: no-preference)').matches);
+  const values = useRef({ scrollProgress, mouseOffset });
+  values.current = { scrollProgress, mouseOffset };
+  useEffect(() => {
+    const query = matchMedia('(min-width: 768px) and (prefers-reduced-motion: no-preference)');
+    const change = () => setAnimated(query.matches);
+    query.addEventListener('change', change);
+    return () => query.removeEventListener('change', change);
+  }, []);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const bgImgRef = useRef<HTMLImageElement | null>(null);
@@ -65,12 +76,14 @@ export function HeroPortalCanvas({ scrollProgress, mouseOffset, hoveredGemId }: 
 
   // Preload background image & video
   useEffect(() => {
+    if (!animated) return;
     const img = new Image();
     img.src = cleanHerobg;
     bgImgRef.current = img;
 
     const video = document.createElement('video');
     video.src = '/hero_gemstones.mp4';
+    video.preload = 'metadata';
     video.autoplay = true;
     video.loop = true;
     video.muted = true;
@@ -81,22 +94,32 @@ export function HeroPortalCanvas({ scrollProgress, mouseOffset, hoveredGemId }: 
 
     return () => {
       video.pause();
-      video.src = '';
+      video.removeAttribute('src');
+      video.load();
+      videoRef.current = null;
     };
-  }, []);
+  }, [animated]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || !animated) return;
     const ctx = canvas.getContext('2d', { alpha: false });
     if (!ctx) return;
 
-    let animId: number;
+    let animId = 0;
+    let visible = true;
+    let lastFrame = 0;
 
     const render = (time: number) => {
+      animId = 0;
+      if (!visible || document.hidden) return;
+      if (time - lastFrame < 1000 / 30) { animId = requestAnimationFrame(render); return; }
+      lastFrame = time;
+      const { scrollProgress, mouseOffset } = values.current;
       const parent = canvas.parentElement;
-      const width = (canvas.width = parent?.clientWidth || window.innerWidth);
-      const height = (canvas.height = parent?.clientHeight || window.innerHeight);
+      const width = parent?.clientWidth || window.innerWidth;
+      const height = parent?.clientHeight || window.innerHeight;
+      if (canvas.width !== width || canvas.height !== height) { canvas.width = width; canvas.height = height; }
 
       if (width === 0 || height === 0) {
         animId = requestAnimationFrame(render);
@@ -322,21 +345,35 @@ export function HeroPortalCanvas({ scrollProgress, mouseOffset, hoveredGemId }: 
       animId = requestAnimationFrame(render);
     };
 
-    animId = requestAnimationFrame(render);
-
-    return () => {
-      cancelAnimationFrame(animId);
+    const sync = () => {
+      cancelAnimationFrame(animId); animId = 0;
+      if (visible && !document.hidden) {
+        videoRef.current?.play().catch(() => {});
+        animId = requestAnimationFrame(render);
+      } else videoRef.current?.pause();
     };
-  }, [scrollProgress, mouseOffset, hoveredGemId]);
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); });
+    observer.observe(canvas);
+    document.addEventListener('visibilitychange', sync);
+    sync();
+    return () => {
+      cancelAnimationFrame(animId); observer.disconnect();
+      document.removeEventListener('visibilitychange', sync);
+    };
+  }, [animated]);
 
   return (
-    <canvas
+    <>
+    <img src={cleanHerobg} alt="" {...{ fetchpriority: 'high' }} decoding="async" className="hero-background absolute inset-0 w-full h-full object-cover" />
+    {!animated && <div className="hero-static-orbit" aria-hidden="true"><span /><img src={heroGem} alt="" width="240" height="240" /></div>}
+    {animated && <canvas
       ref={canvasRef}
       className="absolute inset-0 w-full h-full pointer-events-none z-10"
       style={{
         filter: 'contrast(1.06) saturate(1.12) brightness(1.02)',
       }}
-    />
+    />}
+    </>
   );
 }
 

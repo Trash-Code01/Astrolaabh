@@ -6,6 +6,7 @@ import { useSoundEffects } from '../../../hooks/useSoundEffects';
 import { FLAGSHIP_PRODUCT } from '../../../lib/constants';
 import { formatPrice } from '../../../lib/utils';
 import confetti from 'canvas-confetti';
+import { navigateToCart } from '../../../lib/navigation';
 
 export function ProductConfigurator() {
   const activeColorway = useCreativeStore((s) => s.activeColorway);
@@ -14,7 +15,6 @@ export function ProductConfigurator() {
   const setExplodedProgress = useCreativeStore((s) => s.setExplodedProgress);
   const isAutoRotating = useCreativeStore((s) => s.isAutoRotating);
   const setIsAutoRotating = useCreativeStore((s) => s.setIsAutoRotating);
-  const toggleCart = useCreativeStore((s) => s.toggleCart);
 
   const addItem = useCartStore((s) => s.addItem);
   const { playHover, playClick, playColorSwitch, playCartAdd } = useSoundEffects();
@@ -32,7 +32,7 @@ export function ProductConfigurator() {
   const handleAddToCart = () => {
     playCartAdd();
     addItem(FLAGSHIP_PRODUCT, activeColorway, 1);
-    toggleCart();
+    navigateToCart();
 
     // Subtle luxury particle burst
     try {

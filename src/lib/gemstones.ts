@@ -4,6 +4,9 @@ import emerald from '../assets/emerald.webp';
 import pearl from '../assets/pearl.webp';
 import ruby from '../assets/ruby.webp';
 import yellowSapphire from '../assets/gold.webp';
+import redCoral from '../assets/moonga.webp';
+import hessonite from '../assets/gomed.webp';
+import catsEye from '../assets/lehsunia.webp';
 
 export interface Gemstone {
   id: string;
@@ -97,5 +100,23 @@ export const gemstones: Gemstone[] = [
     price: 'Price on request',
     image: diamond,
     orbitImage: diamond,
+  },
+  {
+    id: 'red-coral', name: 'Red Coral', hindiName: 'मूंगा · Moonga', tagline: 'The Gem of Courage',
+    description: 'Traditionally associated with Mars, Red Coral is valued for its warm vermilion colour and symbolism of courage, resolve and vitality.',
+    origin: 'Origin varies by stone', planet: 'Mars (Mangal)', benefits: ['Courage', 'Resolve', 'Energy', 'Confidence'],
+    price: 'Price on request', image: redCoral, orbitImage: redCoral,
+  },
+  {
+    id: 'hessonite', name: 'Hessonite', hindiName: 'गोमेद · Gomed', tagline: 'The Gem of Perspective',
+    description: 'A honey-toned garnet traditionally associated with Rahu, Hessonite represents perspective, grounding and a considered approach to change.',
+    origin: 'Origin varies by stone', planet: 'Rahu', benefits: ['Perspective', 'Grounding', 'Focus', 'Clarity'],
+    price: 'Price on request', image: hessonite, orbitImage: hessonite,
+  },
+  {
+    id: 'cats-eye', name: "Cat's Eye", hindiName: 'लहसुनिया · Lehsunia', tagline: 'The Gem of Insight',
+    description: 'Known for its luminous moving band of light, chrysoberyl Cat’s Eye is traditionally associated with Ketu and the symbolism of insight and reflection.',
+    origin: 'Origin varies by stone', planet: 'Ketu', benefits: ['Insight', 'Reflection', 'Awareness', 'Focus'],
+    price: 'Price on request', image: catsEye, orbitImage: catsEye,
   },
 ];

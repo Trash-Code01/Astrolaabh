@@ -1,35 +1,56 @@
+import braceletSmall from '../../assets/optimized/m4-small.webp';
+import ringSmall from '../../assets/optimized/m3-small.webp';
+import necklaceSmall from '../../assets/optimized/m2-small.webp';
+import earringsSmall from '../../assets/optimized/m1-small.webp';
 import { useEffect, useRef, useState } from 'react';
-import earrings from '../../assets/m1.png';
-import necklace from '../../assets/m2.png';
-import ring from '../../assets/m3.png';
-import bracelet from '../../assets/m4.png';
+import earrings from '../../assets/optimized/m1.webp';
+import necklace from '../../assets/optimized/m2.webp';
+import ring from '../../assets/optimized/m3.webp';
+import bracelet from '../../assets/optimized/m4.webp';
 import { gsap, ScrollTrigger } from '../../lib/gsap';
 import { scrollToTarget } from '../../lib/lenis';
 
 const SLIDES = 5;
 
+function SlideMeta({ index }: { index: string }) {
+  return (
+    <div className="lb-meta">
+      <div className="lb-controls">
+        <span className="lb-pill" aria-hidden="true" />
+        <button type="button" data-lb-go="-1" aria-label="Previous composition">‹</button>
+        <button type="button" data-lb-go="1" aria-label="Next composition">›</button>
+      </div>
+      <div className="lb-number">
+        <strong><i>*</i>{index}</strong>
+        <div className="lb-number-tags">
+          <span>Wear</span>
+          <span>Style</span>
+          <span>Intention</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LookCta({ children, target = 'gemstone-showcase' }: { children: string; target?: string }) {
+  return (
+    <button type="button" className="lb-cta" data-lb-target={target}>
+      {children} <span aria-hidden="true">→</span>
+    </button>
+  );
+}
+
 export function WearGemstoneSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const progressFillRef = useRef<HTMLDivElement>(null);
-  const scrollIndicatorRef = useRef<HTMLDivElement>(null);
-  const numberTrackRef = useRef<HTMLDivElement>(null);
-  const pillDotRef = useRef<HTMLSpanElement>(null);
-  const prevBtnRef = useRef<HTMLButtonElement>(null);
-  const nextBtnRef = useRef<HTMLButtonElement>(null);
-  const currentSlideRef = useRef(0);
-  const [activeSlide, setActiveSlide] = useState(0);
 
-  const goToSlide = (targetIndex: number) => {
-    const trigger = ScrollTrigger.getById('wear-lookbook');
-    const section = sectionRef.current;
-    if (!trigger || !section) return;
-
-    const clamped = Math.min(SLIDES - 1, Math.max(0, targetIndex));
-    const step = (trigger.end - trigger.start) / Math.max(1, SLIDES - 1);
-    const targetScroll = trigger.start + clamped * step;
-    scrollToTarget(targetScroll);
-  };
+  const [compact, setCompact] = useState(() => matchMedia('(max-width: 900px), (pointer: coarse), (prefers-reduced-motion: reduce)').matches);
+  useEffect(() => {
+    const query = matchMedia('(max-width: 900px), (pointer: coarse), (prefers-reduced-motion: reduce)');
+    const change = () => setCompact(query.matches);
+    query.addEventListener('change', change);
+    return () => query.removeEventListener('change', change);
+  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -39,18 +60,66 @@ export function WearGemstoneSection() {
     const slides = Array.from(track.querySelectorAll<HTMLElement>('.lb-slide'));
 
     const applyWidths = () => {
-      const width = section.clientWidth;
+      const width = section.clientWidth || window.innerWidth;
       slides.forEach((slide) => {
         slide.style.width = `${width}px`;
-        slide.style.flexBasis = `${width}px`;
+        slide.style.minWidth = `${width}px`;
+        slide.style.maxWidth = `${width}px`;
+        slide.style.flex = `0 0 ${width}px`;
+        slide.style.flexShrink = '0';
       });
+      if (track) {
+        track.style.width = `${width * slides.length}px`;
+        track.style.display = 'flex';
+        track.style.flexWrap = 'nowrap';
+      }
     };
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (reduced) {
+    const onClick = (event: MouseEvent) => {
+      const origin = event.target as HTMLElement | null;
+      const jump = origin?.closest<HTMLElement>('[data-lb-jump]');
+      const dir = origin?.closest<HTMLElement>('[data-lb-go]');
+      const link = origin?.closest<HTMLElement>('[data-lb-target]');
+      if (!jump && !dir && !link) return;
+
+      if (link?.dataset.lbTarget) {
+        scrollToTarget(link.dataset.lbTarget);
+        return;
+      }
+
+      const trigger = ScrollTrigger.getById('wear-lookbook');
+      const count = slides.length;
+      if (!trigger) {
+        const viewportCenter = window.innerHeight / 2;
+        const current = slides.reduce((closest, slide, index) => {
+          const distance = Math.abs(slide.getBoundingClientRect().top + slide.offsetHeight / 2 - viewportCenter);
+          const closestDistance = Math.abs(
+            slides[closest].getBoundingClientRect().top + slides[closest].offsetHeight / 2 - viewportCenter,
+          );
+          return distance < closestDistance ? index : closest;
+        }, 0);
+        const requested = jump ? Number(jump.dataset.lbJump) : current + Number(dir?.dataset.lbGo || 0);
+        const index = Math.min(count - 1, Math.max(0, requested));
+        slides[index]?.scrollIntoView({ block: 'start', behavior: reduced ? 'auto' : 'smooth' });
+        return;
+      }
+
+      const step = (trigger.end - trigger.start) / Math.max(1, count - 1);
+      const current = Math.round(trigger.progress * (count - 1));
+      const requested = jump ? Number(jump.dataset.lbJump) : current + Number(dir?.dataset.lbGo || 0);
+      const index = Math.min(count - 1, Math.max(0, requested));
+      scrollToTarget(trigger.start + index * step);
+    };
+
+    section.addEventListener('click', onClick);
+
+    if (compact) {
+      track.removeAttribute('style');
+      slides.forEach(slide => slide.removeAttribute('style'));
       section.dataset.slide = '1';
-      return;
+      return () => section.removeEventListener('click', onClick);
     }
 
     applyWidths();
@@ -63,76 +132,28 @@ export function WearGemstoneSection() {
           id: 'wear-lookbook',
           trigger: section,
           start: 'top top',
-          end: () => `+=${section.clientWidth * (SLIDES - 0.8)}`,
+          end: () => `+=${Math.max(section.clientWidth, track.scrollWidth - section.clientWidth)}`,
           pin: true,
-          scrub: 0.8,
+          scrub: 0.65,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          snap: {
-            snapTo: 1 / (SLIDES - 1),
-            duration: { min: 0.28, max: 0.65 },
-            delay: 0.06,
-            ease: 'power2.out',
-          },
           onToggle: (self) => document.body.classList.toggle('lb-engaged', self.isActive),
           onUpdate: (self) => {
-            const p = self.progress;
-
-            // 1. Direct bottom progress line fill
-            if (progressFillRef.current) {
-              progressFillRef.current.style.transform = `scaleX(${p})`;
+            section.style.setProperty('--lb-p', self.progress.toFixed(4));
+            const index = Math.min(SLIDES - 1, Math.max(0, Math.round(self.progress * (SLIDES - 1))));
+            const label = String(index + 1);
+            if (section.dataset.slide !== label) {
+              section.dataset.slide = label;
+              section.querySelectorAll<HTMLElement>('[data-n]').forEach((button) => {
+                button.setAttribute('aria-current', button.dataset.n === label ? 'true' : 'false');
+              });
             }
-
-            // 2. Mouse scroll indicator fade
-            if (scrollIndicatorRef.current) {
-              scrollIndicatorRef.current.style.opacity = String(Math.max(0, 1 - p * 6));
-            }
-
-            // 3. Lookbook step meter dashes
-            const meterDashes = section.querySelectorAll<HTMLElement>('.lb-dash-fill');
-            meterDashes.forEach((dash, idx) => {
-              const dashProgress = Math.max(0, Math.min(1, p * (SLIDES - 1) - idx));
-              dash.style.transform = `scaleX(${dashProgress})`;
-            });
-
-            // 4. Slide index calculation
-            const rawIdx = p * (SLIDES - 1);
-            const slideIdx = Math.min(SLIDES - 1, Math.max(0, Math.round(rawIdx)));
-
-            if (currentSlideRef.current !== slideIdx) {
-              currentSlideRef.current = slideIdx;
-              setActiveSlide(slideIdx);
-            }
-
-            // 5. Number reel track translation
-            if (numberTrackRef.current) {
-              numberTrackRef.current.style.transform = `translateY(-${slideIdx * 20}%)`;
-            }
-
-            // 6. Pill dot translation
-            if (pillDotRef.current) {
-              pillDotRef.current.style.transform = `translateX(${slideIdx * 12}px)`;
-            }
-
-            // 7. Meter button active states
-            section.querySelectorAll<HTMLElement>('.lb-meter-num').forEach((btn, idx) => {
-              const isActive = idx === slideIdx;
-              btn.classList.toggle('is-active', isActive);
-              btn.setAttribute('aria-current', isActive ? 'true' : 'false');
-            });
-
-            // 8. Arrow buttons state
-            if (prevBtnRef.current) prevBtnRef.current.disabled = slideIdx === 0;
-            if (nextBtnRef.current) nextBtnRef.current.disabled = slideIdx === SLIDES - 1;
-
-            section.dataset.slide = String(slideIdx + 1);
           },
         },
       });
 
-      // Layered horizontal parallax on designated elements
       section.querySelectorAll<HTMLElement>('[data-parallax]').forEach((el) => {
-        const amount = Number(el.dataset.parallax) || 28;
+        const amount = Number(el.dataset.parallax) || 24;
         const slide = el.closest('.lb-slide');
         if (!slide) return;
         gsap.fromTo(el, { x: amount }, {
@@ -155,260 +176,123 @@ export function WearGemstoneSection() {
 
     return () => {
       cancelAnimationFrame(refresh);
+      section.removeEventListener('click', onClick);
       ScrollTrigger.removeEventListener('refreshInit', onRefresh);
       document.body.classList.remove('lb-engaged');
       ctx.revert();
     };
-  }, []);
+  }, [compact]);
 
   return (
     <section
       ref={sectionRef}
       id="ways-to-wear"
-      className="lb"
+      className={`lb${compact ? ' lb-native' : ''}`}
       data-slide="1"
       aria-label="How to wear gemstones"
     >
       <div className="lb-viewport">
-        {/* Pinned Top Editorial Nav Header (Matching reference video) */}
-        <header className="lb-nav" aria-label="Editorial navigation">
-          <div className="lb-brand">
-            <span className="lb-brand-mark" aria-hidden="true">✦</span>
-            <span>ASTRO LAABH</span>
-          </div>
-          <nav className="lb-nav-links" aria-label="Editorial categories">
-            <button type="button" className="is-active" onClick={() => goToSlide(0)}>Editorial</button>
-            <button type="button" onClick={() => scrollToTarget('gemstones')}>Collections</button>
-            <button type="button" onClick={() => scrollToTarget('our-story')}>Vedic Craft</button>
-            <button type="button" onClick={() => scrollToTarget('consultation')}>The Ritual</button>
-          </nav>
-          <div className="lb-nav-action">
-            <button type="button" onClick={() => scrollToTarget('consultation')} aria-label="Consult master astrologer">
-              <span>Consult Astrologer</span>
-              <span aria-hidden="true">↗</span>
-            </button>
-          </div>
-        </header>
-
-        {/* Horizontal Sliding Track */}
         <div ref={trackRef} className="lb-track">
-          {/* SLIDE 1: EARRINGS (Reference: "THE LITTLE VANITY") */}
           <article className="lb-slide is-earrings" aria-label="Earrings">
-            <figure className="lb-photo lb-photo-earrings" data-parallax="40">
-              <img src={earrings} alt="Close-up of an emerald and diamond earring worn on the ear" />
+            <figure className="lb-photo lb-photo-earrings" data-parallax="42">
+              <img loading="lazy" decoding="async" src={earrings} srcSet={`${earringsSmall} 640w, ${earrings} 1280w`} sizes="(max-width: 900px) 100vw, 55vw" alt="Close-up of an emerald and diamond earring worn on the ear" />
             </figure>
-            <div className="lb-shape lb-shape-earrings" data-parallax="-30" aria-hidden="true" />
+            <div className="lb-shape lb-shape-earrings" aria-hidden="true" />
             <div className="lb-seal" aria-hidden="true">
               <svg viewBox="0 0 80 90">
                 <polygon points="40,3 76,24 76,66 40,87 4,66 4,24" fill="none" stroke="currentColor" strokeWidth="1.25" />
               </svg>
               <span>The<br />Edit</span>
             </div>
-            <div className="lb-copy lb-copy-earrings" data-parallax="-24">
+            <div className="lb-copy lb-copy-earrings" data-parallax="-26">
               <p className="lb-kicker"><span>The</span><span>Gemstone</span><span>Edit</span></p>
               <h2 className="lb-title">Earrings</h2>
               <p className="lb-body">A subtle way to let your gemstone become part of your everyday expression.</p>
-              <button type="button" className="lb-cta" onClick={() => scrollToTarget('gemstone-showcase')}>
-                Discover Earrings <span aria-hidden="true">→</span>
-              </button>
+              <LookCta>Discover Earrings</LookCta>
             </div>
+            <SlideMeta index="01" />
           </article>
 
-          {/* SLIDE 2: RINGS (Reference: "WEEK IN FASHION / EDITORIAL") */}
           <article className="lb-slide is-rings" aria-label="Rings">
-            <div className="lb-copy lb-copy-rings" data-parallax="-20">
+            <div className="lb-shape lb-shape-rings" aria-hidden="true" />
+            <div className="lb-copy lb-copy-rings" data-parallax="-18">
               <span className="lb-rule" aria-hidden="true" />
               <h2 className="lb-subhead">Let the stone speak</h2>
               <p className="lb-body">A gemstone ring keeps its meaning close, quietly becoming part of your everyday ritual.</p>
             </div>
-            <figure className="lb-photo lb-photo-rings-detail" data-parallax="16">
-              <img src={ring} alt="Sapphire ring worn on the hand, resting against ivory fabric" />
+            <figure className="lb-photo lb-photo-rings-detail" data-parallax="20">
+              <img loading="lazy" decoding="async" src={ring} srcSet={`${ringSmall} 640w, ${ring} 1280w`} sizes="(max-width: 900px) 100vw, 55vw" alt="Sapphire ring worn on the hand, resting against ivory fabric" />
             </figure>
-            <div className="lb-shape lb-shape-rings" data-parallax="-15" aria-hidden="true" />
-            <p className="lb-vertical" data-parallax="-30">Rings</p>
+            <p className="lb-vertical">Rings</p>
             <figure className="lb-photo lb-photo-rings" data-parallax="34">
-              <img src={ring} alt="Close-up of a blue sapphire ring on an elegant hand" />
+              <img loading="lazy" decoding="async" src={ring} srcSet={`${ringSmall} 640w, ${ring} 1280w`} sizes="(max-width: 900px) 100vw, 55vw" alt="Close-up of a blue sapphire ring on an elegant hand" />
             </figure>
+            <SlideMeta index="02" />
           </article>
 
-          {/* SLIDE 3: NECKLACES (Reference: "UNLEASH YOUR SENSUALITY") */}
           <article className="lb-slide is-necklaces" aria-label="Necklaces">
-            <div className="lb-shape lb-shape-neck-a" data-parallax="25" aria-hidden="true" />
-            <div className="lb-shape lb-shape-neck-b" data-parallax="-25" aria-hidden="true" />
-            <h2 className="lb-display" data-parallax="-22">
+            <div className="lb-shape lb-shape-neck-a" aria-hidden="true" />
+            <div className="lb-shape lb-shape-neck-b" aria-hidden="true" />
+            <h2 className="lb-display" data-parallax="-18">
               <span>Neck</span>
               <span>laces</span>
             </h2>
-            <p className="lb-aside" data-parallax="-15">Worn at heart</p>
-            <figure className="lb-photo lb-photo-neck" data-parallax="32">
-              <img src={necklace} alt="Ruby and diamond necklace worn at the collarbone with an ivory neckline" />
+            <p className="lb-aside">Worn</p>
+            <figure className="lb-photo lb-photo-neck" data-parallax="28">
+              <img loading="lazy" decoding="async" src={necklace} srcSet={`${necklaceSmall} 640w, ${necklace} 1280w`} sizes="(max-width: 900px) 100vw, 55vw" alt="Ruby and diamond necklace worn at the collarbone with an ivory neckline" />
             </figure>
-            <div className="lb-copy lb-copy-neck" data-parallax="-18">
+            <div className="lb-copy lb-copy-neck">
               <h3 className="lb-subhead">Wear your intention close</h3>
               <p className="lb-body">A necklace brings the gemstone close to the heart, where intention becomes part of the ritual.</p>
-              <button type="button" className="lb-cta" onClick={() => scrollToTarget('gemstone-showcase')}>
-                Explore the Look <span aria-hidden="true">→</span>
-              </button>
+              <LookCta>Explore the Look</LookCta>
             </div>
+            <SlideMeta index="03" />
           </article>
 
-          {/* SLIDE 4: BRACELETS (Reference: "BE YOUR OWN MUSE") */}
           <article className="lb-slide is-bracelets" aria-label="Bracelets">
-            <div className="lb-shape lb-shape-bracelets" data-parallax="-25" aria-hidden="true" />
+            <div className="lb-shape lb-shape-bracelets" aria-hidden="true" />
+            <h2 className="lb-display lb-display-bracelets" data-parallax="-22">Bracelets</h2>
             <figure className="lb-photo lb-photo-bracelets" data-parallax="30">
-              <img src={bracelet} alt="Yellow sapphire bracelet worn on the wrist against ivory satin" />
+              <img loading="lazy" decoding="async" src={bracelet} srcSet={`${braceletSmall} 640w, ${bracelet} 1280w`} sizes="(max-width: 900px) 100vw, 55vw" alt="Yellow sapphire bracelet worn on the wrist against ivory satin" />
             </figure>
-            <h2 className="lb-display lb-display-bracelets" data-parallax="-24">Bracelets</h2>
-            <div className="lb-copy lb-copy-bracelets" data-parallax="-16">
+            <div className="lb-copy lb-copy-bracelets">
               <h3 className="lb-subhead">Carry it with you</h3>
               <p className="lb-body">A bracelet turns the gemstone into something you can carry with you throughout the day.</p>
-              <button type="button" className="lb-cta" onClick={() => scrollToTarget('gemstone-showcase')}>
-                Discover Bracelets <span aria-hidden="true">→</span>
-              </button>
+              <LookCta>Discover Bracelets</LookCta>
             </div>
+            <SlideMeta index="04" />
           </article>
 
-          {/* SLIDE 5: YOUR STONE YOUR WAY & REWIND (Reference: "DON'T HIDE YOURSELF / REWIND") */}
           <article className="lb-slide is-yours" aria-label="Personal style">
-            <div className="lb-shape lb-shape-yours" data-parallax="-25" aria-hidden="true" />
-            <h2 className="lb-display lb-display-yours" data-parallax="-20">
+            <div className="lb-shape lb-shape-yours" aria-hidden="true" />
+            <h2 className="lb-display lb-display-yours" data-parallax="-16">
               <span>Your stone</span>
               <span>Your way</span>
             </h2>
-
-            {/* Rotating Sacred Seal Stamp (Matching spinning badge in reference video frame 018) */}
-            <div className="lb-stamp" data-parallax="12" aria-hidden="true">
-              <svg viewBox="0 0 100 100" className="lb-stamp-svg">
-                <path
-                  id="stampPath"
-                  d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
-                  fill="none"
-                />
-                <text>
-                  <textPath href="#stampPath" startOffset="0%">
-                    ✦ SACRED VEDIC ATELIER ✦ ASTRO LAABH ✦
-                  </textPath>
-                </text>
-              </svg>
-              <span className="lb-stamp-center">✦</span>
-            </div>
-
-            <figure className="lb-photo lb-photo-yours-a" data-parallax="20">
-              <img src={bracelet} alt="A gemstone bracelet styled on the wrist" />
+            <figure className="lb-photo lb-photo-yours-a" data-parallax="18">
+              <img loading="lazy" decoding="async" src={bracelet} srcSet={`${braceletSmall} 640w, ${bracelet} 1280w`} sizes="(max-width: 900px) 100vw, 55vw" alt="A gemstone bracelet styled on the wrist" />
             </figure>
-            <figure className="lb-photo lb-photo-yours-b" data-parallax="32">
-              <img src={necklace} alt="A gemstone necklace styled at the neck" />
+            <figure className="lb-photo lb-photo-yours-b" data-parallax="26">
+              <img loading="lazy" decoding="async" src={necklace} srcSet={`${necklaceSmall} 640w, ${necklace} 1280w`} sizes="(max-width: 900px) 100vw, 55vw" alt="A gemstone necklace styled at the neck" />
             </figure>
-
-            <div className="lb-copy lb-copy-yours" data-parallax="-16">
+            <div className="lb-copy lb-copy-yours">
               <p className="lb-body">There is no single way to wear a gemstone. Find the form that feels naturally yours.</p>
-              <button type="button" className="lb-cta" onClick={() => scrollToTarget('gemstones')}>
-                Explore All Gemstones <span aria-hidden="true">→</span>
-              </button>
+              <LookCta>Explore Gemstones</LookCta>
             </div>
-
-            {/* Circular Rewind Button (Matching reference video frame 028) */}
-            <button
-              type="button"
-              className="lb-rewind-btn"
-              onClick={() => goToSlide(0)}
-              aria-label="Rewind to first slide"
-            >
-              <span className="lb-rewind-circle">
-                <span className="lb-rewind-arrow" aria-hidden="true">←</span>
-                <span className="lb-rewind-label">REWIND</span>
-              </span>
-            </button>
+            <SlideMeta index="05" />
           </article>
         </div>
 
-        {/* Pinned Bottom-Left Mouse Scroll Indicator (Matching reference video frame 001) */}
-        <div ref={scrollIndicatorRef} className="lb-scroll-indicator" aria-hidden="true">
-          <div className="lb-mouse-icon">
-            <span className="lb-mouse-wheel" />
-          </div>
-          <span className="lb-scroll-text">Scroll to explore</span>
-          <span className="lb-scroll-line" />
-        </div>
-
-        {/* Pinned Bottom-Center Lookbook Step Meter */}
         <nav className="lb-meter" aria-label="Lookbook progress">
           {['01', '02', '03', '04', '05'].map((label, index) => (
             <span className="lb-meter-step" key={label}>
-              {index > 0 && (
-                <span className="lb-dash">
-                  <span className="lb-dash-fill" />
-                </span>
-              )}
-              <button
-                type="button"
-                className={`lb-meter-num ${activeSlide === index ? 'is-active' : ''}`}
-                onClick={() => goToSlide(index)}
-                aria-current={activeSlide === index ? 'true' : 'false'}
-                aria-label={`Slide ${label}`}
-              >
+              {index > 0 && <i className="lb-dash" style={{ '--i': index - 1 } as React.CSSProperties} />}
+              <button type="button" data-n={index + 1} data-lb-jump={index} aria-current={index === 0 ? 'true' : 'false'} aria-label={`Composition ${label}`}>
                 {label}
               </button>
             </span>
           ))}
         </nav>
-
-        {/* Pinned Bottom-Right Slide Controls with Mechanical Rolling Digit Counter */}
-        <aside className="lb-meta" aria-label="Slide controls">
-          <div className="lb-controls">
-            <button
-              type="button"
-              className="lb-pill-btn"
-              aria-label={`Current slide ${activeSlide + 1} of ${SLIDES}`}
-              onClick={() => goToSlide((activeSlide + 1) % SLIDES)}
-            >
-              <span ref={pillDotRef} className="lb-pill-dot" />
-            </button>
-            <button
-              ref={prevBtnRef}
-              type="button"
-              className="lb-arrow-btn"
-              onClick={() => goToSlide(activeSlide - 1)}
-              disabled={activeSlide === 0}
-              aria-label="Previous composition"
-            >
-              ‹
-            </button>
-            <button
-              ref={nextBtnRef}
-              type="button"
-              className="lb-arrow-btn"
-              onClick={() => goToSlide(activeSlide + 1)}
-              disabled={activeSlide === SLIDES - 1}
-              aria-label="Next composition"
-            >
-              ›
-            </button>
-          </div>
-
-          <div className="lb-number" aria-live="polite">
-            <div className="lb-number-row">
-              <i className="lb-number-star" aria-hidden="true">*</i>
-              <div className="lb-number-reel" aria-label={`Slide ${activeSlide + 1} of 5`}>
-                <div ref={numberTrackRef} className="lb-number-track">
-                  {['01', '02', '03', '04', '05'].map((num) => (
-                    <span key={num} className="lb-number-val">{num}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <small className="lb-number-tags">
-              <span>Wear</span>
-              <span>Style</span>
-              <span>Intention</span>
-            </small>
-          </div>
-        </aside>
-
-        {/* Pinned Edge-to-Edge Bottom Progress Line (Matching reference video) */}
-        <div className="lb-progress-bar" aria-hidden="true">
-          <div ref={progressFillRef} className="lb-progress-fill" />
-        </div>
       </div>
     </section>
   );

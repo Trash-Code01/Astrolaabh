@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/cart", "destination": "/" },
+    { "source": "/checkout", "destination": "/" },
+    { "source": "/find-gem", "destination": "/" },
+    { "source": "/product/:path*", "destination": "/" }
+  ]
+}

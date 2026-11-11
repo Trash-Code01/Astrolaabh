@@ -27,6 +27,9 @@ export interface Product {
   colorways: Colorway[];
   specs: ProductSpec[];
   features: string[];
+  gemstoneId?: string;
+  metalId?: string;
+  jewelryForm?: string;
 }
 
 export interface CartItem {

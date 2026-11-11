@@ -4,6 +4,7 @@ import { useCreativeStore } from '../../../store/useCreativeStore';
 import { useCartStore } from '../../../store/useCartStore';
 import { useSoundEffects } from '../../../hooks/useSoundEffects';
 import { formatPrice } from '../../../lib/utils';
+import { navigateToCheckout } from '../../../lib/navigation';
 
 export function CartDrawer() {
   const isCartOpen = useCreativeStore((s) => s.isCartOpen);
@@ -159,7 +160,10 @@ export function CartDrawer() {
                 disabled={items.length === 0}
                 onClick={() => {
                   playClick();
-                  alert('Thank you for reserving the ASTRLABH KINETIC-01 concept edition.');
+                  if (items.length > 0) {
+                    setIsCartOpen(false);
+                    navigateToCheckout();
+                  }
                 }}
                 className={`w-full py-3.5 rounded-xl font-mono text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all ${
                   items.length === 0

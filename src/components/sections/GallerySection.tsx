@@ -1,17 +1,24 @@
-import m1 from '../../assets/m1.png';
-import m2 from '../../assets/m2.png';
-import m3 from '../../assets/m3.png';
-import m4 from '../../assets/m4.png';
-import j1 from '../../assets/j1.png';
-import j2 from '../../assets/j2.png';
-import j3 from '../../assets/j3.png';
-import j4 from '../../assets/j4.png';
+import { useEffect, useRef } from 'react';
+import m4Small from '../../assets/optimized/m4-small.webp';
+import m3Small from '../../assets/optimized/m3-clean-small.webp';
+import m2Small from '../../assets/optimized/m2-small.webp';
+import m1Small from '../../assets/optimized/m1-small.webp';
+import m1 from '../../assets/optimized/m1.webp';
+import m2 from '../../assets/optimized/m2.webp';
+import m3 from '../../assets/optimized/m3-clean.webp';
+import m4 from '../../assets/optimized/m4.webp';
+import j1 from '../../assets/optimized/j1.webp';
+import j2 from '../../assets/optimized/j2.webp';
+import j3 from '../../assets/optimized/j3.webp';
+import j4 from '../../assets/optimized/j4.webp';
+import { LiquidDistortionImage } from '../animations/LiquidDistortionImage';
+import { gsap, ScrollTrigger } from '../../lib/gsap';
 
 const featuredImages = [
-  { image: m1, alt: 'Emerald and diamond earrings', label: 'Earrings' },
-  { image: m2, alt: 'Ruby and gold necklace', label: 'Necklaces' },
-  { image: m3, alt: 'Blue sapphire and diamond ring', label: 'Rings' },
-  { image: m4, alt: 'Yellow sapphire and gold bracelet', label: 'Bracelets' },
+  { image: m1, small: m1Small, alt: 'Emerald and diamond earrings', label: 'Earrings' },
+  { image: m2, small: m2Small, alt: 'Ruby and gold necklace', label: 'Necklaces' },
+  { image: m3, small: m3Small, alt: 'Blue sapphire and diamond ring', label: 'Rings' },
+  { image: m4, small: m4Small, alt: 'Yellow sapphire and gold bracelet', label: 'Bracelets' },
 ];
 
 const jewelleryPieces = [
@@ -22,19 +29,120 @@ const jewelleryPieces = [
 ];
 
 export function GallerySection() {
+  const headerRef = useRef<HTMLElement>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const questionRef = useRef<HTMLParagraphElement>(null);
+  const descRef = useRef<HTMLParagraphElement>(null);
+  const mantraRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+
+    const mantraItems = mantraRef.current ? Array.from(mantraRef.current.children) : [];
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: header,
+          start: 'top 82%',
+          toggleActions: 'play none none reverse',
+        },
+      });
+
+      if (eyebrowRef.current) {
+        tl.fromTo(
+          eyebrowRef.current,
+          { opacity: 0, y: 16, letterSpacing: '0.42em' },
+          { opacity: 1, y: 0, letterSpacing: '0.32em', duration: 0.75, ease: 'power2.out' }
+        );
+      }
+
+      if (titleRef.current) {
+        tl.fromTo(
+          titleRef.current,
+          { opacity: 0, y: 32 },
+          { opacity: 1, y: 0, duration: 0.85, ease: 'power3.out' },
+          '-=0.45'
+        );
+      }
+
+      if (questionRef.current) {
+        tl.fromTo(
+          questionRef.current,
+          { opacity: 0, y: 22 },
+          { opacity: 1, y: 0, duration: 0.75, ease: 'power2.out' },
+          '-=0.45'
+        );
+      }
+
+      if (descRef.current) {
+        tl.fromTo(
+          descRef.current,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.75, ease: 'power2.out' },
+          '-=0.45'
+        );
+      }
+
+      if (mantraItems.length > 0) {
+        tl.fromTo(
+          mantraItems,
+          { opacity: 0, y: 16, scale: 0.94 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.55, stagger: 0.12, ease: 'back.out(1.5)' },
+          '-=0.4'
+        );
+      }
+    }, header);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section id="gallery" className="gemstone-gallery" aria-labelledby="gallery-heading">
-      <header className="gallery-heading">
-        <p>CAN YOU WEAR</p>
-        <h2 id="gallery-heading">Gemstones?</h2>
-        <span>Yes. Gemstones can be worn in many beautiful and meaningful ways.</span>
+      <header ref={headerRef} className="gallery-heading">
+        <p ref={eyebrowRef} className="gallery-heading-eyebrow">THE ART OF WEARING GEMSTONES</p>
+        <h2 id="gallery-heading" ref={titleRef} className="gallery-heading-title">
+          <span>Ancient Stones. </span>
+          <em>Modern Expressions.</em>
+        </h2>
+        <p ref={questionRef} className="gallery-heading-question">
+          Who says tradition can't be a statement of style?
+        </p>
+        <p ref={descRef} className="gallery-heading-desc">
+          From delicate everyday jewellery to bold, contemporary designs, discover how timeless gemstones can become part of your personal style.
+        </p>
+        <div ref={mantraRef} className="gallery-heading-mantra" aria-label="Wear philosophy">
+          <span className="gallery-mantra-item">
+            <span className="gallery-mantra-dot" aria-hidden="true" />
+            Wear the beauty.
+          </span>
+          <span className="gallery-mantra-item">
+            <span className="gallery-mantra-dot" aria-hidden="true" />
+            Carry the meaning.
+          </span>
+          <span className="gallery-mantra-item">
+            <span className="gallery-mantra-dot" aria-hidden="true" />
+            Make it yours.
+          </span>
+        </div>
       </header>
 
       <div className="gallery-featured-grid">
         {featuredImages.map((item) => (
-          <a className="gallery-featured-item" href="#gemstone-collection" aria-label={`Explore ${item.label}`} key={item.label}>
+          <a className="gallery-featured-item group" href="#ways-to-wear" aria-label={`Explore ${item.label}`} key={item.label}>
             <div className="gallery-featured-image">
-              <img src={item.image} alt={item.alt} loading="lazy" decoding="async" />
+              <LiquidDistortionImage
+                imageUrl={item.image}
+                srcSet={`${item.small} 640w, ${item.image} 1280w`}
+                sizes="(max-width: 767px) 100vw, 50vw"
+                alt={item.alt}
+                className="w-full h-full"
+              />
               <span className="gallery-featured-copy">
                 <span className="gallery-featured-label">{item.label}</span>
                 <span className="gallery-featured-action">Explore <span aria-hidden="true">→</span></span>

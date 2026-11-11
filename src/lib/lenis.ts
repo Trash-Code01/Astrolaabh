@@ -9,13 +9,20 @@ export function createLenis(): Lenis {
     orientation: 'vertical',
     gestureOrientation: 'vertical',
     smoothWheel: true,
-    syncTouch: true,
+    syncTouch: false,
     touchMultiplier: 1.15,
   });
 }
 
 export function setLenisInstance(instance: Lenis | null) {
   lenisInstance = instance;
+}
+
+/** Clear smooth-scroll momentum as well as the browser's scroll position. */
+export function resetPageScroll() {
+  lenisInstance?.resize();
+  lenisInstance?.scrollTo(0, { immediate: true, force: true });
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 }
 
 export function scrollToTarget(target: string | HTMLElement | number, offset = 0) {
@@ -27,10 +34,11 @@ export function scrollToTarget(target: string | HTMLElement | number, offset = 0
     return;
   }
 
+  const behavior = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
   if (typeof resolved === 'number') {
-    window.scrollTo({ top: resolved, behavior: 'smooth' });
+    window.scrollTo({ top: resolved, behavior });
     return;
   }
 
-  resolved.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  window.scrollTo({ top: resolved.getBoundingClientRect().top + window.scrollY + offset, behavior });
 }
