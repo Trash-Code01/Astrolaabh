@@ -2081,3 +2081,587 @@ body.lb-engaged .site-navbar {
 .route-diamond { left: 74%; top: 60%; transform: rotate(-10deg); }
   .satellite-route img { animation: none !important; }
 }
+
+
+/* ========================================================
+   Interactive Scroll-Based Astrologer Call Hero Banner
+   ======================================================== */
+.astrologer-call-banner {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto 70px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #FAF7F2 0%, #F5EFE4 100%);
+  border: 1.5px solid #E2D3BE;
+  box-shadow: 0 16px 50px rgba(100, 70, 30, 0.07);
+  overflow: hidden;
+  padding: 64px 54px;
+}
+.call-banner-celestial-bg {
+  position: absolute;
+  top: -120px;
+  right: -120px;
+  width: 500px;
+  height: 500px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.28;
+}
+.celestial-zodiac-ring {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px dashed #9C691E;
+  position: relative;
+}
+.celestial-zodiac-ring::before {
+  content: '';
+  position: absolute;
+  inset: 30px;
+  border-radius: 50%;
+  border: 1px solid #D4AF37;
+}
+.celestial-zodiac-ring::after {
+  content: '';
+  position: absolute;
+  inset: 70px;
+  border-radius: 50%;
+  border: 1.5px dotted #9C691E;
+}
+.celestial-glow-spot {
+  position: absolute;
+  inset: 20%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, transparent 70%);
+  filter: blur(40px);
+}
+.call-banner-content {
+  position: relative;
+  z-index: 2;
+}
+.call-banner-badge-strip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+.live-astrologer-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: #2C1F14;
+  color: #FAF7F2;
+  font-family: Georgia, serif;
+  font-size: 11px;
+  letter-spacing: .06em;
+  font-weight: 500;
+}
+.live-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #27AE60;
+  box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.3);
+  animation: pulseDot 2s infinite;
+}
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+}
+.confidential-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: #F0E8DC;
+  color: #6E5A44;
+  font-family: Georgia, serif;
+  font-size: 11px;
+  border: 1px solid #DFD5C2;
+}
+.call-banner-title {
+  margin: 0 0 16px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(38px, 4.8vw, 62px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -.025em;
+  color: #2C1F14;
+  max-width: 840px;
+}
+.call-banner-subtitle {
+  margin: 0 0 36px;
+  font-family: Georgia, serif;
+  font-size: 16px;
+  line-height: 1.65;
+  color: #6E5A44;
+  max-width: 720px;
+}
+.call-interactive-bar {
+  background: #FFFDF9;
+  border: 1px solid #E5DAC8;
+  border-radius: 20px;
+  padding: 32px 36px;
+  margin-bottom: 40px;
+  box-shadow: 0 6px 24px rgba(100, 70, 30, 0.04);
+}
+.call-type-group, .call-duration-group {
+  margin-bottom: 24px;
+}
+.call-group-label {
+  display: block;
+  font-family: Georgia, serif;
+  font-size: 11.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #9C691E;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.call-type-chips {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.call-type-chip {
+  padding: 11px 22px;
+  border-radius: 999px;
+  border: 1.5px solid #DFD5C2;
+  background: #FAF7F2;
+  color: #4A3C2F;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .25s ease;
+  display: inline-flex;
+  align-items: center;
+}
+.call-type-chip:hover {
+  background: #F0E8DB;
+  border-color: #C5A880;
+}
+.call-type-chip.is-selected {
+  background: #2C1F14;
+  color: #FAF7F2;
+  border-color: #2C1F14;
+  box-shadow: 0 4px 14px rgba(44, 31, 20, 0.18);
+}
+.call-duration-chips {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.call-dur-chip {
+  padding: 16px 20px;
+  border-radius: 14px;
+  border: 1.5px solid #DFD5C2;
+  background: #FAF7F2;
+  text-align: left;
+  cursor: pointer;
+  transition: all .25s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.call-dur-chip:hover {
+  background: #FFFDF9;
+  border-color: #C5A880;
+}
+.call-dur-chip.is-selected {
+  background: #FFFDF9;
+  border-color: #9C691E;
+  box-shadow: 0 6px 18px rgba(156, 105, 30, 0.12);
+}
+.dur-badge {
+  font-family: Georgia, serif;
+  font-size: 9.5px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #9C691E;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.call-dur-chip strong {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 19px;
+  color: #2C1F14;
+  margin-bottom: 2px;
+}
+.dur-title {
+  font-family: Georgia, serif;
+  font-size: 12px;
+  color: #7E6D59;
+}
+.call-banner-action-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 24px;
+  border-top: 1px solid #F0E6D8;
+  flex-wrap: wrap;
+}
+.call-schedule-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  border-radius: 999px;
+  background: #9C691E;
+  color: #FFFFFF;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  border: 0;
+  transition: all .25s ease;
+  box-shadow: 0 6px 20px rgba(156, 105, 30, 0.25);
+}
+.call-schedule-btn:hover {
+  background: #7D5114;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(156, 105, 30, 0.35);
+}
+.call-action-note {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-size: 13.5px;
+  color: #6E5A44;
+}
+.call-highlight-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.call-highlight-card {
+  padding: 24px;
+  border-radius: 16px;
+  background: rgba(255, 253, 249, 0.7);
+  border: 1px solid #EADBCC;
+}
+.call-highlight-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #F3ECE0;
+  display: grid;
+  place-items: center;
+  margin-bottom: 14px;
+}
+.call-highlight-card h4 {
+  margin: 0 0 6px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: #2C1F14;
+}
+.call-highlight-card p {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #6E5A44;
+}
+.appointment-call-summary {
+  background: #FFFDF9;
+  border: 1px solid #DFD5C2;
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin: 24px 0 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.summary-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  color: #6E5A44;
+}
+.summary-item strong {
+  color: #2C1F14;
+}
+.summary-price {
+  color: #27AE60 !important;
+}
+.appointment-benefit-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.appointment-benefit-list li {
+  font-family: Georgia, serif;
+  font-size: 13.5px;
+  color: #4A3C2F;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .astrologer-call-banner { padding: 40px 24px; }
+  .call-duration-chips { grid-template-columns: 1fr; }
+  .call-highlight-grid { grid-template-columns: 1fr; }
+  .call-banner-action-wrap { flex-direction: column; align-items: flex-start; }
+}
+
+/* ========================================================
+   Redesigned Luxury 2-Column FAQ Section with Framer Motion
+   ======================================================== */
+.faq-redesign-section {
+  position: relative;
+  width: 100%;
+  padding: 130px 5% 140px;
+  background: #FAF8F5;
+  color: #2C1F14;
+  overflow: hidden;
+}
+.faq-ambient-glow {
+  position: absolute;
+  top: 15%;
+  left: 20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.07) 0%, transparent 70%);
+  pointer-events: none;
+  filter: blur(80px);
+}
+.faq-layout-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 38% 62%;
+  gap: 60px;
+  position: relative;
+  z-index: 2;
+}
+.faq-sticky-box {
+  position: sticky;
+  top: 120px;
+}
+.faq-badge {
+  display: inline-block;
+  font-family: Georgia, serif;
+  font-size: 11px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: #9C691E;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.faq-sticky-box h2 {
+  margin: 0 0 16px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(38px, 4.2vw, 56px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -.025em;
+  color: #2C1F14;
+}
+.faq-editorial-desc {
+  margin: 0 0 32px;
+  font-family: Georgia, serif;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: #6E5A44;
+}
+.faq-category-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 36px;
+}
+.faq-cat-pill {
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1px solid #EADBCC;
+  background: #FFFDF9;
+  color: #5C4A38;
+  font-family: Georgia, serif;
+  font-size: 13.5px;
+  text-align: left;
+  cursor: pointer;
+  transition: all .25s ease;
+}
+.faq-cat-pill:hover {
+  background: #F8F3EA;
+  border-color: #C5A880;
+  color: #2C1F14;
+}
+.faq-cat-pill.is-active {
+  background: #2C1F14;
+  color: #FAF7F2;
+  border-color: #2C1F14;
+  box-shadow: 0 4px 16px rgba(44, 31, 20, 0.16);
+}
+.faq-concierge-card {
+  padding: 24px;
+  border-radius: 18px;
+  background: #F5EFE4;
+  border: 1px solid #DFD5C2;
+}
+.faq-concierge-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.faq-concierge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #27AE60;
+}
+.faq-concierge-header h4 {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2C1F14;
+}
+.faq-concierge-card p {
+  margin: 0 0 16px;
+  font-family: Georgia, serif;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #6E5A44;
+}
+.faq-concierge-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: #2C1F14;
+  color: #FAF7F2;
+  font-family: Georgia, serif;
+  font-size: 11.5px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  border: 0;
+  transition: background .2s ease;
+}
+.faq-concierge-btn:hover {
+  background: #9C691E;
+}
+.faq-accordion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.faq-card {
+  border-radius: 20px;
+  background: #FFFDF9;
+  border: 1px solid #EADBCC;
+  box-shadow: 0 4px 16px rgba(100, 70, 30, 0.03);
+  transition: border-color .3s ease, box-shadow .3s ease;
+  overflow: hidden;
+}
+.faq-card:hover {
+  border-color: #C5A880;
+  box-shadow: 0 8px 24px rgba(156, 105, 30, 0.08);
+}
+.faq-card.is-open {
+  border-color: #9C691E;
+  box-shadow: 0 8px 28px rgba(156, 105, 30, 0.1);
+}
+.faq-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 26px 30px;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+.faq-trigger-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+.faq-number {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  letter-spacing: .12em;
+  color: #9C691E;
+  font-weight: 600;
+  padding-top: 3px;
+}
+.faq-mini-tag {
+  display: inline-block;
+  font-family: Georgia, serif;
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #8C7760;
+  margin-bottom: 4px;
+}
+.faq-question-text {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: #2C1F14;
+}
+.faq-icon-indicator {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #FAF7F2;
+  border: 1px solid #DFD5C2;
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  transition: background .25s ease, border-color .25s ease;
+}
+.faq-card.is-open .faq-icon-indicator {
+  background: #F3ECE0;
+  border-color: #9C691E;
+}
+.faq-collapse-body {
+  overflow: hidden;
+}
+.faq-body-content {
+  padding: 0 30px 28px 72px;
+}
+.faq-body-content p {
+  margin: 0 0 16px;
+  font-family: Georgia, serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #5C4A38;
+}
+.faq-highlight-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  font-family: Georgia, serif;
+  font-size: 11.5px;
+  color: #9C691E;
+  font-weight: 500;
+}
+
+@media (max-width: 960px) {
+  .faq-layout-container { grid-template-columns: 1fr; gap: 40px; }
+  .faq-sticky-box { position: static; }
+  .faq-category-nav { flex-direction: row; flex-wrap: wrap; }
+  .faq-body-content { padding-left: 30px; }
+}
