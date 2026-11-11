@@ -89,8 +89,9 @@ export function Footer({ productPage = false }: { productPage?: boolean }) {
           </div>
         </div>
 
-        <div className="mt-[42px] border-t border-[#263C32]/10 pb-[18px] pt-[18px] text-center font-['Outfit',sans-serif] text-[10px] font-medium uppercase tracking-[0.28em] text-[#B88A3B]">
-          FROM EARTH • THROUGH WISDOM • TO INTENTION
+        <div className="mt-[42px] flex flex-col items-center justify-between gap-3 border-t border-[#263C32]/10 pb-[18px] pt-[18px] font-['Outfit',sans-serif] text-[9px] font-medium uppercase tracking-[0.2em] text-[#B88A3B] sm:flex-row">
+          <span>FROM EARTH • THROUGH WISDOM • TO INTENTION</span>
+          <span className="text-[#263C32]/65">Crafted with care by <span className="font-semibold tracking-[0.24em] text-[#8F6E2A]">DEVACIA</span></span>
         </div>
       </div>
 

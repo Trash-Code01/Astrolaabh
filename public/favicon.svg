@@ -1,5 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="16" fill="#263c32"/>
-  <path d="M32 8 37.2 24.1 53 18 43.6 32 56 43 39.3 41.2 32 57 24.7 41.2 8 43 20.4 32 11 18l15.8 6.1L32 8Z" fill="#d4af72"/>
-  <circle cx="32" cy="32" r="5.5" fill="#f7f1e6"/>
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7dfa0"/>
+      <stop offset=".52" stop-color="#c99a43"/>
+      <stop offset="1" stop-color="#8d6425"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="18" fill="#263c32"/>
+  <circle cx="32" cy="32" r="25" fill="none" stroke="url(#gold)" stroke-width="1.2" opacity=".8"/>
+  <path d="M32 9.5 36 25l14.5-8.5L42 31l13 7-16-.5L32 53l-7-15.5L9 38l13-7-8.5-14.5L28 25l4-15.5Z" fill="url(#gold)"/>
+  <path d="m32 24 8 8-8 8-8-8 8-8Z" fill="#263c32" stroke="#f7f1e6" stroke-width="1.3"/>
+  <path d="m32 25 4.8 7-4.8 7-4.8-7 4.8-7Z" fill="url(#gold)"/>
 </svg>

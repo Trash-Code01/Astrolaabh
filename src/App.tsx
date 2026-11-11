@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useState } from 'react';
 import { resetPageScroll } from './lib/lenis';
 import { useLenis } from './hooks/useLenis';
+import { Preloader } from './components/dom/ui/Preloader';
 const HomePage = lazy(() => import('./HomePage'));
 const ProductPage = lazy(() => import('./components/sections/ProductPage').then(module => ({ default: module.ProductPage })));
 const CheckoutPage = lazy(() => import('./components/sections/CheckoutPage').then(module => ({ default: module.CheckoutPage })));
@@ -65,5 +66,12 @@ export function App() {
 }
 
 export default function AppWithSuspense() {
-  return <Suspense fallback={<div className="route-loading" role="status">Opening your stone journey…</div>}><App /></Suspense>;
+  return (
+    <>
+      <Preloader />
+      <Suspense fallback={<div className="route-loading" role="status">Opening your stone journey…</div>}>
+        <App />
+      </Suspense>
+    </>
+  );
 }
