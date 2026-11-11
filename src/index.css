@@ -696,13 +696,13 @@ body.lb-engaged .site-navbar {
 .showcase-purchase button span { margin-left: 8px; font-size: 19px; }
 .showcase-stage { position: relative; width: min(100%, 760px); height: min(690px, 72vw); min-height: 530px; justify-self: center; perspective: 1100px; }
 .showcase-stage::after { position: absolute; right: 6%; bottom: 3%; left: 6%; z-index: 0; height: 30px; border-radius: 50%; background: rgba(108, 78, 40, .1); content: ''; filter: blur(14px); }
-.showcase-doorway { position: absolute; right: 5%; bottom: 2%; z-index: 1; width: 88%; height: 88%; object-fit: contain; object-position: center bottom; }
+.showcase-doorway { position: absolute; right: 6%; left: 6%; margin-inline: auto; bottom: 2%; z-index: 1; width: 88%; height: 88%; object-fit: contain; object-position: center bottom; }
 .showcase-gem-slot { position: absolute; right: 24%; bottom: 24%; z-index: 3; display: grid; width: 51%; height: 47%; place-items: center; perspective: 900px; }
 .showcase-gem-arrive { display: grid; width: 100%; height: 100%; place-items: center; animation: showcase-gem-enter .75s cubic-bezier(.2,.7,.25,1) both; }
 .showcase-main-gem { display: block; width: min(100%, 350px); max-height: 100%; object-fit: contain; animation: showcase-gem-float 4s ease-in-out infinite; }
 .gemstone-showcase:not(.is-visible) .showcase-main-gem { animation-play-state: paused; }
 .showcase-stone { position: absolute; right: 6%; bottom: 3%; z-index: 4; width: 88%; max-height: 30%; object-fit: contain; object-position: center bottom; }
-.showcase-orbit { position: absolute; top: 3%; left: 6%; z-index: 5; width: 88%; aspect-ratio: 2 / 1; }
+.showcase-orbit { position: absolute; top: 2%; left: 6%; z-index: 5; width: 88%; aspect-ratio: 2 / 1; }
 .showcase-orbit-line { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .showcase-orbit-line path { fill: none; stroke: rgba(164, 112, 42, .78); stroke-width: .8; vector-effect: non-scaling-stroke; }
 .showcase-orbit-item { position: absolute; display: block; width: 48px; height: 48px; padding: 0; transform: translate(-50%, -50%); border: 0; background: transparent; color: #33281e; cursor: pointer; }
@@ -711,6 +711,8 @@ body.lb-engaged .site-navbar {
 .showcase-orbit-item:focus-visible { outline: 2px solid #8e622a; outline-offset: 5px; border-radius: 4px; }
 .showcase-orbit-item span { position: absolute; top: calc(100% + 5px); left: 50%; max-width: 112px; overflow: hidden; transform: translateX(-50%); color: #33281e; font: italic 12px/1.15 Georgia, serif; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
 .showcase-orbit-item:focus-visible span { text-decoration: underline; text-decoration-color: #b99561; text-underline-offset: 3px; }
+.showcase-orbit-blue-sapphire span { left: 80%; transform: translateX(-15%); }
+.showcase-orbit-pearl span { left: 20%; transform: translateX(-85%); }
 .showcase-pagination { position: absolute; right: 1%; bottom: 6%; z-index: 6; display: flex; align-items: center; gap: 13px; padding: 4px 9px; border: 1px solid rgba(204, 172, 124, .58); border-radius: 999px; background: rgba(255, 250, 241, .7); color: #88652f; }
 .showcase-pagination button { width: 30px; height: 30px; border: 0; background: transparent; color: #51402c; cursor: pointer; font: 27px/1 Georgia, serif; }
 .showcase-pagination span { display: flex; align-items: center; gap: 7px; font: 10px/1 Georgia, serif; letter-spacing: .1em; }

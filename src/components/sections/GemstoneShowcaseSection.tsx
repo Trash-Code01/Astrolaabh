@@ -6,7 +6,6 @@ import { scrollToTarget } from '../../lib/lenis';
 
 const orbitPositions = ['ruby', 'blue-sapphire', 'emerald', 'yellow-sapphire', 'pearl', 'diamond'];
 
-// Thin arc line color per gem
 const gemLineColor: Record<string, string> = {
   'ruby':           '#D81B43',
   'blue-sapphire':  '#1E56A0',
@@ -16,13 +15,27 @@ const gemLineColor: Record<string, string> = {
   'diamond':        '#60A5FA',
 };
 
+// Pre-compute all 6 gem positions on the semicircle arc (center 50,40 radius 40)
+const GEM_POINTS = gemstones.map((_, i) => {
+  const angle = Math.PI + (Math.PI * i) / (gemstones.length - 1);
+  return {
+    x: +(50 + 40 * Math.cos(angle)).toFixed(2),
+    y: +(40 + 40 * Math.sin(angle)).toFixed(2),
+  };
+});
+
+// 5 arc segment path strings between consecutive gems
+const ARC_SEGMENTS = GEM_POINTS.slice(0, -1).map((start, i) => {
+  const end = GEM_POINTS[i + 1];
+  return `M ${start.x} ${start.y} A 40 40 0 0 1 ${end.x} ${end.y}`;
+});
+
 export function GemstoneShowcaseSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [timerReset, setTimerReset] = useState(0);
   const [isInView, setIsInView] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const activeGemstone = gemstones[activeIndex];
-  const activeLineColor = gemLineColor[activeGemstone.id] ?? 'rgba(164,112,42,0.78)';
 
   const orbitSlots = useMemo(() => gemstones.map((gemstone, index) => {
     const angle = Math.PI + (Math.PI * index) / (gemstones.length - 1);
@@ -33,11 +46,6 @@ export function GemstoneShowcaseSection() {
       y: 40 + 40 * Math.sin(angle),
     };
   }), []);
-
-  const inactiveOrbit = useMemo(
-    () => orbitSlots.filter(({ index }) => index !== activeIndex),
-    [activeIndex, orbitSlots],
-  );
 
   const selectGemstone = useCallback((index: number) => {
     setActiveIndex(index);
@@ -128,28 +136,50 @@ export function GemstoneShowcaseSection() {
       <div className="showcase-stage" aria-label={`${activeGemstone.name} gemstone display`}>
         <div className="showcase-orbit" role="group" aria-label="Choose a gemstone">
           <svg className="showcase-orbit-line" viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true">
-            <path
-              d="M 10 40 A 40 40 0 0 1 90 40"
-              style={{
-                stroke: activeLineColor,
-                transition: 'stroke 0.7s ease',
-              }}
-            />
+            {/* Full neutral base arc underneath */}
+            <path d="M 10 40 A 40 40 0 0 1 90 40" />
+
+            {/* 5 colored segments — only the current active→next segment is lit */}
+            {ARC_SEGMENTS.map((d, segIndex) => {
+              const activeSeg = Math.min(activeIndex, ARC_SEGMENTS.length - 1);
+              const isActive = segIndex === activeSeg;
+              const segColor = gemLineColor[gemstones[activeIndex].id];
+              return (
+                <path
+                  key={segIndex}
+                  d={d}
+                  style={{
+                    fill: 'none',
+                    stroke: isActive ? segColor : 'transparent',
+                    strokeWidth: isActive ? 1.2 : 0,
+                    strokeLinecap: 'round',
+                    filter: isActive ? `drop-shadow(0 0 3px ${segColor})` : 'none',
+                    transition: 'stroke 0.5s ease, filter 0.5s ease',
+                    vectorEffect: 'non-scaling-stroke',
+                  }}
+                />
+              );
+            })}
           </svg>
-          {inactiveOrbit.map(({ gemstone, index, x, y }) => (
-            <button
-              className={`showcase-orbit-item showcase-orbit-${orbitPositions[index]}`}
-              type="button"
-              key={gemstone.id}
-              aria-label={`Select ${gemstone.name}`}
-              aria-pressed={false}
-              style={{ left: `${x}%`, top: `${(y / 50) * 100}%` }}
-              onClick={() => selectGemstone(index)}
-            >
-              <img src={gemstone.orbitImage} alt="" />
-              <span>{gemstone.name}</span>
-            </button>
-          ))}
+
+          {/* ALL 6 gems shown on the arc at all times */}
+          {orbitSlots.map(({ gemstone, index, x, y }) => {
+            const isActive = index === activeIndex;
+            return (
+              <button
+                className={`showcase-orbit-item showcase-orbit-${orbitPositions[index]}${isActive ? ' is-active' : ''}`}
+                type="button"
+                key={gemstone.id}
+                aria-label={`Select ${gemstone.name}`}
+                aria-pressed={isActive}
+                style={{ left: `${x}%`, top: `${(y / 50) * 100}%` }}
+                onClick={() => selectGemstone(index)}
+              >
+                <img src={gemstone.orbitImage} alt="" />
+                <span>{gemstone.name}</span>
+              </button>
+            );
+          })}
         </div>
 
         <img className="showcase-doorway" src={doorway} alt="" />
