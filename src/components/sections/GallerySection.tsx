@@ -1,73 +1,68 @@
-import model1 from '../../assets/model1.png';
-import model2 from '../../assets/model2.png';
-import model3 from '../../assets/model3.png';
-import model4 from '../../assets/model4.png';
-import ruby from '../../assets/ruby.png';
-import sapphire from '../../assets/sapphire.png';
-import diamond from '../../assets/diamond.png';
-import gold from '../../assets/gold.png';
+import m1 from '../../assets/m1.png';
+import m2 from '../../assets/m2.png';
+import m3 from '../../assets/m3.png';
+import m4 from '../../assets/m4.png';
+import j1 from '../../assets/j1.png';
+import j2 from '../../assets/j2.png';
+import j3 from '../../assets/j3.png';
+import j4 from '../../assets/j4.png';
+
+const featuredImages = [
+  { image: m1, alt: 'Emerald and diamond earrings', label: 'Earrings' },
+  { image: m2, alt: 'Ruby and gold necklace', label: 'Necklaces' },
+  { image: m3, alt: 'Blue sapphire and diamond ring', label: 'Rings' },
+  { image: m4, alt: 'Yellow sapphire and gold bracelet', label: 'Bracelets' },
+];
+
+const jewelleryPieces = [
+  { image: j1, alt: 'Pearl and gold earrings', name: 'Earrings', detail: 'Pearl · Gold' },
+  { image: j2, alt: 'Ruby and gold ring', name: 'Ring', detail: 'Ruby · Gold' },
+  { image: j3, alt: 'Blue sapphire necklace', name: 'Necklace', detail: 'Blue Sapphire · Gold' },
+  { image: j4, alt: 'Emerald and gold bracelet', name: 'Bracelet', detail: 'Emerald · Gold' },
+];
 
 export function GallerySection() {
   return (
-    <section id="gallery" className="gemstone-gallery" aria-label="Gemstone editorial gallery">
-      <div className="gemstone-lookbook" aria-label="The gemstone collection">
-        <header className="lookbook-heading">
-          <p>THE GEMSTONE COLLECTION</p>
-          <h2>Precious by Nature</h2>
-        </header>
-        <div className="lookbook-composition">
-          <figure className="lookbook-image lookbook-image-main">
-            <img src={model3} alt="Editorial gemstone portrait" />
-            <figcaption>DISCOVER YOUR STONE<i aria-hidden="true" /></figcaption>
-          </figure>
-          <figure className="lookbook-image lookbook-image-top">
-            <img src={model1} alt="Model wearing a gemstone ring" />
-            <figcaption>CRAFTED WITH MEANING<i aria-hidden="true" /></figcaption>
-          </figure>
-          <div className="lookbook-story">
-            <span>01</span>
-            <p>Chosen for beauty, energy and lasting meaning.</p>
-          </div>
-          <figure className="lookbook-image lookbook-image-bottom">
-            <img src={model4} alt="Fine gemstone editorial portrait" />
-          </figure>
-        </div>
-      </div>
-      <div className="gallery-panels">
-        <figure className="gallery-panel gallery-panel-left">
-          <img src={model1} alt="Model wearing an emerald gemstone" />
-          <figcaption>
-            <span>DISCOVER</span>
-            <span>YOUR STONE</span>
-            <i aria-hidden="true" />
-          </figcaption>
-        </figure>
-        <figure className="gallery-panel gallery-panel-right">
-          <img src={model2} alt="Emerald gemstone in nature" />
-          <figcaption>
-            <span>FIND YOUR</span>
-            <span>ALIGNMENT</span>
-            <i aria-hidden="true" />
-          </figcaption>
-        </figure>
+    <section id="gallery" className="gemstone-gallery" aria-labelledby="gallery-heading">
+      <header className="gallery-heading">
+        <p>CAN YOU WEAR</p>
+        <h2 id="gallery-heading">Gemstones?</h2>
+        <span>Yes. Gemstones can be worn in many beautiful and meaningful ways.</span>
+      </header>
+
+      <div className="gallery-featured-grid">
+        {featuredImages.map((item) => (
+          <a className="gallery-featured-item" href="#gemstone-collection" aria-label={`Explore ${item.label}`} key={item.label}>
+            <div className="gallery-featured-image">
+              <img src={item.image} alt={item.alt} loading="lazy" decoding="async" />
+              <span className="gallery-featured-copy">
+                <span className="gallery-featured-label">{item.label}</span>
+                <span className="gallery-featured-action">Explore <span aria-hidden="true">→</span></span>
+              </span>
+            </div>
+          </a>
+        ))}
       </div>
 
-      <div className="gemstone-story">
-        <div className="gemstone-story-heading">
-          <i aria-hidden="true" />
-          <div>
-            <h2>EXPLORE THE WORLD OF GEMSTONES</h2>
-            <p>Stories, stones and traditions behind every recommendation.</p>
-          </div>
-          <i aria-hidden="true" />
+      <section className="gallery-featured-styles" aria-labelledby="gallery-featured-heading">
+        <header className="gallery-featured-heading">
+          <h3 id="gallery-featured-heading">Featured Styles</h3>
+          <a href="#gemstone-collection">View All <span aria-hidden="true">→</span></a>
+        </header>
+        <div className="gallery-jewellery-grid" aria-label="Featured jewellery">
+          {jewelleryPieces.map((piece) => (
+            <article className="gallery-jewellery-item" key={piece.name}>
+              <div className="gallery-jewellery-image">
+                <img src={piece.image} alt={piece.alt} loading="lazy" decoding="async" />
+              </div>
+              <h4>{piece.name}</h4>
+              <p>{piece.detail}</p>
+            </article>
+          ))}
         </div>
-        <div className="gemstone-strip" aria-label="Featured gemstones">
-          <div><img src={ruby} alt="Ruby gemstone" /></div>
-          <div><img src={sapphire} alt="Sapphire gemstone" /></div>
-          <div><img src={diamond} alt="Diamond gemstone" /></div>
-          <div><img src={gold} alt="Gold gemstone" /></div>
-        </div>
-      </div>
+      </section>
     </section>
   );
 }
+
+export default GallerySection;

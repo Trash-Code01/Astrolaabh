@@ -19,7 +19,9 @@ export function WaterMovingCanvas() {
     const ctx = canvas.getContext('2d', { alpha: false });
     if (!ctx) return;
 
-    let animId: number;
+    let animId: number | null = null;
+    let isVisible = false;
+    let lastFrame = 0;
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
@@ -56,6 +58,13 @@ export function WaterMovingCanvas() {
     canvas.addEventListener('touchstart', handlePointerDown, { passive: true });
 
     const render = (now: number) => {
+      animId = null;
+      if (!isVisible || document.hidden) return;
+      if (now - lastFrame < 40) {
+        scheduleRender();
+        return;
+      }
+      lastFrame = now;
       const t = now * 0.001;
 
       const centerX = width / 2;
@@ -67,7 +76,7 @@ export function WaterMovingCanvas() {
       ctx.fillRect(0, 0, width, height);
 
       // 2. Pure Golden Circular Water Waves (Concentric Hairline Rings Expanding from Center)
-      const ringCount = 8;
+      const ringCount = 6;
       const ringSpacing = 76;
       const speed = 36;
       const baseDistance = (t * speed) % ringSpacing;
@@ -148,13 +157,37 @@ export function WaterMovingCanvas() {
       }
       clickWavesRef.current = activeClickWaves;
 
-      animId = requestAnimationFrame(render);
+      scheduleRender();
     };
 
-    animId = requestAnimationFrame(render);
+    const scheduleRender = () => {
+      if (animId === null && isVisible && !document.hidden) {
+        animId = requestAnimationFrame(render);
+      }
+    };
+
+    const pauseRender = () => {
+      if (animId !== null) cancelAnimationFrame(animId);
+      animId = null;
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) pauseRender();
+      else scheduleRender();
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) scheduleRender();
+      else pauseRender();
+    });
+    observer.observe(canvas);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
-      cancelAnimationFrame(animId);
+      pauseRender();
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('resize', handleResize);
       canvas.removeEventListener('mousedown', handlePointerDown);
       canvas.removeEventListener('touchstart', handlePointerDown);

@@ -44,17 +44,39 @@ body {
   text-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
 }
 
-/* Astrolaabh editorial second section */
-.editorial-section { grid-template-columns: 44% 56%; min-height: 680px; background: #d8c3a9; }
-.editorial-copy { position: relative; min-height: 680px; padding: 64px 10% 70px 12%; color: #172018; background: #d8c3a9; }
-.editorial-eyebrow { margin: 0; text-align: right; font-family: Georgia, serif; font-size: 10px; line-height: 1.7; letter-spacing: .18em; }
-.editorial-copy h2 { position: relative; z-index: 4; margin: 92px -16% 0 0; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(58px, 5.8vw, 88px); font-weight: 400; line-height: .88; letter-spacing: -.035em; }
-.editorial-description { margin: 70px 0 0 35%; font-family: Georgia, serif; font-size: 16px; font-style: italic; line-height: 1.55; }
-.editorial-rule { display: block; width: 58%; height: 1px; margin-top: 28px; margin-left: 35%; background: #b58a3a; }
-.editorial-image { position: relative; min-height: 680px; overflow: hidden; }
-.editorial-image img { width: 100%; height: 100%; position: absolute; inset: 0; object-fit: cover; object-position: center; }
-@media (max-width: 1023px) { .editorial-section { grid-template-columns: 46% 54%; min-height: 600px; } .editorial-copy, .editorial-image { min-height: 600px; } .editorial-copy h2 { font-size: clamp(48px, 7vw, 68px); } .editorial-description { margin-left: 22%; } }
-@media (max-width: 767px) { .editorial-section { grid-template-columns: 1fr; } .editorial-copy { min-height: 480px; padding: 42px 24px 48px; } .editorial-eyebrow { text-align: center; } .editorial-copy h2 { margin: 62px 0 0; text-align: center; font-size: clamp(48px, 15vw, 64px); } .editorial-description { margin: 46px 0 0; text-align: center; } .editorial-rule { width: 50%; margin-left: 25%; } .editorial-image { min-height: 420px; height: 420px; } }
+/* Astrolaabh gemstone story */
+.story-section {
+  min-height: 760px;
+  box-sizing: border-box;
+  padding: 42px 5% 64px;
+  color: #3a2616;
+  background: #f5f0e6;
+}
+.story-header { position: relative; z-index: 2; text-align: center; }
+.story-brand { height: 95px; margin-bottom: 12px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; width:100%; }
+.story-brand img { display:block; width:250px; max-height:64px; margin:0 auto; object-fit:contain; filter:sepia(.25) contrast(.95); }
+.story-lotus { display:block; width:118px; height:40px; margin:0 auto -2px; fill:none; stroke:#a87938; stroke-width:1.25; }
+.story-eyebrow { margin:0 0 9px; color:#765d3b; font-family:Georgia,serif; font-size:10px; letter-spacing:.34em; }
+.story-header h2 { margin:0; font-family:Georgia,'Times New Roman',serif; font-size:clamp(38px,4vw,58px); font-weight:400; line-height:1.05; letter-spacing:-.025em; }
+.story-header h2 em { font-weight:400; }
+.story-subtitle { margin:9px 0 0; font-family:Georgia,serif; font-size:17px; }
+.story-divider { width:min(320px,70vw); margin:18px auto 16px; display:flex; align-items:center; justify-content:center; gap:12px; }
+.story-divider span { width:80px; height:1px; background:rgba(137,105,61,.45); }
+.story-divider i { width:9px; height:9px; background:#a87938; transform:rotate(45deg); }
+.story-gallery { position:relative; z-index:2; width:min(1280px,100%); margin:0 auto; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; }
+.story-item { min-width:0; width:100%; display:flex; flex-direction:column; align-items:center; text-align:center; }
+.story-niche { position:relative; display:grid; place-items:center; width:100%; height:clamp(280px,28vw,350px); }
+.story-door-visual { position:relative; width:auto; height:100%; }
+.story-door-visual-1,.story-door-visual-3 { aspect-ratio:1264/1244; }
+.story-door-visual-2,.story-door-visual-4 { aspect-ratio:1274/1234; }
+.story-door { display:block; width:100%; height:100%; object-fit:contain; }
+.story-door-interior { position:absolute; inset:35% 20% 9%; display:flex; align-items:center; justify-content:center; }
+.story-door-interior img { display:block; width:100%; max-height:72%; object-fit:contain; }
+.story-stage-number { display:none; }
+.story-item h3 { margin:1px 0 3px; color:#75442c; font-family:Georgia,'Times New Roman',serif; font-size:clamp(23px,2vw,30px); font-weight:700; line-height:1; }
+.story-item p { width:min(220px,90%); margin:0 auto; font-family:Georgia,serif; font-size:clamp(13px,1.15vw,16px); line-height:1.32; }
+@media (max-width:1100px) { .story-section { padding-inline:8%; } .story-gallery { width:min(840px,100%); grid-template-columns:repeat(2,minmax(0,1fr)); justify-content:center; gap:48px 40px; } .story-niche { height:clamp(300px,38vw,370px); } }
+@media (max-width:767px) { .story-section { padding:36px 10% 54px; } .story-brand { height:82px; } .story-brand img { width:210px; } .story-header h2 { font-size:38px; } .story-subtitle { font-size:15px; } .story-gallery { grid-template-columns:minmax(0,310px); gap:38px; } .story-niche { height:clamp(300px,88vw,370px); } .story-item h3 { font-size:30px; } .story-item p { font-size:16px; } }
 
 /* Ways to wear your gemstone — vertical-scroll-driven editorial sequence */
 .wear-scroll-section { min-height: 100vh; position: relative; background: #304d43; }
@@ -116,7 +138,11 @@ body {
 .testimonials-heading span { display: block; margin-top: 18px; font-family: Georgia, serif; font-size: 15px; line-height: 1.5; }
 .testimonial-rows { display: flex; flex-direction: column; gap: 24px; }
 .testimonial-marquee { width: 100%; overflow: hidden; }
-.testimonial-marquee-track { display: flex; width: max-content; will-change: transform; backface-visibility: hidden; transform: translate3d(0, 0, 0); }
+.testimonial-marquee-track { display: flex; gap: 24px; width: max-content; will-change: transform; backface-visibility: hidden; }
+.testimonial-marquee-left { animation: testimonial-left 38s linear infinite; animation-play-state: paused; }
+.testimonial-marquee-right { animation: testimonial-right 38s linear infinite; animation-play-state: paused; }
+.testimonials-section.is-visible .testimonial-marquee-left,
+.testimonials-section.is-visible .testimonial-marquee-right { animation-play-state: running; }
 .testimonial-marquee-set { flex: 0 0 auto; display: flex; gap: 24px; padding-right: 24px; }
 .testimonial-card { width: 340px; height: 190px; flex: 0 0 340px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; padding: 26px 28px 22px; border-radius: 20px; }
 .testimonial-rows { gap: 26px; }
@@ -149,9 +175,8 @@ body {
 .hero-marquee-item i { width: 5px; height: 5px; margin-left: 34px; border: 1px solid #b89c66; transform: rotate(45deg); }
 @keyframes hero-marquee { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
 
-/* Smooth testimonial marquee */
-.testimonial-marquee-track .rfm-marquee-content { gap: 28px; padding-right: 28px; }
-/* Testimonial marquee handled by React Fast Marquee */
+@keyframes testimonial-left { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(calc(-50% - 12px), 0, 0); } }
+@keyframes testimonial-right { from { transform: translate3d(calc(-50% - 12px), 0, 0); } to { transform: translate3d(0, 0, 0); } }
 @media (max-width: 767px) { .hero-marquee-item { height: 46px; padding-left: 24px; font-size: 9px; } .hero-marquee-item i { margin-left: 24px; } }
 
 /* Appointment consultation */
@@ -246,80 +271,252 @@ body {
   .astro-footer-bottom > div { justify-content: center; }
 }
 
-/* Astrolaabh editorial gallery continuation */
-.gemstone-gallery { position: relative; }
-.gemstone-lookbook { padding: 72px 7% 86px; background: #f4efe5; }
-.lookbook-heading { display: grid; grid-template-columns: 32% 68%; align-items: end; margin-bottom: 38px; }
-.lookbook-heading p { margin: 0 0 10px; color: #8f764d; font-family: Georgia, serif; font-size: 11px; letter-spacing: .22em; }
-.lookbook-heading h2 { margin: 0; color: #173d32; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(52px, 6vw, 92px); font-weight: 400; line-height: .9; }
-.lookbook-composition { position: relative; display: grid; grid-template-columns: 52% 1fr 28%; grid-template-rows: 250px 190px; gap: 18px; }
-.lookbook-image { position: relative; margin: 0; overflow: hidden; background: #d9cfbd; }
-.lookbook-image img { width: 100%; height: 100%; display: block; object-fit: cover; }
-.lookbook-image-main { grid-row: 1 / 3; }
-.lookbook-image-main img { object-position: center 25%; }
-.lookbook-image-top { grid-column: 2 / 4; }
-.lookbook-image-top img { object-position: center 30%; }
-.lookbook-image-bottom { grid-column: 2 / 4; }
-.lookbook-image figcaption { position: absolute; left: 28px; bottom: 24px; z-index: 2; color: #fffaf1; font-family: Georgia, serif; font-size: clamp(19px, 1.8vw, 28px); letter-spacing: .07em; text-shadow: 0 2px 16px rgba(0,0,0,.35); }
-.lookbook-image figcaption i { display: block; width: 54px; height: 1px; margin-top: 14px; background: rgba(255,250,241,.8); }
-.lookbook-story { position: absolute; left: 54%; bottom: 0; z-index: 3; width: 19%; min-height: 150px; padding: 26px 22px; background: #f4efe5; color: #173d32; }
-.lookbook-story span { color: #9e824e; font-family: Georgia, serif; font-size: 12px; letter-spacing: .2em; }
-.lookbook-story p { margin: 26px 0 0; font-family: Georgia, serif; font-size: 16px; font-style: italic; line-height: 1.55; }
+/* Astrolaabh editorial jewellery gallery */
+.gemstone-gallery { width: 100%; overflow: hidden; background: #f7f3ea; color: #283a2f; }
+.gallery-heading { width: min(760px, calc(100% - 40px)); margin: 0 auto; padding: 58px 0 36px; text-align: center; }
+.gallery-heading > p { margin: 0 0 8px; color: #89734e; font: 600 10px/1.4 Georgia, serif; letter-spacing: .3em; }
+.gallery-heading h2 { margin: 0; color: #29372d; font: 400 clamp(38px, 4.5vw, 58px)/1.04 Georgia, 'Times New Roman', serif; letter-spacing: -.025em; }
+.gallery-heading > span { display: block; margin-top: 10px; color: #625e53; font: 14px/1.5 Georgia, serif; }
+.gallery-featured-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
+.gallery-featured-item { display: block; min-width: 0; color: inherit; text-decoration: none; }
+.gallery-featured-image { position: relative; aspect-ratio: 3 / 2; overflow: hidden; background: #d8cfc0; }
+.gallery-featured-image::after { position: absolute; inset: 45% 0 0; background: linear-gradient(180deg, transparent, rgba(20, 24, 19, .45)); content: ''; pointer-events: none; }
+.gallery-featured-image > img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .45s ease, filter .45s ease; }
+.gallery-featured-item:hover .gallery-featured-image > img { transform: scale(1.02); filter: brightness(1.04); }
+.gallery-featured-copy { position: absolute; z-index: 1; right: 24px; bottom: 17%; left: 24px; display: flex; flex-direction: column; align-items: center; color: #fffaf1; text-align: center; text-shadow: 0 1px 8px rgba(0, 0, 0, .22); }
+.gallery-featured-label { font: 400 clamp(30px, 4vw, 52px)/1.05 Georgia, 'Times New Roman', serif; }
+.gallery-featured-action { margin-top: 9px; font: 500 9px/1.2 Georgia, serif; letter-spacing: .16em; text-transform: uppercase; }
+.gallery-featured-action > span { display: inline-block; margin-left: 4px; font-size: 13px; transition: transform .2s ease; }
+.gallery-featured-item:hover .gallery-featured-action > span { transform: translateX(3px); }
+.gallery-featured-styles { width: min(1160px, calc(100% - 48px)); margin: 0 auto; padding: 48px 0 58px; }
+.gallery-featured-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; margin-bottom: 20px; }
+.gallery-featured-heading h3 { margin: 0; color: #29372d; font: 400 clamp(26px, 3vw, 36px)/1.15 Georgia, 'Times New Roman', serif; }
+.gallery-featured-heading > a { color: #756548; font: 600 10px/1.2 Georgia, serif; letter-spacing: .1em; text-decoration: underline; text-decoration-color: rgba(154, 120, 63, .55); text-underline-offset: 4px; text-transform: uppercase; white-space: nowrap; }
+.gallery-featured-heading > a span { margin-left: 3px; }
+.gallery-jewellery-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.gallery-jewellery-item { min-width: 0; text-align: center; }
+.gallery-jewellery-image { display: grid; aspect-ratio: 1 / .86; place-items: center; overflow: hidden; background: #fffefa; }
+.gallery-jewellery-image img { display: block; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; transition: transform .35s ease; }
+.gallery-jewellery-item:hover .gallery-jewellery-image img { transform: scale(1.02); }
+.gallery-jewellery-item h4 { margin: 12px 0 4px; color: #30362c; font: 500 15px/1.25 Georgia, 'Times New Roman', serif; }
+.gallery-jewellery-item p { margin: 0; color: #746b5c; font: 11px/1.35 Georgia, serif; }
 @media (max-width: 1023px) {
-  .gemstone-lookbook { padding: 58px 5% 68px; }
-  .lookbook-composition { grid-template-columns: 58% 42%; grid-template-rows: 230px 170px 170px; }
-  .lookbook-image-top { grid-column: 2; }
-  .lookbook-image-bottom { grid-column: 2; }
-  .lookbook-story { left: 58%; width: 42%; min-height: 140px; }
+  .gallery-heading { padding-top: 52px; }
+  .gallery-featured-styles { width: min(100% - 48px, 760px); padding: 40px 0 50px; }
+  .gallery-jewellery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 16px; }
 }
 @media (max-width: 767px) {
-  main > section.gemstone-gallery { padding: 0 !important; }
-  .gemstone-lookbook { padding: 48px 16px 54px; }
-  .lookbook-heading { display: block; text-align: center; margin-bottom: 30px; }
-  .lookbook-heading p { margin-bottom: 16px; }
-  .lookbook-heading h2 { font-size: 48px; line-height: 1; }
-  .lookbook-composition { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 420px 220px 180px; gap: 10px; }
-  .lookbook-image-main { grid-column: 1 / 3; grid-row: 1; }
-  .lookbook-image-top { grid-column: 1; grid-row: 2 / 4; }
-  .lookbook-image-bottom { grid-column: 2; grid-row: 3; }
-  .lookbook-story { left: auto; right: 0; bottom: 220px; width: 50%; min-height: 150px; }
-  .lookbook-image figcaption { left: 18px; bottom: 18px; font-size: 18px; }
+  .gallery-heading { width: calc(100% - 36px); padding: 46px 0 28px; }
+  .gallery-heading > p { font-size: 9px; }
+  .gallery-heading h2 { font-size: clamp(34px, 9vw, 42px); }
+  .gallery-heading > span { max-width: 360px; margin: 8px auto 0; font-size: 12px; }
+  .gallery-featured-grid { grid-template-columns: minmax(0, 1fr); }
+  .gallery-featured-image { aspect-ratio: 4 / 3; }
+  .gallery-featured-copy { bottom: 13%; }
+  .gallery-featured-label { font-size: clamp(32px, 9vw, 42px); }
+  .gallery-featured-styles { width: calc(100% - 36px); padding: 32px 0 42px; }
+  .gallery-featured-heading { margin-bottom: 15px; }
+  .gallery-featured-heading h3 { font-size: 26px; }
+  .gallery-jewellery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; }
+  .gallery-jewellery-image { aspect-ratio: 1 / .9; }
+  .gallery-jewellery-item h4 { margin-top: 9px; font-size: 13px; }
+  .gallery-jewellery-item p { font-size: 10px; }
 }
-.gemstone-gallery { width: 100%; overflow: hidden; background: #f8f5ef; color: #173d32; }
-.gallery-panels { display: grid; grid-template-columns: 1fr 1fr; height: min(48vw, 620px); min-height: 480px; }
-.gallery-panel { position: relative; margin: 0; overflow: hidden; background: #9d8d72; }
-.gallery-panel img { width: 100%; height: 100%; display: block; object-fit: cover; }
-.gallery-panel-left img { object-position: 50% 28%; }
-.gallery-panel-right img { object-position: 50% 50%; }
-.gallery-panel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(18,19,13,.18)); pointer-events: none; }
-.gallery-panel figcaption { position: absolute; z-index: 2; left: 9%; bottom: 8%; color: #fffaf2; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(28px, 3vw, 46px); font-weight: 400; line-height: 1.02; letter-spacing: .025em; text-shadow: 0 2px 18px rgba(0,0,0,.28); }
-.gallery-panel figcaption span { display: block; }
-.gallery-panel figcaption i { display: block; width: 68px; height: 1px; margin-top: 24px; background: rgba(255,250,242,.72); }
-.gemstone-story { min-height: 430px; padding: 54px 2.8% 58px; background: #f8f5ef; }
-.gemstone-story-heading { display: grid; grid-template-columns: minmax(45px, 1fr) auto minmax(45px, 1fr); align-items: center; gap: 24px; text-align: center; }
-.gemstone-story-heading > i { height: 1px; background: #b9a778; }
-.gemstone-story-heading h2 { margin: 0; color: #173d32; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(24px, 2.05vw, 34px); font-weight: 400; letter-spacing: .08em; }
-.gemstone-story-heading p { margin: 16px 0 0; color: #5f6959; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(15px, 1.35vw, 20px); font-style: italic; }
-.gemstone-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; width: min(78%, 1120px); margin: 52px auto 0; }
-.gemstone-strip > div { aspect-ratio: 1 / .95; overflow: hidden; background: #e9e2d5; }
-.gemstone-strip img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; mix-blend-mode: multiply; }
+@media (prefers-reduced-motion: reduce) {
+  .gallery-featured-image > img, .gallery-featured-action > span, .gallery-jewellery-image img { transition: none; }
+}
+
+/* Premium gemstone collection */
+.gemstone-collection {
+  padding: 76px 24px 64px;
+  color: #302d22;
+  background: #f7f3ea;
+}
+.collection-heading { width: min(760px, 100%); margin: 0 auto 28px; text-align: center; }
+.collection-eyebrow { margin: 0 0 12px; color: #34372a; font: 600 10px/1.4 Georgia, serif; letter-spacing: .34em; text-transform: uppercase; }
+.collection-heading h2 { margin: 0; color: #293222; font: 400 clamp(36px, 4vw, 50px)/1.08 Georgia, 'Times New Roman', serif; letter-spacing: -.025em; }
+.collection-heading h2 em { color: #9a783f; font-weight: 400; }
+.collection-description { margin: 10px 0 0; color: #4b473e; font: 13px/1.5 Georgia, serif; }
+.collection-description span { display: block; }
+.collection-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: min(1120px, 100%); margin: 0 auto; }
+.collection-card { display: flex; min-width: 0; min-height: 324px; box-sizing: border-box; flex-direction: column; align-items: center; padding: 15px 24px 14px; text-align: center; }
+.collection-card:nth-child(3n + 1), .collection-card:nth-child(3n + 2) { border-right: 1px solid rgba(150, 120, 70, .18); }
+.collection-card:nth-child(-n + 6) { border-bottom: 1px solid rgba(150, 120, 70, .18); }
+.collection-card-image { display: block; width: 76px; height: 76px; flex: 0 0 76px; margin: 0 auto 2px; object-fit: contain; filter: drop-shadow(0 3px 4px rgba(69, 53, 29, .12)); }
+.collection-card-heading { min-height: 42px; }
+.collection-card-heading h3 { margin: 0; color: #302d22; font: 600 17px/1.2 Georgia, 'Times New Roman', serif; }
+.collection-card-heading p { margin: 3px 0 0; color: #514b3c; font: 12px/1.25 Georgia, serif; }
+.collection-card-meta { display: grid; width: min(100%, 220px); gap: 4px; margin: 7px 0 22px; text-align: center; }
+.collection-card-meta > div { display: flex; justify-content: center; gap: 8px; align-items: baseline; }
+.collection-card-meta dt { color: #756d5d; font: 600 8px/1.25 Arial, sans-serif; letter-spacing: .14em; text-transform: uppercase; }
+.collection-card-meta dd { min-width: 0; margin: 0; color: #39372f; font: 10px/1.3 Georgia, serif; }
+.collection-card-benefits { position: relative; width: min(100%, 250px); box-sizing: border-box; margin-top: 1px; padding: 10px 12px 9px; border: 1px solid rgba(150, 120, 70, .27); border-radius: 7px; background: rgba(255, 253, 248, .35); }
+.collection-card-benefits h4 { position: absolute; top: -6px; left: 50%; margin: 0; padding: 0 8px; transform: translateX(-50%); background: #f7f3ea; color: #5b584a; font: 600 8px/1.2 Arial, sans-serif; letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; }
+.collection-card-benefits ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px 8px; margin: 0; padding: 0; list-style: none; text-align: left; }
+.collection-card-benefits li { position: relative; min-width: 0; padding-left: 11px; color: #454237; font: 10px/1.25 Georgia, serif; }
+.collection-card-benefits li::before { position: absolute; left: 0; color: #9a783f; content: '✓'; }
+.collection-card-footer { display: flex; width: min(100%, 250px); align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 11px; }
+.collection-card-footer p { margin: 0; color: #302d22; font: 12px/1.2 Georgia, serif; white-space: nowrap; }
+.collection-card-footer p span { color: #756d5d; font-size: 10px; font-style: italic; }
+.collection-card-footer p strong { font-weight: 700; }
+.collection-card-footer a { color: #665331; font: 600 9px/1.2 Georgia, serif; letter-spacing: .1em; text-decoration: underline; text-decoration-color: rgba(154, 120, 63, .55); text-underline-offset: 4px; text-transform: uppercase; white-space: nowrap; }
+.collection-card-footer a span { display: inline-block; margin-left: 2px; }
+.collection-all-link { display: flex; width: min(500px, 100%); align-items: center; justify-content: center; gap: 20px; margin: 30px auto 0; color: #f7f3ea; font: 500 12px/1 Georgia, serif; letter-spacing: .04em; text-decoration: none; text-transform: uppercase; }
+.collection-all-link > span:first-child, .collection-all-link > span:last-child { height: 1px; flex: 1; background: rgba(154, 120, 63, .65); }
+.collection-all-link { position: relative; }
+.collection-all-link::before { position: absolute; z-index: 0; left: 50%; width: 164px; height: 40px; transform: translateX(-50%); border-radius: 999px; background: #283321; content: ''; }
+.collection-all-link > span { position: relative; }
+.collection-all-link > span:first-child, .collection-all-link > span:last-child { z-index: 1; }
+.collection-all-link { isolation: isolate; }
+.collection-all-link .collection-all-label { z-index: 1; display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+.collection-all-link .collection-all-arrow { font-size: 15px; }
+.collection-all-link { padding: 13px 0; }
+.collection-all-link:hover::before { background: #34412b; }
 @media (max-width: 1023px) {
-  .gallery-panels { height: 520px; }
-  .gallery-panel figcaption { font-size: clamp(25px, 4vw, 38px); }
-  .gemstone-story-heading { gap: 14px; }
-  .gemstone-strip { width: 92%; }
+  .gemstone-collection { padding: 68px 5% 60px; }
+  .collection-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .collection-card { min-height: 324px; padding-inline: 20px; }
+  .collection-card:nth-child(3n + 1), .collection-card:nth-child(3n + 2) { border-right: 0; }
+  .collection-card:nth-child(odd) { border-right: 1px solid rgba(150, 120, 70, .18); }
+  .collection-card:nth-child(-n + 8) { border-bottom: 1px solid rgba(150, 120, 70, .18); }
 }
-@media (max-width: 767px) {
-  main > section.gemstone-gallery { padding: 0 !important; }
-  .gallery-panels { grid-template-columns: 1fr; height: auto; }
-  .gallery-panel { height: 440px; }
-  .gallery-panel figcaption { font-size: 31px; }
-  .gemstone-story { min-height: 0; padding: 48px 20px 52px; }
-  .gemstone-story-heading { grid-template-columns: 28px 1fr 28px; gap: 12px; }
-  .gemstone-story-heading h2 { font-size: 24px; line-height: 1.25; }
-  .gemstone-story-heading p { font-size: 16px; line-height: 1.45; }
-  .gemstone-strip { width: 100%; grid-template-columns: repeat(4, 72vw); grid-auto-flow: column; overflow-x: auto; gap: 12px; padding-bottom: 8px; margin-top: 38px; scroll-snap-type: x mandatory; }
-  .gemstone-strip > div { aspect-ratio: 1 / .82; scroll-snap-align: start; }
+@media (max-width: 620px) {
+  .gemstone-collection { padding: 58px 18px 52px; }
+  .collection-heading { margin-bottom: 24px; }
+  .collection-eyebrow { font-size: 9px; }
+  .collection-heading h2 { font-size: clamp(32px, 9vw, 38px); }
+  .collection-description { font-size: 12px; }
+  .collection-grid { grid-template-columns: minmax(0, 1fr); max-width: 440px; }
+  .collection-card { min-height: 310px; padding: 16px 30px; }
+  .collection-card:nth-child(odd) { border-right: 0; }
+  .collection-card:nth-child(-n + 8) { border-bottom: 1px solid rgba(150, 120, 70, .18); }
+  .collection-card-image { width: 78px; height: 78px; flex-basis: 78px; }
+  .collection-card-heading h3 { font-size: 18px; }
+  .collection-card-heading p { font-size: 12px; }
+  .collection-card-meta { width: min(100%, 250px); }
+  .collection-card-meta > div { justify-content: center; }
+  .collection-card-meta dt { font-size: 8px; }
+  .collection-card-meta dd { font-size: 11px; }
+  .collection-card-benefits li { font-size: 11px; }
+  .collection-card-footer p { font-size: 13px; }
+  .collection-card-footer a { font-size: 10px; }
+  .collection-all-link { margin-top: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .collection-all-link { transition: none; }
+}
+
+/* Interactive Pancharatna gemstone showcase */
+.gemstone-showcase {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(340px, .82fr) minmax(0, 1.18fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 64px);
+  min-height: min(810px, 100vh);
+  padding: 104px max(5vw, 32px) 68px;
+  overflow: hidden;
+  color: #382a1d;
+  background:
+    radial-gradient(ellipse at 75% 48%, rgba(245, 220, 177, .46), transparent 48%),
+    #f7f0e5;
+}
+.showcase-information { position: relative; z-index: 2; width: min(100%, 520px); margin: 0 auto; }
+.showcase-eyebrow { margin: 0 0 18px; color: #6d5540; font: 600 10px/1.5 Georgia, serif; letter-spacing: .3em; text-transform: uppercase; }
+.showcase-eyebrow::after { display: inline-block; width: 74px; height: 1px; margin: 0 0 3px 14px; background: #b99561; content: ''; }
+.showcase-copy { animation: showcase-copy-in .55s ease both; }
+.showcase-copy h2 { margin: 0; color: #3a2817; font: 400 clamp(68px, 8vw, 112px)/.95 Georgia, 'Times New Roman', serif; letter-spacing: -.055em; }
+.showcase-hindi { margin: 8px 0 0; color: #704b22; font: 400 clamp(21px, 2.4vw, 32px)/1.2 Georgia, serif; }
+.showcase-tagline { margin: 9px 0 14px; color: #6e512e; font: italic 400 clamp(20px, 2.2vw, 28px)/1.2 Georgia, serif; }
+.showcase-tagline span { color: #a8752b; font-style: normal; }
+.showcase-description { max-width: 430px; margin: 0; color: #44392e; font: 15px/1.55 Georgia, serif; }
+.showcase-details { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 440px; margin: 26px 0 22px; }
+.showcase-details > div { min-width: 0; padding-right: 14px; }
+.showcase-details > div + div { padding-left: 18px; border-left: 1px solid #d9c5a5; }
+.showcase-details dt { display: flex; align-items: center; gap: 10px; color: #8c6430; font: 600 9px/1.5 Georgia, serif; letter-spacing: .22em; text-transform: uppercase; }
+.showcase-details dt span { color: #a76d1d; font: 24px/1 Georgia, serif; }
+.showcase-details dd { margin: 3px 0 0 34px; color: #33291f; font: 15px/1.35 Georgia, serif; }
+.showcase-benefits { position: relative; max-width: 470px; margin: 0 0 27px; padding: 23px 24px 18px; border: 1px solid #d8b27d; border-radius: 14px; background: rgba(255, 249, 238, .52); }
+.showcase-benefits h3 { position: absolute; top: -12px; left: 50%; min-width: 164px; margin: 0; padding: 4px 14px; transform: translateX(-50%); border: 1px solid #d8b27d; border-radius: 999px; background: #f7f0e5; color: #704b22; font: 600 10px/1.3 Georgia, serif; letter-spacing: .22em; text-align: center; text-transform: uppercase; }
+.showcase-benefits h3::before, .showcase-benefits h3::after { position: absolute; top: 50%; width: 5px; height: 5px; transform: translateY(-50%) rotate(45deg); background: #aa782f; content: ''; }
+.showcase-benefits h3::before { left: 8px; }
+.showcase-benefits h3::after { right: 8px; }
+.showcase-benefits ul { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; margin: 0; padding: 0; list-style: none; }
+.showcase-benefits li { display: flex; align-items: center; gap: 10px; min-width: 0; color: #3f342a; font: 15px/1.3 Georgia, serif; }
+.showcase-benefits li span { width: 20px; flex: 0 0 20px; color: #a76d1d; font-size: 19px; text-align: center; }
+.showcase-purchase { display: flex; align-items: center; gap: 28px; }
+.showcase-purchase > p { margin: 0; color: #36291c; font: italic 18px/1 Georgia, serif; white-space: nowrap; }
+.showcase-purchase > p span { margin-right: 5px; font-size: 15px; }
+.showcase-purchase > p strong { font-size: 30px; font-style: normal; font-weight: 600; }
+.showcase-purchase button { min-width: 184px; padding: 14px 22px; border: 1px solid #b88a46; border-radius: 999px; background: #3d4a36; box-shadow: 0 5px 13px rgba(67, 55, 33, .16); color: #f8ecd5; cursor: pointer; font: 16px/1 Georgia, serif; transition: background-color .2s ease, transform .2s ease; }
+.showcase-purchase button:hover { transform: translateY(-2px); background: #303d2d; }
+.showcase-purchase button span { margin-left: 8px; font-size: 19px; }
+.showcase-stage { position: relative; width: min(100%, 760px); height: min(690px, 72vw); min-height: 530px; justify-self: center; perspective: 1100px; }
+.showcase-stage::after { position: absolute; right: 6%; bottom: 3%; left: 6%; z-index: 0; height: 30px; border-radius: 50%; background: rgba(108, 78, 40, .1); content: ''; filter: blur(14px); }
+.showcase-doorway { position: absolute; right: 5%; bottom: 2%; z-index: 1; width: 88%; height: 88%; object-fit: contain; object-position: center bottom; }
+.showcase-gem-slot { position: absolute; right: 24%; bottom: 24%; z-index: 3; display: grid; width: 51%; height: 47%; place-items: center; perspective: 900px; }
+.showcase-gem-arrive { display: grid; width: 100%; height: 100%; place-items: center; animation: showcase-gem-enter .75s cubic-bezier(.2,.7,.25,1) both; }
+.showcase-main-gem { display: block; width: min(100%, 350px); max-height: 100%; object-fit: contain; animation: showcase-gem-float 4s ease-in-out infinite; }
+.gemstone-showcase:not(.is-visible) .showcase-main-gem { animation-play-state: paused; }
+.showcase-stone { position: absolute; right: 6%; bottom: 3%; z-index: 4; width: 88%; max-height: 30%; object-fit: contain; object-position: center bottom; }
+.showcase-orbit { position: absolute; top: 3%; left: 6%; z-index: 5; width: 88%; aspect-ratio: 2 / 1; }
+.showcase-orbit-line { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.showcase-orbit-line path { fill: none; stroke: rgba(164, 112, 42, .78); stroke-width: .8; vector-effect: non-scaling-stroke; }
+.showcase-orbit-item { position: absolute; display: block; width: 48px; height: 48px; padding: 0; transform: translate(-50%, -50%); border: 0; background: transparent; color: #33281e; cursor: pointer; }
+.showcase-orbit-item img { display: block; width: 100%; height: 100%; padding: 3px; border: 1px solid #d6b77f; border-radius: 50%; background: #fffaf1; box-shadow: 0 3px 8px rgba(84, 57, 26, .12); object-fit: contain; transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease; }
+.showcase-orbit-item:hover img { transform: scale(1.09); border-color: #9c691e; box-shadow: 0 0 0 3px rgba(195, 145, 71, .18), 0 4px 10px rgba(84, 57, 26, .15); }
+.showcase-orbit-item:focus-visible { outline: 2px solid #8e622a; outline-offset: 5px; border-radius: 4px; }
+.showcase-orbit-item span { position: absolute; top: calc(100% + 5px); left: 50%; max-width: 112px; overflow: hidden; transform: translateX(-50%); color: #33281e; font: italic 12px/1.15 Georgia, serif; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+.showcase-orbit-item:focus-visible span { text-decoration: underline; text-decoration-color: #b99561; text-underline-offset: 3px; }
+.showcase-pagination { position: absolute; right: 1%; bottom: 6%; z-index: 6; display: flex; align-items: center; gap: 13px; padding: 4px 9px; border: 1px solid rgba(204, 172, 124, .58); border-radius: 999px; background: rgba(255, 250, 241, .7); color: #88652f; }
+.showcase-pagination button { width: 30px; height: 30px; border: 0; background: transparent; color: #51402c; cursor: pointer; font: 27px/1 Georgia, serif; }
+.showcase-pagination span { display: flex; align-items: center; gap: 7px; font: 10px/1 Georgia, serif; letter-spacing: .1em; }
+.showcase-pagination i { width: 4px; height: 4px; border-radius: 50%; background: #a87933; }
+@keyframes showcase-gem-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes showcase-gem-enter { from { opacity: 0; transform: translateY(14px) scale(.86); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes showcase-copy-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 1100px) {
+  .gemstone-showcase { grid-template-columns: minmax(300px, .9fr) minmax(0, 1.1fr); gap: 24px; padding-inline: 4%; }
+  .showcase-stage { min-height: 500px; }
+  .showcase-orbit-item { width: 42px; height: 42px; }
+  .showcase-orbit-item span { max-width: 96px; font-size: 11px; }
+  .showcase-benefits { padding-inline: 17px; }
+  .showcase-benefits li { font-size: 13px; }
+}
+@media (max-width: 760px) {
+  .gemstone-showcase { display: flex; flex-direction: column; gap: 12px; min-height: 0; padding: 88px 20px 56px; }
+  .showcase-stage { order: 0; width: min(100%, 560px); height: 480px; min-height: 0; }
+  .showcase-information { order: 1; width: min(100%, 520px); }
+  .showcase-eyebrow { text-align: center; }
+  .showcase-eyebrow::after { width: 36px; margin-left: 8px; }
+  .showcase-copy h2 { font-size: clamp(58px, 16vw, 82px); text-align: center; }
+  .showcase-hindi, .showcase-tagline { text-align: center; }
+  .showcase-description { margin-inline: auto; text-align: center; }
+  .showcase-details { margin-inline: auto; }
+  .showcase-benefits { margin-inline: auto; }
+  .showcase-purchase { justify-content: center; flex-wrap: wrap; }
+  .showcase-orbit { top: 3%; left: 5%; width: 90%; }
+  .showcase-doorway { right: 6%; bottom: 1%; width: 88%; height: 83%; }
+  .showcase-gem-slot { right: 25%; bottom: 23%; width: 50%; height: 42%; }
+  .showcase-main-gem { width: min(100%, 260px); }
+  .showcase-stone { right: 5%; bottom: 1%; width: 90%; max-height: 27%; }
+  .showcase-orbit-item { width: 42px; height: 42px; }
+  .showcase-orbit-item span { max-width: 82px; font-size: 10px; }
+  .showcase-pagination { right: 50%; bottom: 1%; transform: translateX(50%); }
+}
+@media (max-width: 420px) {
+  .gemstone-showcase { padding-inline: 14px; }
+  .showcase-stage { height: 390px; }
+  .showcase-orbit-item { width: 36px; height: 36px; }
+  .showcase-orbit-item span { max-width: 72px; font-size: 9px; }
+  .showcase-gem-slot { right: 23%; bottom: 23%; width: 54%; }
+  .showcase-benefits { padding-inline: 14px; }
+  .showcase-benefits ul { gap: 10px 6px; }
+  .showcase-benefits li { gap: 6px; font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .showcase-gem-arrive, .showcase-main-gem, .showcase-copy { animation: none; }
+  .showcase-orbit-item img, .showcase-purchase button { transition: none; }
 }
 
 /* Astrolaabh gemstone hero */

@@ -1,4 +1,4 @@
-import Marquee from 'react-fast-marquee';
+import { useEffect, useRef, useState } from 'react';
 
 const firstRow = [
   { quote: 'The gemstone felt deeply personal â€” beautifully chosen and presented with quiet confidence.', name: 'Ananya Mehta', location: 'Mumbai', color: 'sage' },
@@ -19,11 +19,12 @@ const secondRow = [
 ];
 
 function MarqueeRow({ reviews, direction }: { reviews: typeof firstRow; direction: 'left' | 'right' }) {
+  const cards = [...reviews, ...reviews];
   return (
     <div className="testimonial-marquee" aria-label="Client testimonials">
-      <Marquee direction={direction === 'left' ? 'left' : 'right'} gradient={false} speed={38} pauseOnHover={false} autoFill={true} className="testimonial-marquee-track">
-        {reviews.map((review) => (
-          <article className={`testimonial-card testimonial-card-${review.color}`} key={review.name}>
+      <div className={`testimonial-marquee-track testimonial-marquee-${direction}`}>
+        {cards.map((review, index) => (
+          <article className={`testimonial-card testimonial-card-${review.color}`} key={`${review.name}-${index}`}>
             <p className="testimonial-quote">â€œ{review.quote}â€</p>
             <div className="testimonial-person">
               <div className="testimonial-avatar" aria-hidden="true" />
@@ -31,14 +32,28 @@ function MarqueeRow({ reviews, direction }: { reviews: typeof firstRow; directio
             </div>
           </article>
         ))}
-      </Marquee>
+      </div>
     </div>
   );
 }
 
 export function TestimonialsSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(([entry]) => setIsInView(entry.isIntersecting), {
+      rootMargin: '100px 0px',
+    });
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="testimonials-section" aria-labelledby="testimonials-heading">
+    <section ref={sectionRef} className={`testimonials-section${isInView ? ' is-visible' : ''}`} aria-labelledby="testimonials-heading">
       <header className="testimonials-heading">
         <p>Client Stories</p>
         <h2 id="testimonials-heading">What people are saying?</h2>

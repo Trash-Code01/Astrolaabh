@@ -19,7 +19,7 @@ export function Navbar() {
   };
 
   const links = [
-    ['Gemstones', 'narrative'], ['Consultation', 'craftsmanship'],
+    ['Gemstones', 'gemstone-collection'], ['Consultation', 'craftsmanship'],
     ['Designs', 'specs'], ['Efficacy', 'tech'], ['Our Story', 'cta'],
   ];
 
