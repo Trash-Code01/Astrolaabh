@@ -60,7 +60,7 @@ export function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      setIsScrolled(scrollY > 24);
+      setIsScrolled(scrollY > 20);
 
       // Determine active section based on scroll offset
       const sections = ['hero', 'narrative', 'gemstone-collection', 'gallery', 'ways-to-wear', 'appointment'];
@@ -101,7 +101,7 @@ export function Navbar() {
 
     const el = document.getElementById(id);
     if (el) {
-      const navOffset = isScrolled ? 72 : 84;
+      const navOffset = isScrolled ? 70 : 80;
       const targetPosition = el.getBoundingClientRect().top + window.pageYOffset - navOffset;
       window.scrollTo({ top: targetPosition, behavior: 'smooth' });
     }
@@ -122,72 +122,37 @@ export function Navbar() {
   return (
     <>
       <header
-        className={`fixed left-0 top-0 z-50 w-full transition-all duration-500 ease-out ${
+        className={`fixed left-0 top-0 z-50 w-full transition-all duration-400 ease-out ${
           isScrolled
-            ? 'bg-[#FAF8F5]/94 backdrop-blur-xl border-b border-[#E8E1D5]/80 shadow-[0_4px_24px_rgba(24,21,18,0.05)] py-3 sm:py-3.5'
-            : 'bg-gradient-to-b from-black/25 via-black/5 to-transparent py-4 sm:py-5'
+            ? 'bg-[#FAF8F5]/90 backdrop-blur-2xl border-b border-[#E8E1D5]/70 shadow-[0_4px_28px_rgba(24,21,18,0.04)] py-3 sm:py-3.5'
+            : 'bg-gradient-to-b from-black/20 via-transparent to-transparent py-5 sm:py-6'
         }`}
       >
         <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-14 flex items-center justify-between">
           
-          {/* Left Brand Identity: Iconic Vedic Lotus Emblem & Typography */}
-          <div className="flex items-center gap-3 sm:gap-4">
-            <a
-              href="#hero"
-              className={`flex items-center gap-2.5 px-3.5 py-1.5 rounded-full transition-all duration-300 select-none shadow-sm ${
-                isScrolled
-                  ? 'bg-white/80 hover:bg-white border border-[#E2D8C8] text-[#181512]'
-                  : 'bg-white/20 hover:bg-white/35 backdrop-blur-md border border-white/40 text-white shadow-[0_4px_16px_rgba(0,0,0,0.12)]'
-              }`}
-              onMouseEnter={playHover}
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection('hero');
-              }}
-            >
-              {/* Sacred Stylized Lotus Star Glyph */}
-              <svg
-                viewBox="0 0 40 32"
-                className={`w-6 h-5 sm:w-7 sm:h-6 flex-shrink-0 transition-colors duration-300 ${
-                  isScrolled ? 'text-[#9E773A] fill-current' : 'text-[#F5D799] fill-current drop-shadow-[0_1px_3px_rgba(0,0,0,0.3)]'
-                }`}
-                aria-hidden="true"
-              >
-                <path
-                  d="M20 2C18 7 13 13 6 16C12 18 16 23 17 30C19 25 21 25 23 30C24 23 28 18 34 16C27 13 22 7 20 2Z"
-                  opacity="0.95"
-                />
-                <path
-                  d="M20 7C22 13 27 18 33 20C28 22 25 26 24 31C21 28 19 28 16 31C15 26 12 22 7 20C13 18 18 13 20 7Z"
-                  opacity="0.65"
-                />
-                <circle cx="20" cy="18" r="2.5" fill={isScrolled ? '#181512' : '#FFFFFF'} />
-              </svg>
-
-              <span
-                className={`font-serif text-sm sm:text-base tracking-[0.2em] font-medium whitespace-nowrap transition-colors duration-300 ${
-                  isScrolled ? 'text-[#181512]' : 'text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.4)]'
-                }`}
-              >
+          {/* Brand Name as Pure Typographic Logo (Awwwards Luxury Maison Standard) */}
+          <a
+            href="#hero"
+            className="flex flex-col group select-none transition-transform duration-300 hover:scale-[1.01]"
+            onMouseEnter={playHover}
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection('hero');
+            }}
+          >
+            <div className="flex items-center gap-2">
+              <span className="font-serif text-lg sm:text-xl lg:text-[22px] tracking-[0.24em] font-medium text-[#181512] transition-colors leading-none uppercase">
                 ASTRO LAABH
               </span>
-            </a>
-
-            {/* Subtle Luxury Guarantee Badge */}
-            <div
-              className={`hidden xl:flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-serif tracking-[0.15em] uppercase transition-all duration-300 ${
-                isScrolled
-                  ? 'bg-[#F3EDE2]/80 border border-[#E5DCD0] text-[#73634F]'
-                  : 'bg-white/15 backdrop-blur-sm border border-white/30 text-white/90 shadow-sm'
-              }`}
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#9E773A]" />
-              <span>Sacred Vedic Gemstones</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#9E773A] opacity-80" />
             </div>
-          </div>
+            <span className="font-serif text-[8.5px] sm:text-[9.5px] tracking-[0.28em] text-[#8C6D37] uppercase font-normal mt-1 opacity-85 transition-opacity leading-none">
+              Sacred Vedic Gemstones
+            </span>
+          </a>
 
           {/* Center Navigation Links with Dropdown & Active Scroll Highlighting */}
-          <nav className="hidden lg:flex items-center gap-7 xl:gap-9 relative">
+          <nav className="hidden lg:flex items-center gap-8 xl:gap-10 relative">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
 
@@ -201,12 +166,10 @@ export function Navbar() {
                   >
                     <button
                       onClick={() => scrollToSection(link.id)}
-                      className={`font-serif text-[13px] tracking-[0.16em] uppercase transition-colors whitespace-nowrap py-1.5 flex items-center gap-1.5 group select-none ${
-                        isScrolled
-                          ? isActive
-                            ? 'text-[#9E773A] font-semibold'
-                            : 'text-[#2C241C] hover:text-[#9E773A] font-normal'
-                          : 'text-[#2E251D] hover:text-[#9E773A] font-normal'
+                      className={`font-serif text-[12.5px] xl:text-[13px] tracking-[0.18em] uppercase transition-colors whitespace-nowrap py-1.5 flex items-center gap-1.5 group select-none ${
+                        isActive
+                          ? 'text-[#9E773A] font-semibold'
+                          : 'text-[#2C241C] hover:text-[#9E773A] font-normal'
                       }`}
                     >
                       <span>{link.label}</span>
@@ -226,7 +189,7 @@ export function Navbar() {
                     {/* Luxury Gemstones Mega-Dropdown Popover Card */}
                     {gemstonesDropdownOpen && (
                       <div
-                        className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-80 sm:w-96 rounded-2xl border border-[#E8E1D5] bg-[#FAF8F5]/98 shadow-[0_16px_40px_rgba(24,21,18,0.12)] backdrop-blur-2xl p-4 transition-all duration-200 z-50"
+                        className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-80 sm:w-96 rounded-2xl border border-[#E8E1D5] bg-[#FAF8F5]/98 shadow-[0_16px_40px_rgba(24,21,18,0.12)] backdrop-blur-2xl p-4 transition-all duration-200 z-50 animate-in fade-in zoom-in-95 duration-150"
                         onMouseEnter={handleDropdownEnter}
                         onMouseLeave={handleDropdownLeave}
                       >
@@ -281,12 +244,10 @@ export function Navbar() {
                 <button
                   key={link.id}
                   onClick={() => scrollToSection(link.id)}
-                  className={`font-serif text-[13px] tracking-[0.16em] uppercase transition-colors whitespace-nowrap py-1.5 relative group select-none ${
-                    isScrolled
-                      ? isActive
-                        ? 'text-[#9E773A] font-semibold'
-                        : 'text-[#2C241C] hover:text-[#9E773A] font-normal'
-                      : 'text-[#2E251D] hover:text-[#9E773A] font-normal'
+                  className={`font-serif text-[12.5px] xl:text-[13px] tracking-[0.18em] uppercase transition-colors whitespace-nowrap py-1.5 relative group select-none ${
+                    isActive
+                      ? 'text-[#9E773A] font-semibold'
+                      : 'text-[#2C241C] hover:text-[#9E773A] font-normal'
                   }`}
                   onMouseEnter={playHover}
                 >
@@ -302,7 +263,7 @@ export function Navbar() {
             })}
           </nav>
 
-          {/* Right Action Controls: Search, Cart Drawer, Consultation CTA */}
+          {/* Right Action Suite: Search, Bag, and High-End Consultation CTA */}
           <div className="flex items-center gap-2.5 sm:gap-3 flex-shrink-0">
             {/* Search Icon Button */}
             <button
@@ -311,11 +272,7 @@ export function Navbar() {
                 playClick();
                 setSearchOpen(true);
               }}
-              className={`hidden sm:flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full transition-all duration-300 shadow-sm ${
-                isScrolled
-                  ? 'border border-[#E0D7C8] bg-white/70 hover:bg-white text-[#29251F] hover:border-[#9E773A]'
-                  : 'border border-[#2D241B]/20 bg-white/40 hover:bg-white/70 backdrop-blur-sm text-[#2D241B]'
-              }`}
+              className="h-9 w-9 sm:h-10 sm:w-10 rounded-full border border-[#2D241B]/15 hover:border-[#9E773A] bg-white/50 hover:bg-white text-[#29251F] transition-all flex items-center justify-center shadow-sm backdrop-blur-sm"
             >
               <Search className="h-4 w-4" />
             </button>
@@ -327,11 +284,7 @@ export function Navbar() {
                 playClick();
                 toggleCart();
               }}
-              className={`relative hidden sm:flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full transition-all duration-300 shadow-sm ${
-                isScrolled
-                  ? 'border border-[#E0D7C8] bg-white/70 hover:bg-white text-[#29251F] hover:border-[#9E773A]'
-                  : 'border border-[#2D241B]/20 bg-white/40 hover:bg-white/70 backdrop-blur-sm text-[#2D241B]'
-              }`}
+              className="relative h-9 w-9 sm:h-10 sm:w-10 rounded-full border border-[#2D241B]/15 hover:border-[#9E773A] bg-white/50 hover:bg-white text-[#29251F] transition-all flex items-center justify-center shadow-sm backdrop-blur-sm"
             >
               <ShoppingBag className="h-4 w-4" />
               {cartCount > 0 && (
@@ -346,7 +299,7 @@ export function Navbar() {
               onClick={() => scrollToSection('appointment')}
               className="consult-button hidden sm:flex items-center gap-3 rounded-full bg-gradient-to-r from-[#F0DEC2] via-[#EAD4B0] to-[#E2C79E] hover:from-[#EAD4B0] hover:to-[#D8BC8E] py-2 pl-5 pr-2 shadow-sm transition-all duration-300 group border border-[#D5BB8E]"
             >
-              <span className="font-serif text-[13px] font-medium text-[#221910] tracking-wide">
+              <span className="font-serif text-[12.5px] font-medium text-[#221910] tracking-wide uppercase">
                 Consult an Astrologer
               </span>
               <span className="grid h-7 w-7 place-items-center rounded-full bg-[#221910] text-[#EAD4B0] transition-transform duration-300 group-hover:translate-x-0.5">
@@ -356,11 +309,7 @@ export function Navbar() {
 
             {/* Mobile Navigation Toggle Button */}
             <button
-              className={`grid h-9 w-9 place-items-center rounded-full transition-colors lg:hidden ${
-                isScrolled
-                  ? 'border border-[#E0D7C8] bg-white/80 text-[#29251F]'
-                  : 'border border-white/50 bg-white/40 backdrop-blur-sm text-[#221910]'
-              }`}
+              className="grid h-9 w-9 place-items-center rounded-full border border-[#2D241B]/15 bg-white/60 text-[#29251F] backdrop-blur-sm lg:hidden"
               aria-label="Toggle navigation menu"
               onClick={() => {
                 playClick();
