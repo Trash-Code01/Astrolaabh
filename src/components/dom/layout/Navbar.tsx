@@ -121,7 +121,7 @@ export function Navbar() {
   return (
     <>
       {/* SOLID, HIGH-CONTRAST LUXURY HEADER — 100% VISIBLE ON EVERY PIXEL */}
-      <header className="fixed left-0 top-0 z-50 w-full bg-[#FAF8F5] border-b border-[#E2D8C8] shadow-[0_2px_16px_rgba(24,21,18,0.06)] transition-all">
+      <header className="site-navbar fixed left-0 top-0 z-50 w-full bg-[#FAF8F5] border-b border-[#E2D8C8] shadow-[0_2px_16px_rgba(24,21,18,0.06)] transition-all">
         <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-14 h-[72px] sm:h-[78px] flex items-center justify-between">
           
           {/* Brand Logo & Authority Badge */}
