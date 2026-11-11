@@ -1,116 +1,103 @@
-import { useEffect, useRef } from 'react';
-import { ShoppingBag, CheckCircle2, Award } from 'lucide-react';
-import { useCreativeStore } from '../../store/useCreativeStore';
-import { useCartStore } from '../../store/useCartStore';
-import { useSoundEffects } from '../../hooks/useSoundEffects';
-import { ScrollTrigger } from '../../lib/gsap';
-import { FLAGSHIP_PRODUCT } from '../../lib/constants';
-import { formatPrice } from '../../lib/utils';
-import confetti from 'canvas-confetti';
+import { ArrowRight, Compass, Sparkles, UserCheck, Shield, Gem, Award } from 'lucide-react';
+import { scrollToTarget } from '../../lib/lenis';
 
 export function CTASection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const setCurrentSection = useCreativeStore((s) => s.setCurrentSection);
-  const activeColorway = useCreativeStore((s) => s.activeColorway);
-  const toggleCart = useCreativeStore((s) => s.toggleCart);
+  const handleConsult = () => {
+    scrollToTarget('appointment');
+  };
 
-  const addItem = useCartStore((s) => s.addItem);
-  const { playHover, playClick, playCartAdd } = useSoundEffects();
-
-  useEffect(() => {
-    if (!sectionRef.current) return;
-
-    const trigger = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: 'top center',
-      end: 'bottom center',
-      onEnter: () => setCurrentSection('cta'),
-      onEnterBack: () => setCurrentSection('cta'),
-    });
-
-    return () => trigger.kill();
-  }, [setCurrentSection]);
-
-  const handleAcquire = () => {
-    playCartAdd();
-    addItem(FLAGSHIP_PRODUCT, activeColorway, 1);
-    toggleCart();
-
-    try {
-      confetti({
-        particleCount: 70,
-        spread: 80,
-        origin: { y: 0.6 },
-        colors: [activeColorway.hex, activeColorway.emissiveColor, '#ffffff'],
-      });
-    } catch {
-      // Ignored
-    }
+  const handleExplore = () => {
+    scrollToTarget('gemstone-showcase');
   };
 
   return (
-    <section
-      id="cta"
-      ref={sectionRef}
-      className="relative min-h-screen w-full flex flex-col justify-center items-center p-6 sm:p-14 pointer-events-none z-10 text-center"
-    >
-      <div className="max-w-2xl mx-auto pointer-events-auto glass-panel p-8 sm:p-12 rounded-3xl space-y-6 shadow-2xl">
-        <div className="inline-flex items-center gap-2 font-mono text-xs text-brand-accent tracking-widest uppercase glass-pill px-3 py-1 rounded-full">
-          <Award className="w-3.5 h-3.5" />
-          <span>ALLOCATION IN PROGRESS</span>
+    <section id="final-cta" className="final-cta-section" aria-labelledby="final-cta-heading">
+      <div className="final-cta-ambient" aria-hidden="true" />
+
+      <div className="final-cta-container">
+        <header className="final-cta-header">
+          <p className="final-cta-eyebrow">
+            <Sparkles className="w-3.5 h-3.5 inline mr-1 text-[#B8860B]" />
+            YOUR CELESTIAL ALIGNMENT AWAITS
+            <Sparkles className="w-3.5 h-3.5 inline ml-1 text-[#B8860B]" />
+          </p>
+          <h2 id="final-cta-heading">Find Your Destined Gemstone</h2>
+          <p className="final-cta-description">
+            Whether seeking prosperity, mental clarity, or divine planetary protection, take the next step on your Vedic journey with Astro Laabh.
+          </p>
+        </header>
+
+        {/* Dual Luxury Action Cards */}
+        <div className="final-cta-cards">
+          {/* Card 1: Explore Collection */}
+          <div className="final-cta-card final-cta-card-collection">
+            <div className="final-cta-card-icon" aria-hidden="true">
+              <Gem className="w-6 h-6 text-[#9C691E]" />
+            </div>
+            <span className="final-cta-card-tag">SACRED CATALOG</span>
+            <h3>Explore the Collection</h3>
+            <p>
+              Discover certified natural Navaratna gemstones, untreated master-cut jewels, and bespoke sacred gold rings crafted for planetary resonance.
+            </p>
+            <ul className="final-cta-feature-list">
+              <li><Award className="w-4 h-4 text-[#B8860B]" /> 100% Certified Natural & Untreated</li>
+              <li><Shield className="w-4 h-4 text-[#B8860B]" /> Consecrated via Vedic Pran Pratishtha</li>
+            </ul>
+            <button
+              type="button"
+              className="final-cta-btn final-cta-btn-primary"
+              onClick={handleExplore}
+            >
+              Explore Full Collection <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Card 2: Consult Astrologer */}
+          <div className="final-cta-card final-cta-card-consultation">
+            <div className="final-cta-card-icon" aria-hidden="true">
+              <Compass className="w-6 h-6 text-[#9C691E]" />
+            </div>
+            <span className="final-cta-card-tag">ONE-ON-ONE GUIDANCE</span>
+            <h3>Consult a Vedic Astrologer</h3>
+            <p>
+              Unsure which stone aligns with your current planetary dasha? Reserve a private consultation with our master astrologers for kundali analysis.
+            </p>
+            <ul className="final-cta-feature-list">
+              <li><UserCheck className="w-4 h-4 text-[#B8860B]" /> Exact Birth-Chart Planetary Diagnosis</li>
+              <li><Sparkles className="w-4 h-4 text-[#B8860B]" /> Precise Wearing Protocol & Muhurat</li>
+            </ul>
+            <button
+              type="button"
+              className="final-cta-btn final-cta-btn-secondary"
+              onClick={handleConsult}
+            >
+              Book Astrologer Appointment <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
-        <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-white tracking-tight">
-          SECURE YOUR KINETIC-01
-        </h2>
-
-        <p className="font-sans text-sm sm:text-base text-zinc-300 max-w-lg mx-auto leading-relaxed">
-          Each unit is engraved with a unique serial number and registered onto our immutable authenticity ledger. Shipped in a custom precision-milled aluminum presentation vault.
-        </p>
-
-        {/* Selected configuration summary */}
-        <div className="flex items-center justify-center gap-4 py-3 px-6 glass-pill rounded-xl max-w-md mx-auto font-mono text-xs">
-          <div className="flex items-center gap-2">
-            <span
-              className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: activeColorway.hex }}
-            />
-            <span className="text-white font-semibold">{activeColorway.name}</span>
+        {/* Trust Badges Bar */}
+        <div className="final-cta-trust-bar">
+          <div className="final-cta-trust-item">
+            <span className="final-cta-trust-emblem">✦</span>
+            <span>Government & Independent Lab Certified</span>
           </div>
-          <span className="text-zinc-600">//</span>
-          <span className="text-brand-accent font-bold">
-            {formatPrice(FLAGSHIP_PRODUCT.price)}
-          </span>
-        </div>
-
-        {/* Big Action Button */}
-        <div className="pt-2">
-          <button
-            onClick={handleAcquire}
-            onMouseEnter={playHover}
-            className="w-full sm:w-auto px-10 py-4 bg-brand-accent hover:bg-white text-black font-mono font-bold text-sm tracking-widest rounded-2xl transition-all duration-300 shadow-[0_0_30px_rgba(0,240,255,0.4)] flex items-center justify-center gap-3 mx-auto"
-          >
-            <ShoppingBag className="w-4 h-4" />
-            <span>RESERVE SERIALIZED EDITION</span>
-          </button>
-        </div>
-
-        {/* Guarantees */}
-        <div className="flex flex-wrap items-center justify-center gap-6 pt-4 text-[11px] font-mono text-zinc-400">
-          <div className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-3.5 h-3.5 text-brand-accent" />
-            <span>30-DAY IN-HOME TRIAL</span>
+          <div className="final-cta-trust-item">
+            <span className="final-cta-trust-emblem">✦</span>
+            <span>Vedic Energization Included</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-3.5 h-3.5 text-brand-accent" />
-            <span>3-YEAR CONCIERGE WARRANTY</span>
+          <div className="final-cta-trust-item">
+            <span className="final-cta-trust-emblem">✦</span>
+            <span>Insured Worldwide Delivery</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-3.5 h-3.5 text-brand-accent" />
-            <span>WORLDWIDE COURIER EXPRESS</span>
+          <div className="final-cta-trust-item">
+            <span className="final-cta-trust-emblem">✦</span>
+            <span>Lifetime Authenticity Guarantee</span>
           </div>
         </div>
       </div>
     </section>
   );
 }
+
+export default CTASection;

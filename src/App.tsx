@@ -12,8 +12,10 @@ const GemstoneCollectionSection = lazy(() => import('./components/sections/Gemst
 const GemstoneShowcaseSection = lazy(() => import('./components/sections/GemstoneShowcaseSection'));
 const GallerySection = lazy(() => import('./components/sections/GallerySection').then((module) => ({ default: module.GallerySection })));
 const WearGemstoneSection = lazy(() => import('./components/sections/WearGemstoneSection'));
-const AppointmentSection = lazy(() => import('./components/sections/AppointmentSection').then((module) => ({ default: module.AppointmentSection })));
 const TestimonialsSection = lazy(() => import('./components/sections/TestimonialsSection').then((module) => ({ default: module.TestimonialsSection })));
+const AppointmentSection = lazy(() => import('./components/sections/AppointmentSection').then((module) => ({ default: module.AppointmentSection })));
+const CTASection = lazy(() => import('./components/sections/CTASection'));
+const FAQSection = lazy(() => import('./components/sections/FAQSection'));
 
 function LazyMount({ children, minHeight, className }: { children: ReactNode; minHeight?: string; className?: string }) {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -45,7 +47,7 @@ export function App() {
   useLenis();
 
   return (
-    <div className="relative min-h-screen bg-brand-dark text-white selection:bg-brand-accent selection:text-black">
+    <div className="relative min-h-screen bg-[#FAF8F5] text-[#2C1F14] selection:bg-[#D4AF37] selection:text-black">
       {/* Sacred AstroLaabh Water & Gold Chakra Preloader */}
       <Preloader />
 
@@ -57,18 +59,41 @@ export function App() {
 
       {/* Main Luxury Storytelling & Gemstone Flow */}
       <main className="relative z-10">
+        {/* 1. Hero Section (Landing Page - 2 CTA Buttons) */}
         <HeroSection />
+
+        {/* 2. Scrolling Text Marquee */}
         <HeroMarquee />
+
+        {/* 3. Brand Story (How AstroLaabh Brings the Gems) */}
         <LazyMount minHeight="760px"><NarrativeSection /></LazyMount>
+
+        {/* 4. Explore Navaratna Collection */}
         <LazyMount minHeight="1000px"><GemstoneCollectionSection /></LazyMount>
+
+        {/* 5. Explore Our Collection (Pancharatna Gemstone Showcase) */}
         <LazyMount minHeight="760px"><GemstoneShowcaseSection /></LazyMount>
+
+        {/* 6. Image Gallery (Gemstones & Fine Jewellery) */}
         <LazyMount minHeight="760px"><GallerySection /></LazyMount>
+
+        {/* 7. How You Can Wear Gemstones (Editorial Sequence) */}
         <LazyMount minHeight="100vh" className="bg-[#f6f1e7]"><WearGemstoneSection /></LazyMount>
-        <LazyMount minHeight="800px"><AppointmentSection /></LazyMount>
+
+        {/* 8. Customer Reviews & Testimonials (Themed with interactive animation) */}
         <LazyMount minHeight="850px"><TestimonialsSection /></LazyMount>
+
+        {/* 9. Book an Appointment (Astrologer Consultation) */}
+        <LazyMount minHeight="850px"><AppointmentSection /></LazyMount>
+
+        {/* 10. Final CTA Section (Find Your Gemstone / Explore Collection) */}
+        <LazyMount minHeight="650px"><CTASection /></LazyMount>
+
+        {/* 11. Frequently Asked Questions (FAQs) */}
+        <LazyMount minHeight="750px"><FAQSection /></LazyMount>
       </main>
 
-      {/* Footer */}
+      {/* 12. Footer */}
       <Footer />
     </div>
   );

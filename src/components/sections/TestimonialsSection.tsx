@@ -1,68 +1,268 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
+import { Star, ShieldCheck, Sparkles } from 'lucide-react';
 
-const firstRow = [
-  { quote: 'The gemstone felt deeply personal — beautifully chosen and presented with quiet confidence.', name: 'Ananya Mehta', location: 'Mumbai', color: 'sage' },
-  { quote: 'Every detail felt thoughtful. My consultation was elegant, calm and genuinely insightful.', name: 'Leena Kapoor', location: 'Delhi', color: 'ivory' },
-  { quote: 'A meaningful piece that I now wear every day, chosen with care and true understanding.', name: 'Sara Rahman', location: 'Dubai', color: 'rose' },
-  { quote: 'The guidance was warm, refined and completely aligned with what I was seeking.', name: 'Mira Shah', location: 'London', color: 'sage' },
-  { quote: 'Beautifully crafted, deeply considered and unlike any jewellery experience I have known.', name: 'Ishita Rao', location: 'Bangalore', color: 'ivory' },
-  { quote: 'My gemstone carries both elegance and intention. I treasure it beyond measure.', name: 'Amelia Grant', location: 'Sydney', color: 'rose' },
-];
-
-const secondRow = [
-  { quote: 'Astrolaabh made the entire process feel personal, serene and wonderfully considered.', name: 'Devika Sethi', location: 'Singapore', color: 'ivory' },
-  { quote: 'The most beautiful balance of ancient wisdom and modern, understated design.', name: 'Rhea Malhotra', location: 'Jaipur', color: 'rose' },
-  { quote: 'From the consultation to the final piece, the experience was exceptional in every way.', name: 'Noor Ahmed', location: 'Doha', color: 'sage' },
-  { quote: 'I received a piece that feels timeless, distinctive and truly mine.', name: 'Clara Bennett', location: 'New York', color: 'ivory' },
-  { quote: 'Their understanding of meaning and beauty is reflected in every detail.', name: 'Tara Iyer', location: 'Chennai', color: 'rose' },
-  { quote: 'Quiet luxury, sincere guidance and a gemstone I will cherish for years.', name: 'Elena Rossi', location: 'Milan', color: 'sage' },
-];
-
-function MarqueeRow({ reviews, direction }: { reviews: typeof firstRow; direction: 'left' | 'right' }) {
-  const cards = [...reviews, ...reviews];
-  return (
-    <div className="testimonial-marquee" aria-label="Client testimonials">
-      <div className={`testimonial-marquee-track testimonial-marquee-${direction}`}>
-        {cards.map((review, index) => (
-          <article className={`testimonial-card testimonial-card-${review.color}`} key={`${review.name}-${index}`}>
-            <p className="testimonial-quote">“{review.quote}”</p>
-            <div className="testimonial-person">
-              <div className="testimonial-avatar" aria-hidden="true" />
-              <div><h3>{review.name}</h3><p>{review.location}</p></div>
-            </div>
-          </article>
-        ))}
-      </div>
-    </div>
-  );
+interface Review {
+  quote: string;
+  name: string;
+  location: string;
+  stone: string;
+  category: 'wealth' | 'focus' | 'peace' | 'all';
+  rating: number;
 }
+
+const allReviews: Review[] = [
+  {
+    quote: 'The Blue Sapphire felt deeply personal. Within weeks of wearing it after my Vedic chart reading, I felt a calm mental clarity in my business decisions.',
+    name: 'Ananya Mehta',
+    location: 'Mumbai',
+    stone: 'Neelam · Blue Sapphire',
+    category: 'focus',
+    rating: 5,
+  },
+  {
+    quote: 'Every detail felt thoughtful. The astrologer consultation was elegant, unhurried, and genuinely insightful. The Ruby ring is an heirloom.',
+    name: 'Leena Kapoor',
+    location: 'New Delhi',
+    stone: 'Manik · Burmese Ruby',
+    category: 'wealth',
+    rating: 5,
+  },
+  {
+    quote: 'A meaningful Emerald that I wear every day. Chosen with genuine Vedic care and certified authenticity that gives complete peace of mind.',
+    name: 'Sara Rahman',
+    location: 'Dubai',
+    stone: 'Panna · Zambian Emerald',
+    category: 'wealth',
+    rating: 5,
+  },
+  {
+    quote: 'The astrologer pointed out planetary aspects no one had ever explained to me before. My Yellow Sapphire arrived consecrated and radiant.',
+    name: 'Mira Shah',
+    location: 'London',
+    stone: 'Pukhraj · Ceylon Yellow Sapphire',
+    category: 'focus',
+    rating: 5,
+  },
+  {
+    quote: 'Beautifully crafted gold bezel, deeply considered gemstone selection. Astro Laabh is in a league of its own for luxury spiritual fine jewellery.',
+    name: 'Ishita Rao',
+    location: 'Bangalore',
+    stone: 'Heera · Natural Diamond',
+    category: 'peace',
+    rating: 5,
+  },
+  {
+    quote: 'The South Sea Pearl brought a wonderful sense of emotional serenity during a demanding career transition. Truly exceptional guidance.',
+    name: 'Amelia Grant',
+    location: 'Sydney',
+    stone: 'Moti · Natural Basra Pearl',
+    category: 'peace',
+    rating: 5,
+  },
+  {
+    quote: 'Astrolaabh made the entire consultation feel serene and wonderfully considered. The certificate of origin and energy consecration are authentic.',
+    name: 'Devika Sethi',
+    location: 'Singapore',
+    stone: 'Panna · Colombian Emerald',
+    category: 'wealth',
+    rating: 5,
+  },
+  {
+    quote: 'The most beautiful balance of ancient Vedic astrological precision and modern, understated jewellery design. I receive compliments constantly.',
+    name: 'Rhea Malhotra',
+    location: 'Jaipur',
+    stone: 'Manik · Old Mine Ruby',
+    category: 'focus',
+    rating: 5,
+  },
+  {
+    quote: 'From the private kundali reading to the final handcrafted gold ring, the experience was transcendent. Highly recommended for authentic seekers.',
+    name: 'Noor Ahmed',
+    location: 'Doha',
+    stone: 'Neelam · Kashmir Sapphire',
+    category: 'peace',
+    rating: 5,
+  },
+  {
+    quote: 'I received a piece that feels timeless, distinctive and truly mine. Wearing my consecrated Yellow Sapphire has been an anchor of good fortune.',
+    name: 'Clara Bennett',
+    location: 'New York',
+    stone: 'Pukhraj · Untreated Sapphire',
+    category: 'wealth',
+    rating: 5,
+  },
+  {
+    quote: 'Their understanding of planetary alignment and sacred craftsmanship is reflected in every angle of the cut. Simply peerless quality.',
+    name: 'Tara Iyer',
+    location: 'Chennai',
+    stone: 'Moonga · Red Coral',
+    category: 'focus',
+    rating: 5,
+  },
+  {
+    quote: 'Quiet luxury, sincere astrologer guidance, and an authentic unheated gemstone that will stay in my family for generations.',
+    name: 'Elena Rossi',
+    location: 'Milan',
+    stone: 'Moti · Natural Pearl',
+    category: 'peace',
+    rating: 5,
+  },
+];
+
+const categories = [
+  { id: 'all', label: 'All Testimonials' },
+  { id: 'wealth', label: 'Wealth & Prosperity' },
+  { id: 'focus', label: 'Clarity & Discipline' },
+  { id: 'peace', label: 'Peace & Serenity' },
+] as const;
 
 export function TestimonialsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [isInView, setIsInView] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<'all' | 'wealth' | 'focus' | 'peace'>('all');
 
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
     const observer = new IntersectionObserver(([entry]) => setIsInView(entry.isIntersecting), {
-      rootMargin: '100px 0px',
+      rootMargin: '120px 0px',
     });
     observer.observe(section);
     return () => observer.disconnect();
   }, []);
 
+  const filteredReviews = useMemo(() => {
+    if (activeCategory === 'all') return allReviews;
+    return allReviews.filter((r) => r.category === activeCategory);
+  }, [activeCategory]);
+
+  const row1 = useMemo(() => {
+    const list = filteredReviews.slice(0, Math.ceil(filteredReviews.length / 2));
+    return list.length < 4 ? [...list, ...list, ...list] : [...list, ...list];
+  }, [filteredReviews]);
+
+  const row2 = useMemo(() => {
+    const list = filteredReviews.slice(Math.ceil(filteredReviews.length / 2));
+    return list.length < 4 ? [...list, ...list, ...list] : [...list, ...list];
+  }, [filteredReviews]);
+
   return (
-    <section ref={sectionRef} className={`testimonials-section${isInView ? ' is-visible' : ''}`} aria-labelledby="testimonials-heading">
+    <section
+      ref={sectionRef}
+      id="testimonials"
+      className={`testimonials-section${isInView ? ' is-visible' : ''}`}
+      aria-labelledby="testimonials-heading"
+    >
+      <div className="testimonials-ambient-glow" aria-hidden="true" />
+
       <header className="testimonials-heading">
-        <p>Client Stories</p>
-        <h2 id="testimonials-heading">What people are saying?</h2>
-        <span>Real experiences from people who found their stone with Astro Laabh.</span>
+        <p className="testimonials-eyebrow">
+          <Sparkles className="w-3.5 h-3.5 inline mr-1.5 text-[#B8860B]" />
+          VOICES OF ASTROLAABH
+          <Sparkles className="w-3.5 h-3.5 inline ml-1.5 text-[#B8860B]" />
+        </p>
+        <h2 id="testimonials-heading">What People Are Saying</h2>
+        <span className="testimonials-subheading">
+          Real experiences from patrons who discovered their authentic planetary gemstone through our Vedic consultations.
+        </span>
+
+        {/* Interactive Category Filter Pills */}
+        <div className="testimonials-filter-bar" role="tablist" aria-label="Review categories">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              role="tab"
+              aria-selected={activeCategory === cat.id}
+              className={`testimonials-filter-pill ${activeCategory === cat.id ? 'is-active' : ''}`}
+              onClick={() => setActiveCategory(cat.id as any)}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
       </header>
 
       <div className="testimonial-rows">
-        <MarqueeRow reviews={firstRow} direction="right" />
-        <MarqueeRow reviews={secondRow} direction="left" />
+        {/* Row 1: Marquee Right to Left */}
+        <div className="testimonial-marquee" aria-label="Client reviews row 1">
+          <div className="testimonial-marquee-track testimonial-marquee-left">
+            {row1.map((review, i) => (
+              <article
+                key={`r1-${review.name}-${i}`}
+                className="testimonial-luxury-card"
+              >
+                <div className="testimonial-card-header">
+                  <div className="testimonial-stars" aria-label={`${review.rating} out of 5 stars`}>
+                    {[...Array(review.rating)].map((_, s) => (
+                      <Star key={s} className="w-3.5 h-3.5 fill-[#D4AF37] text-[#D4AF37]" />
+                    ))}
+                  </div>
+                  <span className="testimonial-verified-badge">
+                    <ShieldCheck className="w-3 h-3 text-[#B8860B]" />
+                    Verified Patron
+                  </span>
+                </div>
+
+                <p className="testimonial-quote">“{review.quote}”</p>
+
+                <div className="testimonial-stone-tag">
+                  <span>✦ {review.stone}</span>
+                </div>
+
+                <div className="testimonial-person">
+                  <div className="testimonial-avatar" aria-hidden="true">
+                    {review.name.split(' ').map((n) => n[0]).join('')}
+                  </div>
+                  <div>
+                    <h3>{review.name}</h3>
+                    <p>{review.location}</p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        {/* Row 2: Marquee Left to Right */}
+        <div className="testimonial-marquee" aria-label="Client reviews row 2">
+          <div className="testimonial-marquee-track testimonial-marquee-right">
+            {row2.map((review, i) => (
+              <article
+                key={`r2-${review.name}-${i}`}
+                className="testimonial-luxury-card"
+              >
+                <div className="testimonial-card-header">
+                  <div className="testimonial-stars" aria-label={`${review.rating} out of 5 stars`}>
+                    {[...Array(review.rating)].map((_, s) => (
+                      <Star key={s} className="w-3.5 h-3.5 fill-[#D4AF37] text-[#D4AF37]" />
+                    ))}
+                  </div>
+                  <span className="testimonial-verified-badge">
+                    <ShieldCheck className="w-3 h-3 text-[#B8860B]" />
+                    Verified Patron
+                  </span>
+                </div>
+
+                <p className="testimonial-quote">“{review.quote}”</p>
+
+                <div className="testimonial-stone-tag">
+                  <span>✦ {review.stone}</span>
+                </div>
+
+                <div className="testimonial-person">
+                  <div className="testimonial-avatar" aria-hidden="true">
+                    {review.name.split(' ').map((n) => n[0]).join('')}
+                  </div>
+                  <div>
+                    <h3>{review.name}</h3>
+                    <p>{review.location}</p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
