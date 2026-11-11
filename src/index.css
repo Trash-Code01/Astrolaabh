@@ -571,83 +571,82 @@ body.lb-engaged .site-navbar {
 
 /* Premium gemstone collection */
 .gemstone-collection {
-  padding: 88px max(24px, 5vw) 84px;
-  color: #33291e;
-  background: #f8f3e9;
+  padding: 76px 24px 64px;
+  color: #302d22;
+  background: #f7f3ea;
 }
-.collection-heading { width: min(760px, 100%); margin: 0 auto 34px; text-align: center; }
-.collection-eyebrow { margin: 0 0 14px; color: #8d6738; font: 500 10px/1.4 Georgia, serif; letter-spacing: .3em; text-transform: uppercase; }
-.collection-heading h2 { margin: 0; color: #54391f; font: 400 clamp(38px, 4.5vw, 58px)/1.04 Georgia, 'Times New Roman', serif; letter-spacing: -.025em; }
-.collection-description { margin: 12px 0 0; color: #4a4035; font: 14px/1.55 Georgia, serif; }
+.collection-heading { width: min(760px, 100%); margin: 0 auto 28px; text-align: center; }
+.collection-eyebrow { margin: 0 0 12px; color: #34372a; font: 600 10px/1.4 Georgia, serif; letter-spacing: .34em; text-transform: uppercase; }
+.collection-heading h2 { margin: 0; color: #293222; font: 400 clamp(36px, 4vw, 50px)/1.08 Georgia, 'Times New Roman', serif; letter-spacing: -.025em; }
+.collection-heading h2 em { color: #9a783f; font-weight: 400; }
+.collection-description { margin: 10px 0 0; color: #4b473e; font: 13px/1.5 Georgia, serif; }
 .collection-description span { display: block; }
-.collection-divider { display: flex; align-items: center; justify-content: center; gap: 12px; width: min(180px, 45vw); margin: 21px auto 0; }
-.collection-divider span { flex: 1; height: 1px; background: #cbb78f; }
-.collection-divider i { width: 7px; height: 7px; border: 1px solid #aa814a; transform: rotate(45deg); }
-.collection-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; width: min(1200px, 100%); margin: 0 auto; }
-.collection-card { display: grid; grid-template-columns: 108px minmax(0, 1fr); align-items: center; gap: 12px; min-width: 0; padding: 16px; border: 1px solid #e8d4b5; border-radius: 17px; background: rgba(255, 252, 246, .72); box-shadow: 0 3px 12px rgba(106, 76, 38, .045); transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
-.collection-card:hover { transform: translateY(-2px); border-color: #d3b27e; box-shadow: 0 6px 16px rgba(106, 76, 38, .08); }
-.collection-card-image { position: relative; display: grid; place-items: center; min-width: 0; height: 118px; }
-.collection-card-image img { position: relative; z-index: 1; display: block; width: 100px; height: 100px; object-fit: contain; filter: drop-shadow(0 5px 5px rgba(81, 57, 28, .12)); }
-.collection-card-image span { position: absolute; bottom: 8px; width: 72px; height: 12px; border: 1px solid rgba(186, 143, 78, .45); border-radius: 50%; background: linear-gradient(180deg, #fff5dc, #d8b979); box-shadow: 0 3px 6px rgba(106, 76, 38, .1); }
-.collection-card-content { min-width: 0; }
-.collection-card-heading { margin-bottom: 8px; }
-.collection-card-heading h3 { margin: 0; color: #38291b; font: 600 18px/1.15 Georgia, 'Times New Roman', serif; }
-.collection-card-heading p { margin: 3px 0 0; color: #9a6d32; font: 12px/1.3 Georgia, serif; }
-.collection-card-meta { display: grid; gap: 4px; margin: 0 0 9px; }
-.collection-card-meta > div { display: grid; grid-template-columns: 45px minmax(0, 1fr); gap: 4px; align-items: baseline; }
-.collection-card-meta dt { color: #957345; font: 600 8px/1.25 Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
-.collection-card-meta dd { min-width: 0; margin: 0; color: #42372b; font: 10px/1.3 Georgia, serif; }
-.collection-card-benefits { padding: 7px 9px 8px; border: 1px solid #eee1cb; border-radius: 9px; background: #f7f0e3; }
-.collection-card-benefits h4 { margin: 0 0 4px; color: #947041; font: 600 9px/1.2 Arial, sans-serif; letter-spacing: .05em; text-transform: uppercase; }
-.collection-card-benefits ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3px 8px; margin: 0; padding: 0; list-style: none; }
-.collection-card-benefits li { position: relative; padding-left: 11px; color: #514638; font: 10px/1.3 Georgia, serif; }
-.collection-card-benefits li::before { position: absolute; left: 0; color: #ae8249; content: '✓'; }
-.collection-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 9px; }
-.collection-card-footer p { margin: 0; color: #392c1f; font: 13px/1.2 Georgia, serif; white-space: nowrap; }
-.collection-card-footer p span { color: #786b5d; font-size: 10px; }
+.collection-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: min(1120px, 100%); margin: 0 auto; }
+.collection-card { display: flex; min-width: 0; min-height: 324px; box-sizing: border-box; flex-direction: column; align-items: center; padding: 15px 24px 14px; text-align: center; }
+.collection-card:nth-child(3n + 1), .collection-card:nth-child(3n + 2) { border-right: 1px solid rgba(150, 120, 70, .18); }
+.collection-card:nth-child(-n + 6) { border-bottom: 1px solid rgba(150, 120, 70, .18); }
+.collection-card-image { display: block; width: 76px; height: 76px; flex: 0 0 76px; margin: 0 auto 2px; object-fit: contain; filter: drop-shadow(0 3px 4px rgba(69, 53, 29, .12)); }
+.collection-card-heading { min-height: 42px; }
+.collection-card-heading h3 { margin: 0; color: #302d22; font: 600 17px/1.2 Georgia, 'Times New Roman', serif; }
+.collection-card-heading p { margin: 3px 0 0; color: #514b3c; font: 12px/1.25 Georgia, serif; }
+.collection-card-meta { display: grid; width: min(100%, 220px); gap: 4px; margin: 7px 0 22px; text-align: center; }
+.collection-card-meta > div { display: flex; justify-content: center; gap: 8px; align-items: baseline; }
+.collection-card-meta dt { color: #756d5d; font: 600 8px/1.25 Arial, sans-serif; letter-spacing: .14em; text-transform: uppercase; }
+.collection-card-meta dd { min-width: 0; margin: 0; color: #39372f; font: 10px/1.3 Georgia, serif; }
+.collection-card-benefits { position: relative; width: min(100%, 250px); box-sizing: border-box; margin-top: 1px; padding: 10px 12px 9px; border: 1px solid rgba(150, 120, 70, .27); border-radius: 7px; background: rgba(255, 253, 248, .35); }
+.collection-card-benefits h4 { position: absolute; top: -6px; left: 50%; margin: 0; padding: 0 8px; transform: translateX(-50%); background: #f7f3ea; color: #5b584a; font: 600 8px/1.2 Arial, sans-serif; letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; }
+.collection-card-benefits ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px 8px; margin: 0; padding: 0; list-style: none; text-align: left; }
+.collection-card-benefits li { position: relative; min-width: 0; padding-left: 11px; color: #454237; font: 10px/1.25 Georgia, serif; }
+.collection-card-benefits li::before { position: absolute; left: 0; color: #9a783f; content: '✓'; }
+.collection-card-footer { display: flex; width: min(100%, 250px); align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 11px; }
+.collection-card-footer p { margin: 0; color: #302d22; font: 12px/1.2 Georgia, serif; white-space: nowrap; }
+.collection-card-footer p span { color: #756d5d; font-size: 10px; font-style: italic; }
 .collection-card-footer p strong { font-weight: 700; }
-.collection-card-footer a { color: #815a2b; font: 600 10px/1.2 Georgia, serif; letter-spacing: .04em; text-decoration: none; text-transform: uppercase; white-space: nowrap; }
-.collection-card-footer a span { display: inline-block; margin-left: 3px; transition: transform .2s ease; }
-.collection-card-footer a:hover span { transform: translateX(3px); }
-.collection-all-link { display: flex; align-items: center; justify-content: center; gap: 10px; width: fit-content; min-width: 188px; margin: 34px auto 0; padding: 14px 25px; border: 1px solid #66502f; border-radius: 999px; background: #344b3b; color: #f3e5c7; font: 500 13px/1 Georgia, serif; letter-spacing: .04em; text-decoration: none; transition: background-color .2s ease, border-color .2s ease; }
-.collection-all-link:hover { border-color: #8c7046; background: #293d31; }
-.collection-all-link span { font-size: 17px; }
+.collection-card-footer a { color: #665331; font: 600 9px/1.2 Georgia, serif; letter-spacing: .1em; text-decoration: underline; text-decoration-color: rgba(154, 120, 63, .55); text-underline-offset: 4px; text-transform: uppercase; white-space: nowrap; }
+.collection-card-footer a span { display: inline-block; margin-left: 2px; }
+.collection-all-link { display: flex; width: min(500px, 100%); align-items: center; justify-content: center; gap: 20px; margin: 30px auto 0; color: #f7f3ea; font: 500 12px/1 Georgia, serif; letter-spacing: .04em; text-decoration: none; text-transform: uppercase; }
+.collection-all-link > span:first-child, .collection-all-link > span:last-child { height: 1px; flex: 1; background: rgba(154, 120, 63, .65); }
+.collection-all-link { position: relative; }
+.collection-all-link::before { position: absolute; z-index: 0; left: 50%; width: 164px; height: 40px; transform: translateX(-50%); border-radius: 999px; background: #283321; content: ''; }
+.collection-all-link > span { position: relative; }
+.collection-all-link > span:first-child, .collection-all-link > span:last-child { z-index: 1; }
+.collection-all-link { isolation: isolate; }
+.collection-all-link .collection-all-label { z-index: 1; display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+.collection-all-link .collection-all-arrow { font-size: 15px; }
+.collection-all-link { padding: 13px 0; }
+.collection-all-link:hover::before { background: #34412b; }
 @media (max-width: 1023px) {
-  .gemstone-collection { padding: 72px 5% 70px; }
-  .collection-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-  .collection-card { grid-template-columns: 96px minmax(0, 1fr); gap: 10px; padding: 14px; }
-  .collection-card-image { height: 110px; }
-  .collection-card-image img { width: 92px; height: 92px; }
+  .gemstone-collection { padding: 68px 5% 60px; }
+  .collection-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .collection-card { min-height: 324px; padding-inline: 20px; }
+  .collection-card:nth-child(3n + 1), .collection-card:nth-child(3n + 2) { border-right: 0; }
+  .collection-card:nth-child(odd) { border-right: 1px solid rgba(150, 120, 70, .18); }
+  .collection-card:nth-child(-n + 8) { border-bottom: 1px solid rgba(150, 120, 70, .18); }
 }
 @media (max-width: 620px) {
-  .gemstone-collection { padding: 60px 18px 58px; }
-  .collection-heading { margin-bottom: 28px; }
+  .gemstone-collection { padding: 58px 18px 52px; }
+  .collection-heading { margin-bottom: 24px; }
   .collection-eyebrow { font-size: 9px; }
-  .collection-heading h2 { font-size: 38px; }
-  .collection-description { font-size: 13px; }
-  .collection-grid { grid-template-columns: minmax(0, 1fr); gap: 13px; max-width: 440px; }
-  .collection-card { grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 15px 17px 16px; }
-  .collection-card-image { height: 132px; }
-  .collection-card-image img { width: 116px; height: 116px; }
-  .collection-card-image span { bottom: 4px; }
-  .collection-card-heading h3 { font-size: 20px; }
-  .collection-card-heading p { font-size: 13px; }
-  .collection-card-meta { gap: 5px; }
-  .collection-card-meta > div { grid-template-columns: 54px minmax(0, 1fr); }
-  .collection-card-meta dt { font-size: 9px; }
-  .collection-card-meta dd { font-size: 12px; }
-  .collection-card-benefits { padding: 9px 11px; }
-  .collection-card-benefits h4 { font-size: 10px; }
-  .collection-card-benefits ul { gap: 5px 10px; }
-  .collection-card-benefits li { font-size: 12px; }
-  .collection-card-footer { margin-top: 11px; }
-  .collection-card-footer p { font-size: 15px; }
-  .collection-card-footer p span { font-size: 11px; }
-  .collection-card-footer a { font-size: 11px; }
-  .collection-all-link { margin-top: 28px; }
+  .collection-heading h2 { font-size: clamp(32px, 9vw, 38px); }
+  .collection-description { font-size: 12px; }
+  .collection-grid { grid-template-columns: minmax(0, 1fr); max-width: 440px; }
+  .collection-card { min-height: 310px; padding: 16px 30px; }
+  .collection-card:nth-child(odd) { border-right: 0; }
+  .collection-card:nth-child(-n + 8) { border-bottom: 1px solid rgba(150, 120, 70, .18); }
+  .collection-card-image { width: 78px; height: 78px; flex-basis: 78px; }
+  .collection-card-heading h3 { font-size: 18px; }
+  .collection-card-heading p { font-size: 12px; }
+  .collection-card-meta { width: min(100%, 250px); }
+  .collection-card-meta > div { justify-content: center; }
+  .collection-card-meta dt { font-size: 8px; }
+  .collection-card-meta dd { font-size: 11px; }
+  .collection-card-benefits li { font-size: 11px; }
+  .collection-card-footer p { font-size: 13px; }
+  .collection-card-footer a { font-size: 10px; }
+  .collection-all-link { margin-top: 24px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .collection-card, .collection-card-footer a span, .collection-all-link { transition: none; }
+  .collection-all-link { transition: none; }
 }
 
 /* Interactive Pancharatna gemstone showcase */
