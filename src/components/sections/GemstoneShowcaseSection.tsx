@@ -102,7 +102,7 @@ export function GemstoneShowcaseSection() {
         <p className="showcase-eyebrow">The Pancharatna Collection</p>
         <div className="showcase-copy" key={activeGemstone.id}>
           <h2>{activeGemstone.name}</h2>
-          <p className="showcase-hindi">{activeGemstone.hindiName}</p>
+          <p className="showcase-hindi" lang="hi">{activeGemstone.hindiName}</p>
           <p className="showcase-tagline">{activeGemstone.tagline}<span aria-hidden="true"> ✦</span></p>
           <p className="showcase-description">{activeGemstone.description}</p>
 
@@ -175,17 +175,18 @@ export function GemstoneShowcaseSection() {
                 style={{ left: `${x}%`, top: `${(y / 50) * 100}%` }}
                 onClick={() => selectGemstone(index)}
               >
-                <img src={gemstone.orbitImage} alt="" />
+                <img loading="lazy" src={gemstone.orbitImage} alt="" />
                 <span>{gemstone.name}</span>
               </button>
             );
           })}
         </div>
 
-        <img className="showcase-doorway" src={doorway} alt="" />
+        <img loading="lazy" className="showcase-doorway" src={doorway} alt="" />
         <div className="showcase-gem-slot">
           <div className="showcase-gem-arrive" key={activeGemstone.id}>
             <img
+              loading="lazy"
               className="showcase-main-gem"
               src={activeGemstone.image}
               alt={activeGemstone.name}
@@ -193,7 +194,7 @@ export function GemstoneShowcaseSection() {
             />
           </div>
         </div>
-        <img className="showcase-stone" src={stone} alt="" />
+        <img loading="lazy" className="showcase-stone" src={stone} alt="" />
         <div className="showcase-pagination" aria-label="Gemstone selection controls">
           <button type="button" aria-label="Previous gemstone" onClick={() => selectGemstone((activeIndex + gemstones.length - 1) % gemstones.length)}>‹</button>
           <span>{String(activeIndex + 1).padStart(2, '0')} <i /> {String(gemstones.length).padStart(2, '0')}</span>

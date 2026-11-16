@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { CartItem, Colorway, Product } from '../types';
 
 interface CartState {
@@ -11,7 +12,7 @@ interface CartState {
   getSubtotal: () => number;
 }
 
-export const useCartStore = create<CartState>((set, get) => ({
+export const useCartStore = create<CartState>()(persist((set, get) => ({
   items: [],
 
   addItem: (product, selectedColor, quantity = 1) => {
@@ -22,7 +23,8 @@ export const useCartStore = create<CartState>((set, get) => ({
 
       if (existingIndex > -1) {
         const nextItems = [...state.items];
-        nextItems[existingIndex].quantity += quantity;
+        const item = nextItems[existingIndex];
+        nextItems[existingIndex] = { ...item, quantity: item.quantity + quantity };
         return { items: nextItems };
       }
 
@@ -65,4 +67,4 @@ export const useCartStore = create<CartState>((set, get) => ({
   getSubtotal: () => {
     return get().items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   },
-}));
+}), { name: 'astrolaabh-bag', partialize: ({ items }) => ({ items }) }));

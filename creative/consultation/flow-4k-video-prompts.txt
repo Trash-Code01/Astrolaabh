@@ -1,0 +1,27 @@
+ASTRO LAABH | CONSULTATION INTRO | 4K LANDSCAPE MASTER
+
+Generate each shot separately using the full-size reference images. Paste the shared direction followed by ONE shot prompt. Use the study and visitor cutout as visual references for the doorway shot. The four shots end where the existing Three.js delivery begins.
+
+SHARED DIRECTION — paste with each shot
+
+Photorealistic Indian fine-jewellery film, composed in 16:9 for a 3840 × 2160 UHD master. Match the people, clothing, stationery and morning light in the attached references. Clean digital cinematography with a natural 35 mm lens perspective. Resolve the weave of the ivory linen, fine skin creases, the grain of the paper and the embossed gold seal. Preserve those details continuously as the subjects move. Soft sunlight comes from upper left. Keep detail in the ivory highlights and olive shadows. Controlled camera movement, stable exposure and deliberate focus. Natural skin texture, clean edges and restrained contrast. No added film grain, glow, beauty smoothing, edge halos, focus hunting or subtitles.
+
+01 | THE VISIT — doorway reference, 01-doorway.jpg
+
+Over the young visitor’s shoulder, follow him two measured steps across the sandstone threshold into the astrologer’s study. His ivory linen sleeve passes close to the teak doorframe. Ahead, the older astrologer in an olive kurta looks up from a circular chart beside a small brass armillary. Move at the visitor’s walking pace, then settle with him at the desk. Keep the astrologer’s eyes, silver hair and expression in clear focus. The visitor’s shoulder frames the left side, leaving a clear sightline to the astrologer. Quiet, natural movement.
+
+02 | THE RECOMMENDATION — card handoff reference, 02-offer.jpg
+
+A steady close shot across the teak desk. The older hand enters from upper right in an olive sleeve. The younger hand takes the opposite edge of the ivory card from lower left. The visitor’s fingertips close around the edge before the astrologer releases it. Hold the card nearly parallel to the camera for one full second. Keep the two printed lines exactly as photographed, “Pukhraj” above “Yellow Sapphire,” with the original gold border. The letters, card edge and touching fingertips stay in the same plane of focus throughout the exchange. The thumb casts a small contact shadow on the paper. The card stays rigid as its weight passes from one hand to the other. Keep the open olive envelope in view below.
+
+03 | RECEIVING THE CARD — insertion reference, 03-received.jpg
+
+Cut closer as the visitor holds the moss-olive envelope open in his left hand. His right thumb and forefinger guide the recommendation card slowly into its mouth. Begin with “Pukhraj” visible. Let the physical paper edge cover the lettering as the card enters. The constellation lines stay fixed on the envelope, and the fingertips keep their grip. Focus stays on the mouth of the envelope and the card edge. The astrologer’s released hand rests beside the chart in the background.
+
+04 | THE WALK — sealed envelope reference, 04-walk.jpg
+
+Track beside the same visitor at waist height as he takes two steps toward the jeweller’s sunlit worktable. His right hand carries the sealed olive envelope by its short edge, with the embossed gold compass facing camera. Match his speed so the hand, paper fibres and relief of the seal stay sharp while the stone passage moves behind them. A leaf shadow crosses the paper once. The visitor slows and starts to lift the envelope toward the worktable. Cut on that upward movement. The existing Three.js delivery shot takes over and places the envelope on the desk.
+
+EXPORT CHECK — outside the prompt box
+
+Choose 16:9 and the highest available source quality in Flow. Check the lettering and fingers during playback before upscaling the selected takes. Select 4K upscale/export if offered for your model and plan. Download the finished file and verify 3840 × 2160 under Windows Properties > Details. If the only defect is the output size and the existing take is sharp, upscale that take first.

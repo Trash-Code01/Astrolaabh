@@ -41,7 +41,7 @@ function GemstoneCard({ entry }: { entry: (typeof collectionEntries)[number] }) 
       />
       <header className="collection-card-heading">
         <h3>{gemstone.name}</h3>
-        <p>{gemstone.hindiName}</p>
+        <p lang="hi">{gemstone.hindiName}</p>
       </header>
 
       <dl className="collection-card-meta">

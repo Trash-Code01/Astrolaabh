@@ -1,0 +1,22 @@
+Astro Laabh | Google Flow video prompts
+
+Use Google Flow on the web. Choose Video > Frames. Select Veo 3.1 Lite if available, 16:9, four seconds for each generation. Upload only the named frame(s) for that shot. Each prompt stands alone. The JPGs are cropped to a common landscape aspect ratio for this pass. Generate a separate 9:16 pass for the phone edit, using portrait framing that keeps the exchange inside the frame.
+
+01 | The visitor enters
+Start frame: 01-doorway.jpg
+Prompt:
+One continuous over-the-shoulder shot in the Indian astrologer’s study shown in the first frame. The young man in the ivory linen shirt takes two measured steps across the sandstone threshold and slows at the teak desk. The camera follows just behind his shoulder at walking pace. The older astrologer in the olive kurta lifts his gaze from the chart to greet him. Keep both men recognizable and the brass armillary on the desk. Warm morning light from camera left. Natural weight shifts, quiet expressions. Silent editorial film, no on-screen captions.
+
+02 | The recommendation changes hands
+Start frame: 02-offer.jpg
+End frame: 03-received.jpg
+Prompt:
+A close shot of a single exchange. Begin with both men touching opposite edges of the ivory card as shown. The visitor’s fingers take its weight. The astrologer opens his fingers and draws his olive-sleeved hand back to the chart. Keep the card face toward camera for one beat, with its existing print “Pukhraj” and “Yellow Sapphire” steady and readable. The visitor supports the open olive envelope with his other hand and slips the card halfway inside. Finish in the supplied end frame. Keep the paper rigid, the original gold border and the two men’s sleeves distinct. Soft daylight from upper left, very small camera movement, no dialogue or on-screen captions.
+
+03 | The walk to the atelier
+Start frame: 04-walk.jpg
+Prompt:
+A waist-height tracking shot of the same ivory-shirted visitor carrying the sealed olive envelope down the sandstone passage. He takes two natural steps toward the jeweller’s sunlit worktable. The camera tracks beside his hand. The envelope swings gently with his stride, with the flap, constellation print and gold compass seal facing camera. A leaf shadow moves across the paper as he crosses into sunlight. He slows and begins lifting the envelope toward the worktable. End while the envelope is still in his hand, before it touches the table. Preserve the seal shape and paper proportions. No dialogue, captions or music.
+
+Editing and handoff
+Choose the card exchange first. Check that the astrologer actually releases the card, that the spelling holds, and that the same envelope arrives at the desk. Keep about two seconds of the visit, two to three of the exchange and one to two of the walk. Cut on the lifting hand to the project's existing Three.js delivery shot. The existing consultation film contains that shot from 5.5 seconds to 8 seconds. Use the matching desktop or portrait render. End on the resting envelope, hold while the live canvas becomes ready, then reveal “Open the letter” in HTML. Match the video and canvas viewport, crop and camera on each target size. The licensed/generated output from Flow should be downloaded as clean clips without baked-in site text.

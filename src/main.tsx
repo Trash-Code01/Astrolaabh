@@ -5,6 +5,7 @@ import App from './App';
 import 'lenis/dist/lenis.css';
 import './index.css';
 import './mobile.css';
+import './brand.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

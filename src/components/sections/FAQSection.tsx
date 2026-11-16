@@ -91,7 +91,7 @@ export function FAQSection() {
         <div className="faq-editorial-column">
           <div className="faq-sticky-box">
             <span className="faq-badge">
-              <Sparkles className="w-3.5 h-3.5 inline mr-1 text-[#9C691E]" />
+              <Sparkles className="w-3.5 h-3.5 inline mr-1 text-subdued" />
               CLARITY & SACRED WISDOM
             </span>
             <h2 id="faq-title">Frequently Asked Questions</h2>
@@ -169,9 +169,9 @@ export function FAQSection() {
                         transition={{ duration: 0.28, ease: [0.2, 0.9, 0.3, 1] }}
                       >
                         {isOpen ? (
-                          <Minus className="w-4 h-4 text-[#9C691E]" />
+                          <Minus className="w-4 h-4 text-subdued" />
                         ) : (
-                          <Plus className="w-4 h-4 text-[#6E5A44]" />
+                          <Plus className="w-4 h-4 text-subdued" />
                         )}
                       </motion.div>
                     </div>
@@ -204,7 +204,7 @@ export function FAQSection() {
                           <p>{faq.answer}</p>
                           {faq.highlight && (
                             <div className="faq-highlight-pill">
-                              <Sparkles className="w-3 h-3 text-[#9C691E]" />
+                              <Sparkles className="w-3 h-3 text-subdued" />
                               <span>{faq.highlight}</span>
                             </div>
                           )}

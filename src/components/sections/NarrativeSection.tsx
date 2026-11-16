@@ -1,3 +1,4 @@
+import { brandLogo } from '../../lib/brand';
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import story1 from '../../assets/story1.webp';
@@ -70,7 +71,7 @@ export function NarrativeSection() {
           <svg className="story-lotus" viewBox="0 0 150 50" aria-hidden="true">
             <path d="M75 47C61 39 59 23 75 4c16 19 14 35 0 43ZM75 47C58 42 48 29 50 12c17 2 25 14 25 35ZM75 47c17-5 27-18 25-35-17 2-25 14-25 35ZM75 47C56 46 40 38 34 24c17-4 32 7 41 23ZM75 47c19-1 35-9 41-23-17-4-32 7-41 23Z" />
           </svg>
-          <img src="/astrolaabh-logo.png" alt="" />
+          <img src={brandLogo} alt="" />
         </div>
         <p className="story-eyebrow">THE ASTROLAABH STORY</p>
         <h2>From an Astrologer’s Vision to <em>Your Hands</em>.</h2>

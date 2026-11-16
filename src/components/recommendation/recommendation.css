@@ -1,0 +1,78 @@
+.rec-story { position:relative; height:905vh; height:905svh; background:#d9c5aa; }
+.rec-atelier-anchor { position:absolute; pointer-events:none; }
+.rec-polish-choice { margin-top:14px; }
+.rec-polish-choice + .rec-actions .rec-primary { margin-top:5px; }
+.rec-stage { position:sticky; top:0; height:100vh; height:100svh; overflow:hidden; isolation:isolate; color:#322c20; --progress:0; }
+.rec-world,.rec-still,.rec-still img,.rec-scrim { position:absolute; inset:0; width:100%; height:100%; }
+.rec-still img { object-fit:cover; }
+.rec-world { display:block; opacity:0; pointer-events:none; }
+.rec-world.is-ready { opacity:1; }
+.rec-scrim { pointer-events:none; background:linear-gradient(90deg,rgba(237,222,196,.94) 0%,rgba(238,224,202,.86) 20%,rgba(240,225,201,.48) 35%,transparent 55%); }
+.rec-copy { position:absolute; width:clamp(260px,33vw,550px); left:clamp(28px,7vw,144px); top:53%; transform:translateY(-50%); animation:rec-copy-in .42s ease-out both; }
+.rec-chapter,.rec-primary,.rec-advisor,.rec-scroll {font-family:var(--brand-font);}
+.rec-chapter { display:flex; align-items:center; gap:12px; font-size:11px; letter-spacing:.19em; text-transform:uppercase; font-weight:600; }
+.rec-chapter i { width:27px; height:1px; background:currentColor; opacity:.7; }
+.rec-copy h1 { font:400 clamp(41px,4.6vw,86px)/1.03 var(--brand-font); letter-spacing:-.055em; color:inherit; margin:19px 0 16px; }
+.rec-copy p { font:400 clamp(17px,1.55vw,25px)/1.45 var(--brand-font); max-width:28ch; margin:0; text-wrap:pretty; }
+.rec-actions { display:flex; flex-wrap:wrap; align-items:center; gap:18px; }
+.rec-primary { display:inline-flex; align-items:center; justify-content:space-between; gap:20px; padding:13px 18px; min-height:44px; margin-top:26px; font-size:12px; font-weight:600; color:#f7f3e8; background:#384037; border:1px solid #384037; border-radius:2px; text-decoration:none; }
+.rec-primary:hover { background:#222d24; }.rec-advisor { margin-top:26px; text-underline-offset:4px; text-decoration:underline; font-size:12px; }
+.rec-green { color:#faf5e4; }.rec-green .rec-scrim { background:linear-gradient(90deg,#273127db, #2833278a 27%, transparent 60%); }
+.rec-green .rec-primary { background:#efdfb8; border-color:#efdfb8; color:#333b2e; }
+.rec-controls { position:absolute; bottom:max(22px,4vh); left:7vw; right:7vw; display:flex; align-items:center; justify-content:space-between; }
+.rec-stops { display:flex; align-items:center; }.rec-stops button { width:36px; height:42px; display:grid; place-items:center; }.rec-stops span { width:24px; height:2px; background:currentColor; opacity:.35; }.rec-stops [aria-current] span { opacity:1; height:3px; }
+.rec-scroll { display:flex; align-items:center; gap:9px; color:#352e23; background:#eee1c5e8; padding:7px 12px; border-radius:16px; font-size:10px; letter-spacing:.04em; }.rec-green .rec-scroll{color:#f5edda;background:#354333e8;}
+@keyframes rec-copy-in { from { opacity:0; } to { opacity:1; } }
+@media(max-aspect-ratio:94/100) {
+ .rec-copy { left:7%; top:auto; bottom:10.5%; transform:none; width:88%; }
+ .rec-copy h1 { font-size:clamp(36px,8.5vw,57px); margin:8px 0 7px; }
+ .rec-copy p { font-size:17px; max-width:34ch; }.rec-primary,.rec-advisor { margin-top:13px; }
+ .rec-scrim { background:linear-gradient(0deg,#ebddc8 0%,#edddc9eb 23%,#f0e1cb72 37%,transparent 55%); }
+ .rec-green .rec-scrim { background:linear-gradient(0deg,#273127 0%,#273127d9 26%,transparent 55%); }
+ .rec-controls { bottom:max(8px,env(safe-area-inset-bottom)); }.rec-chapter {font-size:9px;}
+}
+@media(prefers-reduced-motion:reduce){.rec-copy { animation:none; } }
+
+/* The workbench shares the astrolabe's sage cloth and scroll stage. */
+.rec-shopping .rec-copy { width:min(375px,37vw); }
+.rec-shop { font-family:var(--brand-font); color:#fbf6e6; }
+.rec-shop fieldset { margin:0 0 13px; padding:0; border:0; }
+.rec-shop legend { padding:0; margin-bottom:5px; font-size:11px; color:#f1e8ce; }
+.rec-options { display:flex; flex-wrap:wrap; gap:5px; }
+.rec-options label { position:relative; cursor:pointer; }
+.rec-options input { position:absolute; width:1px; height:1px; opacity:0; }
+.rec-options span { display:inline-flex; align-items:center; gap:6px; min-height:38px; padding:6px 11px; border:1px solid #e7dcc67a; background:#263225b5; border-radius:2px; color:#faf5e4; font-size:12px; }
+.rec-options input:checked + span { border-color:#e9dcba; background:#f1e6cd; color:#32392d; }
+.rec-options input:focus-visible + span { outline:2px solid white; outline-offset:2px; }
+.rec-options i { width:11px; height:11px; border-radius:50%; box-shadow:inset 0 0 0 1px #0002; }
+.rec-buy { display:flex; align-items:center; gap:20px; padding-top:6px; }
+.rec-buy > span { font-size:11px; }.rec-buy strong { display:block; font:400 23px/1.1 var(--brand-font); }
+.rec-buy .rec-primary { margin:0; min-width:145px; justify-content:center; }
+.rec-shop-links { display:flex; align-items:center; gap:16px; margin-top:12px; font-size:11px; }
+.rec-shop-links a { text-decoration:underline; text-underline-offset:3px; }
+@media(max-aspect-ratio:94/100) {
+ .rec-shopping .rec-copy { width:88%; bottom:max(47px,7%); }
+ .rec-shopping .rec-copy h1 { margin:5px 0 9px; }
+ .rec-shopping .rec-scrim { background:linear-gradient(0deg,#263126 12%,#283427f5 32%,#283427c4 44%,transparent 65%); }
+ .rec-shop fieldset { margin-bottom:7px; }.rec-options span { min-height:34px; }
+ .rec-shop-links { margin-top:8px; }.rec-stops button { width:26px; }.rec-stops span {width:18px;}
+}
+@media(max-height:600px) and (min-aspect-ratio:94/100){
+ .rec-shopping .rec-copy { top:55%; }.rec-shopping .rec-copy h1 { font-size:31px; margin:3px 0 8px; }
+ .rec-shop fieldset { margin-bottom:5px; }.rec-options span { min-height:28px; }.rec-shop-links { margin-top:6px; }
+}
+@media(prefers-reduced-motion:reduce){.rec-story {height:585svh;} }
+@media(max-aspect-ratio: 63/100) {
+ .rec-ring-portrait .rec-still { background:linear-gradient(#e6d3af 50%,#263126 86%); }
+ .rec-ring-portrait .rec-still img { object-fit:contain; object-position:center 30%; }
+}
+
+/* The finished piece and its controls share the same full-bleed ivory paper. */
+.rec-showcase { color:#30382c; }
+.rec-showcase .rec-copy { animation:none; }
+.rec-showcase .rec-scrim { background:none; }
+.rec-showcase .rec-shop,.rec-showcase .rec-shop legend { color:inherit; }
+.rec-showcase .rec-options span { background:transparent; border-color:#79765e; color:inherit; }
+.rec-showcase .rec-options input:checked + span,.rec-showcase .rec-primary,.rec-showcase .rec-scroll { background:#384037; border-color:#384037; color:#faf5e4; }
+.rec-showcase .rec-options input:focus-visible + span { outline-color:#384037; }
+.rec-showcase .rec-primary:hover { background:#222d24; }

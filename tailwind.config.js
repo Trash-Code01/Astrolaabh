@@ -7,22 +7,25 @@ export default {
   theme: {
     extend: {
       colors: {
+        sage: '#787C62', champagne: '#C5A259', pukhraj: '#F6D88A', sand: '#E8E1D5',
+        ink: '#111317', 'warm-stone': '#CDBFAB', pearl: '#D9D9D6', mist: '#F2F2F1',
+        forest: 'var(--sage-deep)', subdued: 'var(--ink-muted)',
         brand: {
-          dark: '#08080a',
-          card: '#121217',
+          dark: '#111317',
+          card: '#787C62',
           border: 'rgba(255, 255, 255, 0.08)',
-          accent: '#00f0ff',
-          neon: '#ff0055',
-          gold: '#e0b571',
-          muted: '#8e8e99',
+          accent: '#C5A259',
+          neon: '#F6D88A',
+          gold: '#C5A259',
+          muted: '#D9D9D6',
         },
       },
       fontFamily: {
-        sans: ['Space Grotesk', 'Inter', 'sans-serif'],
-        display: ['Syncopate', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
-        serif: ['"Cormorant Garamond"', '"Playfair Display"', 'Georgia', 'serif'],
-        cinzel: ['Cinzel', 'serif'],
+        sans: ['Manrope', 'Karma', 'sans-serif'],
+        display: ['Manrope', 'Karma', 'sans-serif'],
+        mono: ['Manrope', 'Karma', 'sans-serif'],
+        serif: ['Manrope', 'Karma', 'sans-serif'],
+        cinzel: ['Manrope', 'Karma', 'sans-serif'],
       },
       animation: {
         'spin-slow': 'spin 35s linear infinite',

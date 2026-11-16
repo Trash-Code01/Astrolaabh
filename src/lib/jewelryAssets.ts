@@ -18,6 +18,10 @@ const sheets: Record<string, string> = {
 export function getJewelryAsset(gemstoneId: string, metalId: string, form: string) {
   const x = form === 'Necklace' ? '50%' : form === 'Bracelet' ? '100%' : '0%';
   if (gemstoneId === 'yellow-sapphire') {
+    if (form === 'Ring') {
+      const metal = metalId === 'silver' ? 'silver' : 'yellow-gold';
+      return { backgroundImage: `url(/story/pukhraj-ring-${metal}.webp)`, backgroundPosition: 'center', backgroundSize: 'cover' };
+    }
     return { backgroundImage: `url(${metalId === 'silver' ? yellowSilver : yellowGold})`, backgroundPosition: `${x} 0%`, backgroundSize: '300% 100%' };
   }
   return { backgroundImage: `url(${sheets[gemstoneId]})`, backgroundPosition: `${x} ${metalId === 'silver' ? '100%' : '0%'}`, backgroundSize: '300% 200%' };

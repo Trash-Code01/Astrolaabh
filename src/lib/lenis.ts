@@ -25,16 +25,16 @@ export function resetPageScroll() {
   window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 }
 
-export function scrollToTarget(target: string | HTMLElement | number, offset = 0) {
+export function scrollToTarget(target: string | HTMLElement | number, offset = 0, immediate = false) {
   const resolved = typeof target === 'string' ? document.getElementById(target) : target;
   if (resolved == null) return;
 
   if (lenisInstance) {
-    lenisInstance.scrollTo(resolved, { offset, duration: 1.15 });
+    lenisInstance.scrollTo(resolved, { offset, duration: 1.15, immediate });
     return;
   }
 
-  const behavior = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+  const behavior = immediate || matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
   if (typeof resolved === 'number') {
     window.scrollTo({ top: resolved, behavior });
     return;

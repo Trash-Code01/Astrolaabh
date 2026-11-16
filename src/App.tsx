@@ -1,7 +1,7 @@
-import { lazy, Suspense, useEffect, useLayoutEffect, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { resetPageScroll } from './lib/lenis';
 import { useLenis } from './hooks/useLenis';
-import { Preloader } from './components/dom/ui/Preloader';
+import { AtelierArrival } from './components/recommendation/AtelierArrival';
 const HomePage = lazy(() => import('./HomePage'));
 const ProductPage = lazy(() => import('./components/sections/ProductPage').then(module => ({ default: module.ProductPage })));
 const CheckoutPage = lazy(() => import('./components/sections/CheckoutPage').then(module => ({ default: module.CheckoutPage })));
@@ -9,7 +9,9 @@ const CartPage = lazy(() => import('./components/sections/CartPage').then(module
 
 const FindGemPage = lazy(() => import('./components/sections/FindGemPage'));
 
-export function App() {
+type RouteReadiness = (home: boolean) => void;
+
+export function App({ onReady, onSceneReady }: { onReady?: RouteReadiness; onSceneReady: () => void }) {
   useLenis();
   const [route, setRoute] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -54,7 +56,28 @@ export function App() {
     return () => cancelAnimationFrame(frame);
   }, [route]);
 
-  if (route === 'find-gem') return <Suspense fallback={<div style={{ minHeight: '100vh', background: '#f5f0e6' }} />}><FindGemPage /></Suspense>;
+  useEffect(() => {
+    if (!onReady) return;
+    let active = true;
+    const ready = () => { if (active) { active = false; onReady(route === 'home'); } };
+    // This effect commits after the destination's lazy module and CSS arrive.
+    // A failed optional image must not leave the page behind the loader.
+    const deadline = window.setTimeout(ready, 15000);
+    const frame = requestAnimationFrame(() => {
+      const target = document.getElementById(location.hash.slice(1));
+      const top = target ? target.getBoundingClientRect().top : 0;
+      const images = Array.from(document.querySelectorAll<HTMLImageElement>('[data-route-content] img')).filter(image => {
+        const box = image.getBoundingClientRect();
+        return box.width > 0 && box.height > 0 && box.bottom > top && box.top < top + innerHeight && box.right > 0 && box.left < innerWidth;
+      });
+      for (const image of images) image.loading = 'eager';
+      void Promise.allSettled([document.fonts.load('400 16px Manrope'), ...images.map(image => image.decode())])
+        .then(() => { clearTimeout(deadline); ready(); });
+    });
+    return () => { active = false; clearTimeout(deadline); cancelAnimationFrame(frame); };
+  }, [route, onReady]);
+
+  if (route === 'find-gem') return <FindGemPage />;
   if (route === 'checkout') return <CheckoutPage />;
   if (route === 'cart') return <CartPage />;
 
@@ -62,16 +85,45 @@ export function App() {
     return <ProductPage key={route} gemstoneId={route} />;
   }
 
-  return <HomePage />;
+  return <HomePage onSceneReady={onSceneReady} />;
 }
 
 export default function AppWithSuspense() {
+  const [showOpening, setShowOpening] = useState(true);
+  const [reduceMotion, setReduceMotion] = useState(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const [includeVisit] = useState(() => location.pathname === '/' && (!location.hash || location.hash === '#hero') && window.scrollY < 4);
+  const [filmEnded, setFilmEnded] = useState(false);
+  const [homeRoute, setHomeRoute] = useState<boolean | null>(null);
+  const [sceneReady, setSceneReady] = useState(false);
+  const finishFilm = useCallback(() => setFilmEnded(true), []);
+  const finishScene = useCallback(() => setSceneReady(true), []);
+  const assetsReady = homeRoute !== null && (!homeRoute || !includeVisit || reduceMotion || sceneReady);
+
+  useEffect(() => {
+    if (!showOpening) return;
+    const preference = matchMedia('(prefers-reduced-motion: reduce)');
+    const changed = () => setReduceMotion(preference.matches);
+    preference.addEventListener('change', changed);
+    return () => preference.removeEventListener('change', changed);
+  }, [showOpening]);
+
+  useEffect(() => {
+    if (!showOpening || (!filmEnded && !reduceMotion) || homeRoute === null) return;
+    if (assetsReady) { setShowOpening(false); return; }
+    // The responsive envelope still is ready. If the GPU or mesh stalls,
+    // reveal that usable scene and let WebGL take over when it finishes.
+    const deadline = window.setTimeout(() => setShowOpening(false), 8000);
+    return () => clearTimeout(deadline);
+  }, [assetsReady, homeRoute, filmEnded, reduceMotion, showOpening]);
+
   return (
     <>
-      <Preloader />
-      <Suspense fallback={<div className="route-loading" role="status">Opening your stone journey…</div>}>
-        <App />
-      </Suspense>
+      <div data-route-content style={{ display: 'contents' }} ref={element => { if (element) element.inert = showOpening; }}>
+        <Suspense fallback={null}><App onReady={showOpening ? setHomeRoute : undefined} onSceneReady={finishScene} /></Suspense>
+      </div>
+      {showOpening && (reduceMotion
+        ? <div className="arrival-loading" role="status" aria-label="Loading Astro Laabh"><img src="/story/logo-opening.webp" alt="" /></div>
+        : <AtelierArrival includeVisit={includeVisit} onFinish={finishFilm} assetsReady={assetsReady} waiting={filmEnded && !assetsReady} />)}
     </>
   );
 }

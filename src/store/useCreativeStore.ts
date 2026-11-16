@@ -33,11 +33,6 @@ interface CreativeState {
   setCursorState: (text: string, variant?: 'default' | 'pointer' | 'drag' | 'view' | 'color') => void;
   resetCursor: () => void;
 
-  // Preloader
-  isLoading: boolean;
-  loadingProgress: number;
-  setLoadingProgress: (progress: number) => void;
-  finishLoading: () => void;
 }
 
 export const useCreativeStore = create<CreativeState>((set) => ({
@@ -66,10 +61,6 @@ export const useCreativeStore = create<CreativeState>((set) => ({
   setCursorState: (text, variant = 'pointer') => set({ cursorText: text, cursorVariant: variant }),
   resetCursor: () => set({ cursorText: '', cursorVariant: 'default' }),
 
-  isLoading: true,
-  loadingProgress: 0,
-  setLoadingProgress: (progress) => set({ loadingProgress: progress }),
-  finishLoading: () => set({ isLoading: false, loadingProgress: 100 }),
 }));
 
 (window as any).__creativeStore = useCreativeStore;

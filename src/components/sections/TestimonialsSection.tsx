@@ -158,9 +158,9 @@ export function TestimonialsSection() {
 
       <header className="testimonials-heading">
         <p className="testimonials-eyebrow">
-          <Sparkles className="w-3.5 h-3.5 inline mr-1.5 text-[#B8860B]" />
+          <Sparkles className="w-3.5 h-3.5 inline mr-1.5 text-subdued" />
           VOICES OF ASTROLAABH
-          <Sparkles className="w-3.5 h-3.5 inline ml-1.5 text-[#B8860B]" />
+          <Sparkles className="w-3.5 h-3.5 inline ml-1.5 text-subdued" />
         </p>
         <h2 id="testimonials-heading">What People Are Saying</h2>
         <span className="testimonials-subheading">
@@ -195,11 +195,11 @@ export function TestimonialsSection() {
                 <div className="testimonial-card-header">
                   <div className="testimonial-stars" aria-label={`${review.rating} out of 5 stars`}>
                     {[...Array(review.rating)].map((_, s) => (
-                      <Star key={s} className="w-3.5 h-3.5 fill-[#D4AF37] text-[#D4AF37]" />
+                      <Star key={s} className="w-3.5 h-3.5 fill-champagne text-subdued" />
                     ))}
                   </div>
                   <span className="testimonial-verified-badge">
-                    <ShieldCheck className="w-3 h-3 text-[#B8860B]" />
+                    <ShieldCheck className="w-3 h-3 text-subdued" />
                     Verified Patron
                   </span>
                 </div>
@@ -235,11 +235,11 @@ export function TestimonialsSection() {
                 <div className="testimonial-card-header">
                   <div className="testimonial-stars" aria-label={`${review.rating} out of 5 stars`}>
                     {[...Array(review.rating)].map((_, s) => (
-                      <Star key={s} className="w-3.5 h-3.5 fill-[#D4AF37] text-[#D4AF37]" />
+                      <Star key={s} className="w-3.5 h-3.5 fill-champagne text-subdued" />
                     ))}
                   </div>
                   <span className="testimonial-verified-badge">
-                    <ShieldCheck className="w-3 h-3 text-[#B8860B]" />
+                    <ShieldCheck className="w-3 h-3 text-subdued" />
                     Verified Patron
                   </span>
                 </div>

@@ -11,15 +11,10 @@ import yellowSapphirePortrait from '../../assets/optimized/goldeninfo.webp';
 import metalMaterials from '../../assets/optimized/metal-materials.webp';
 import { getJewelryAsset } from '../../lib/jewelryAssets';
 import { gemstones, type Gemstone } from '../../lib/gemstones';
-import { FLAGSHIP_PRODUCT } from '../../lib/constants';
+import { configuredGemstone, forms, metals } from '../../lib/configuredGemstone';
 import { useCartStore } from '../../store/useCartStore';
 import { navigateToCart } from '../../lib/navigation';
 
-const forms = ['Loose stone', 'Ring', 'Necklace', 'Bracelet'];
-const metals = [
-  { id: 'yellow-gold', name: '18k Yellow gold', short: '18K GOLD', color: '#d6ad58' },
-  { id: 'silver', name: '925 Sterling silver', short: '925 SILVER', color: '#aeb8c0' },
-];
 const mantras: Record<string, [string, string]> = {
   ruby: ['ॐ ह्रां ह्रीं ह्रौं सः सूर्याय नमः', 'Om Hraam Hreem Hraum Sah Suryaya Namah'],
   'blue-sapphire': ['ॐ शं शनैश्चराय नमः', 'Om Sham Shanaishcharaya Namah'],
@@ -88,36 +83,7 @@ export function ProductPage({ gemstoneId = 'ruby' }: { gemstoneId?: string }) {
     if (!selectedMetal || selectedForm === null) return;
 
     const form = forms[selectedForm];
-    const colorway = {
-      id: selectedMetal.id,
-      name: `${selectedMetal.name} · ${form}`,
-      hex: selectedMetal.color,
-      finish: 'metallic' as const,
-      roughness: 0.24,
-      metalness: 0.88,
-      emissiveColor: selectedMetal.color,
-    };
-    const price = Number(gemstone.price.replace(/[^0-9]/g, '')) || 0;
-    const product = {
-      ...FLAGSHIP_PRODUCT,
-      id: `gemstone-${gemstone.id}-${selectedMetal.id}-${form.toLowerCase()}`,
-      name: `${gemstone.name} · ${form}`,
-      edition: 'HANDCRAFTED TO ORDER',
-      tagline: gemstone.tagline,
-      description: gemstone.description,
-      price,
-      currency: 'INR',
-      colorways: [colorway],
-      specs: [
-        { label: 'GEMSTONE', value: gemstone.name, detail: gemstone.origin },
-        { label: 'SETTING', value: form, detail: selectedMetal.name },
-      ],
-      features: gemstone.benefits,
-      gemstoneId: gemstone.id,
-      metalId: selectedMetal.id,
-      jewelryForm: form,
-    };
-
+    const { product, colorway } = configuredGemstone(gemstone, selectedMetal, form);
     addItem(product, colorway, 1);
     navigateToCart();
   };
@@ -133,7 +99,7 @@ export function ProductPage({ gemstoneId = 'ruby' }: { gemstoneId?: string }) {
       <section id="top" className="pdp-product">
         <div className="pdp-gallery">
           <div className="pdp-gallery-top"><span>THE {gemstone.name.toUpperCase()} COLLECTION</span><button onClick={() => setSaved(!saved)} aria-label={saved ? 'Remove from saved items' : 'Save this stone'} className={saved ? 'is-saved' : ''}><Heart size={17} fill={saved ? 'currentColor' : 'none'} /></button></div>
-          <motion.div className="pdp-visual" style={{ y: imageY, background: 'linear-gradient(145deg, #f8f4eb 0%, #eee8da 100%)' }}>
+          <motion.div className="pdp-visual" style={{ y: imageY }}>
             <div className="pdp-side-note"><span>{planetName} STONE</span><i>✳</i><span>HAND FINISHED</span></div>
             <AnimatePresence mode="wait"><JewelleryVisual key={`${gemstone.id}-${selectedMetalId}-${displayForm}`} form={displayForm} metal={activeStep === 3 ? selectedMetal : null} image={gemstone.image} gemstoneId={gemstone.id} gemstoneName={gemstone.name} previewZoom={hoveredForm !== null} /></AnimatePresence>
             <div className="pdp-gem-caption"><span>ATELIER · 01</span><span>{gemstone.origin.toUpperCase()} · NATURAL {gemstone.name.toUpperCase()}</span></div>
@@ -143,7 +109,7 @@ export function ProductPage({ gemstoneId = 'ruby' }: { gemstoneId?: string }) {
 
         <div className="pdp-buy" id="details">
           <div className="pdp-eyebrow"><span className="pdp-starline">✳</span> {gemstone.planet.toUpperCase()} <span className="pdp-starline">✳</span></div>
-          <h1>{gemstone.hindiName.split('·')[1]?.trim() ?? gemstone.name}<span className="pdp-devanagari">{sanskritName}</span></h1>
+          <h1>{gemstone.hindiName.split('·')[1]?.trim() ?? gemstone.name}<span className="pdp-devanagari" lang="hi">{sanskritName}</span></h1>
           <div className="pdp-subtitle">{gemstone.name.toUpperCase()} <span>·</span> {gemstone.planet.toUpperCase()} <span>·</span> {gemstone.origin.toUpperCase()}</div>
           <div className="pdp-rating"><span className="pdp-stars"><Star /><Star /><Star /><Star /><Star /></span><span>4.9 / 5</span><i /> <span>142 stone stories</span></div>
           <div className="pdp-price-row"><strong>{gemstone.price === 'Price on request' ? gemstone.price : `From ${gemstone.price}`}</strong><span>{gemstone.price === 'Price on request' ? 'Speak with our gemstone team' : 'Inclusive of all taxes'}</span><span className="pdp-stock"><i /> AVAILABLE TO DISCOVER</span></div>
@@ -189,7 +155,7 @@ export function ProductPage({ gemstoneId = 'ruby' }: { gemstoneId?: string }) {
         <div className="pdp-story-top"><span>01 — THE MEANING</span><span>{gemstone.name.toUpperCase()} · {gemstone.planet.toUpperCase()}</span></div>
         <div className="pdp-story-content">
           <div className="pdp-story-image"><img loading="lazy" decoding="async" src={secondaryImage} alt={`${gemstone.name} gemstone`} /><span>{sanskritName}</span></div>
-          <div className="pdp-story-copy"><div className="pdp-eyebrow">WORN WITH INTENTION <span className="pdp-starline">✳</span></div><h2>{gemstone.tagline.replace(/^The Gem of /i, 'The gift of ')}.</h2><p>{gemstone.description}</p><p className="pdp-note">A gemstone is a personal choice. We always recommend speaking with a trusted astrologer before wearing one.</p>{mantra && <div className="pdp-mantra"><span>BEEJ MANTRA · RECITED DURING ENERGISATION</span><strong>{mantra}</strong><i>{transliteration}</i></div>}</div>
+          <div className="pdp-story-copy"><div className="pdp-eyebrow">WORN WITH INTENTION <span className="pdp-starline">✳</span></div><h2>{gemstone.tagline.replace(/^The Gem of /i, 'The gift of ')}.</h2><p>{gemstone.description}</p><p className="pdp-note">A gemstone is a personal choice. We always recommend speaking with a trusted astrologer before wearing one.</p>{mantra && <div className="pdp-mantra"><span>BEEJ MANTRA · RECITED DURING ENERGISATION</span><strong lang="sa">{mantra}</strong><i>{transliteration}</i></div>}</div>
         </div>
         <div className="pdp-story-footer"><span>WORN FOR <b>{gemstone.benefits.join(' · ').toUpperCase()}</b></span><span>CHOSEN WITH PERSONAL GUIDANCE</span></div>
       </section>

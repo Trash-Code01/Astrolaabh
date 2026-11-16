@@ -1,0 +1,150 @@
+@font-face {
+  font-family: Manrope;
+  src: url('/fonts/manrope.woff2') format('woff2');
+  font-weight: 200 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Baloo 2';
+  src: url('/fonts/baloo2.woff2') format('woff2');
+  font-weight: 400 800;
+  font-display: swap;
+  unicode-range: U+0900-097F, U+1CD0-1CFF, U+A8E0-A8FF;
+}
+@font-face {
+  font-family: Karma;
+  src: url('/fonts/karma.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0900-097F, U+1CD0-1CFF, U+A8E0-A8FF;
+}
+
+:root {
+  --sage: #787c62;
+  --champagne: #c5a259;
+  --pukhraj: #f6d88a;
+  --sand: #e8e1d5;
+  --ink: #111317;
+  --warm-stone: #cdbfab;
+  --pearl: #d9d9d6;
+  --mist: #f2f2f1;
+  --white: #fff;
+  --brand-font: Manrope, Karma, sans-serif;
+  --sage-deep: color-mix(in srgb, var(--sage) 48%, var(--ink));
+  --ink-muted: color-mix(in srgb, var(--sage) 56%, var(--ink));
+  --sage-mist: color-mix(in srgb, var(--sage) 16%, var(--mist));
+  --sage-paper: linear-gradient(rgb(50 54 45 / 82%), rgb(50 54 45 / 82%)), url('/brand/sage-paper.webp');
+}
+body { font-family: var(--brand-font); background: var(--sand); color: var(--ink); }
+::selection { color: var(--ink); background: var(--pukhraj); }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.pdp-shell .pdp-devanagari, .showcase-hindi:lang(hi), .collection-card-heading :lang(hi), .fg-story-top :lang(hi) {
+  font-family: 'Baloo 2', var(--brand-font);
+}
+.pdp-shell .pdp-mantra strong:lang(sa) { font-family: Karma, var(--brand-font); }
+
+.site-navbar, .brand-checkout-header, .fg-page .fg-header, .brand-footer, .brand-home .story-section {
+  background-color: var(--sage-deep);
+  background-image: var(--sage-paper);
+  background-size: auto, 320px;
+  color: var(--mist);
+  border-color: var(--sage);
+}
+.site-navbar nav:not(.mobile-navigation) > button, .site-navbar nav:not(.mobile-navigation) > a, .site-navbar nav:not(.mobile-navigation) > div > button, .site-navbar nav:not(.mobile-navigation) > div > button > svg {
+  color: var(--mist);
+}
+.site-navbar nav:not(.mobile-navigation) > button:hover, .site-navbar nav:not(.mobile-navigation) > a:hover, .site-navbar nav:not(.mobile-navigation) > div > button:hover { color: var(--pukhraj); }
+.site-navbar nav:not(.mobile-navigation) > a > span.absolute, .site-navbar nav:not(.mobile-navigation) > div > button > span.absolute { background: var(--champagne); }
+.brand-checkout-header .text-subdued, .brand-checkout-header a { color: var(--sand); }
+.fg-page .fg-header nav a, .fg-page .fg-header nav span { color: var(--sand); }
+.fg-page .fg-header-talk { background: var(--sand); color: var(--ink); border-color: var(--warm-stone); }
+
+.brand-home .hero-marquee {
+  background: linear-gradient(rgb(232 225 213 / 90%),rgb(232 225 213 / 90%)), url('/brand/fluted-glass.webp') center/200px;
+  border-color: var(--warm-stone);
+}
+.hero-marquee .hero-marquee-item, .hero-marquee .hero-marquee-text { color: var(--sage-deep); }
+.hero-marquee .hero-marquee-star { color: var(--champagne); }
+.story-section .story-lotus { stroke: var(--champagne); }
+.story-header .story-eyebrow { color: var(--pukhraj); }
+.story-section .story-header h2 { color: var(--white); }
+.story-section .story-header em { color: var(--sand); }
+.story-section :is(.story-subtitle,.story-item p) { color: var(--sand); }
+.story-divider span { background: var(--champagne) url('/brand/gold-foil.webp') center/100px; }
+.story-divider i { background: var(--champagne); }
+.story-section .story-item h3 { color: var(--white); }
+.brand-home .gemstone-collection { background: var(--mist); color: var(--ink); }
+.collection-heading h2, .gallery-heading-title, .faq-sticky-box h2 { color: var(--ink); }
+.collection-heading h2 em, .gallery-heading-title em { color: var(--sage-deep); }
+.collection-heading :is(.collection-eyebrow,.collection-description), .gallery-heading :is(.gallery-heading-question,.gallery-heading-desc,.gallery-heading-eyebrow) { color: var(--ink-muted); }
+.collection-card :is(.collection-card-heading h3,.collection-card-footer p,.collection-card-meta dd) { color: var(--ink); }
+.collection-card :is(.collection-card-meta dt,.collection-card-benefits li,.collection-card-footer a,.collection-card-view) { color: var(--sage-deep); }
+.collection-card .collection-card-benefits { border-color: var(--pearl); background: transparent; }
+.collection-card .collection-card-benefits h4 { background: var(--mist); color: var(--sage-deep); }
+.collection-all-link::before { background: var(--sage-deep); }
+.brand-home .gemstone-showcase {
+  background: linear-gradient(rgb(232 225 213 / 92%),rgb(232 225 213 / 92%)), url('/brand/travertine.webp') center/380px;
+}
+.showcase-information .showcase-copy h2 { color: var(--ink); }
+.showcase-information :is(.showcase-eyebrow,.showcase-tagline,.showcase-description,.showcase-hindi,.showcase-details dt,.showcase-details dd) { color: var(--sage-deep); }
+.showcase-copy .showcase-benefits, .showcase-copy .showcase-benefits h3 { background: var(--mist); border-color: var(--warm-stone); color: var(--sage-deep); }
+.brand-home .gemstone-gallery { background: var(--mist); color: var(--ink); }
+.gallery-heading-mantra, .gallery-featured-heading { color: var(--sage-deep); }
+.gallery-heading-mantra .gallery-mantra-dot { background: var(--champagne); }
+.brand-home .lb { --lb-ivory: var(--sage-mist); --lb-ink: var(--ink); --lb-muted: var(--ink-muted); --lb-gold: var(--champagne); }
+.lb .lb-slide { background: var(--sage-mist); }
+.lb .lb-slide:nth-child(even) { background: var(--sand); }
+.lb .lb-slide .lb-shape { background-color: var(--warm-stone); }
+.lb .lb-cta { color: var(--sage-deep); }
+.brand-home .testimonials-section { background: var(--sage-mist); color: var(--ink); }
+.testimonials-heading :is(h2,.testimonials-eyebrow,.testimonials-subheading) { color: var(--sage-deep); }
+.testimonials-section .testimonial-luxury-card, .faq-redesign-section .faq-card { background: var(--white); border-color: var(--pearl); }
+.brand-home .faq-redesign-section { background: var(--mist); color: var(--ink); }
+.faq-redesign-section .faq-concierge-card { background: var(--sage-mist); border-color: var(--pearl); }
+.faq-redesign-section .faq-cat-pill.is-active, .testimonials-section .testimonials-filter-pill.is-active { color: var(--white); background: var(--sage-deep); border-color: var(--sage-deep); }
+.brand-home #final-cta { background: var(--sand); }
+
+.brand-footer :is(h3,p,nav a,form input), .brand-footer [class*="text-ink"], .brand-footer [class*="text-subdued"] { color: var(--sand); }
+.brand-footer nav a:hover, .brand-footer nav h3 { color: var(--pukhraj); }
+.brand-footer input::placeholder { color: var(--pearl); }
+.brand-footer form button { background: var(--champagne); color: var(--ink); }
+.brand-footer form button:hover { background: var(--pukhraj); }
+.pdp-shell { --pdp-ink: var(--ink); --pdp-muted: var(--ink-muted); --pdp-gold: var(--sage-deep); --pdp-gold-light: var(--champagne); --pdp-paper: var(--sand); --pdp-paper-bright: var(--mist); --pdp-red: var(--sage-deep); }
+.pdp-shell .pdp-visual { background: linear-gradient(145deg, var(--mist), var(--sand)); }
+.pdp-progress span { background: var(--champagne) url('/brand/gold-foil.webp') center/160px; }
+.fg-page.fg-page { --fg-ink: var(--ink); --fg-gold: var(--sage-deep); --fg-line: var(--pearl); --fg-muted: var(--ink-muted); background: var(--mist); }
+.fg-page .fg-story { background: linear-gradient(rgb(221 223 213 / 93%),rgb(221 223 213 / 93%)), url('/brand/sage-paper.webp') center/320px; }
+.fg-page .fg-intro h1 em { color: var(--sage-deep); }
+.fg-page .fg-form-side { background: var(--white); }
+.fg-page .fg-choice[aria-pressed=true] { border-color: var(--sage); background: var(--sage-mist); }
+.brand-shopping { background: var(--sand); }
+.brand-shopping .bg-ink { background: var(--sage-deep); color: var(--white); }
+.brand-shopping .bg-ink:hover { background: var(--ink); }
+/* Product configuration and the stone's provenance */
+.pdp-shell .pdp-devanagari { color: var(--sage-deep); }
+.pdp-shell :is(.pdp-metal-card,.pdp-form-card) { background: var(--mist); border-color: var(--warm-stone); }
+.pdp-shell :is(.pdp-metal-card,.pdp-form-card).selected { border-color: var(--sage-deep); background: var(--white); box-shadow: inset 0 0 0 1px var(--sage); }
+.pdp-shell :is(.pdp-metal-card,.pdp-form-card).selected > i, .pdp-shell .pdp-config-progress button.is-current i, .pdp-shell .pdp-config-progress button.is-complete i {
+  background: var(--sage-deep); border-color: var(--sage-deep); color: var(--white);
+}
+.pdp-shell :is(.pdp-metal-card small,.pdp-form-card small,.pdp-field-note,.pdp-config-foot,.pdp-config-heading > span,.pdp-design-note,.pdp-gallery-top,.pdp-crumb) { color: var(--ink-muted); }
+.pdp-shell .pdp-next-button { background: var(--sage-deep); border-color: var(--sage-deep); }
+.pdp-shell .pdp-next-button:disabled { background: var(--sage); }
+.pdp-shell .pdp-story, .pdp-shell .pdp-footer { background-color: var(--sage-deep); background-image: var(--sage-paper); background-size: auto,320px; color: var(--mist); }
+.pdp-shell .pdp-story-copy :is(h2,p) { color: var(--sand); }
+.pdp-shell .pdp-certificate { background: var(--sage-mist); border-color: var(--sage); }
+.brand-home :is(.gallery-featured-styles,.gallery-jewellery-item) { background: var(--mist); }
+.gallery-jewellery-item .gallery-jewellery-image { background: var(--white); }
+.gemstone-gallery .gallery-featured-heading :is(h2,p), .gemstone-gallery .gallery-jewellery-item h3 { color: var(--sage-deep); }
+.faq-redesign-section :is(.faq-badge,.faq-mini-tag,.faq-highlight-pill) { color: var(--sage-deep); background: var(--sage-mist); border-color: var(--pearl); }
+.faq-redesign-section :is(.faq-question-text,.faq-body-content,.faq-editorial-desc), .testimonials-section .testimonial-quote { color: var(--ink); }
+.faq-redesign-section .faq-concierge-btn { color: var(--white); background: var(--sage-deep); }
+.faq-redesign-section .faq-concierge-btn:hover { background: var(--ink); }
+.testimonials-section .testimonials-filter-pill:not(.is-active) { background: var(--mist); border-color: var(--pearl); color: var(--sage-deep); }
+.fg-page .fg-consult-strip { background: var(--sand); border-color: var(--warm-stone); }
+.fg-page .fg-choice.is-selected { border-color: var(--sage); background: var(--sage-mist); }
+.brand-home .rec-primary, .brand-home .rec-showcase :is(.rec-primary,.rec-scroll), .brand-home .rec-showcase .rec-options input:checked + span {
+  color: var(--white); background: var(--sage-deep); border-color: var(--sage-deep);
+}
+.brand-home .rec-green:not(.rec-showcase) .rec-primary { color: var(--ink); background: var(--sand); border-color: var(--sand); }
+.brand-home .rec-primary:hover { background: var(--ink); }

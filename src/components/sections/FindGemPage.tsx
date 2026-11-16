@@ -1,3 +1,4 @@
+import { brandLogo } from '../../lib/brand';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { ArrowLeft, ArrowRight, Check, ChevronRight, Compass, Gem, Heart, MessageCircle, ShieldCheck, Sparkles, Sun, X } from 'lucide-react';
 import { gemstones } from '../../lib/gemstones';
@@ -76,7 +77,7 @@ export default function FindGemPage() {
 
   return <div className="fg-page">
     <header className="fg-header">
-      <a href="/" aria-label="AstroLaabh home"><img src="/astrolaabh-logo.png" alt="AstroLaabh" /></a>
+      <a href="/" aria-label="AstroLaabh home"><img src={brandLogo} alt="AstroLaabh" /></a>
       <nav aria-label="Discovery navigation"><a href="/#gemstone-collection">The collection</a><span>Find my gem</span></nav>
       <button className="fg-header-talk" onClick={() => setConsult(true)}><MessageCircle size={15} /><span>Talk to an astrologer</span><ArrowRight size={14} /></button>
     </header>
@@ -87,7 +88,7 @@ export default function FindGemPage() {
 
       <section className="fg-discovery" aria-label="Gemstone discovery">
         <aside className="fg-story">
-          <div className="fg-story-top"><span>THE ART OF ALIGNMENT</span><span>ज्योतिष</span></div>
+          <div className="fg-story-top"><span>THE ART OF ALIGNMENT</span><span lang="hi">ज्योतिष</span></div>
           <div className="fg-orbit">
             <svg className="fg-zodiac" viewBox="0 0 500 500" aria-hidden="true">
               <circle cx="250" cy="250" r="236" /><circle cx="250" cy="250" r="227" strokeDasharray="1 7" /><circle cx="250" cy="250" r="213" /><circle cx="250" cy="250" r="172" /><circle cx="250" cy="250" r="163" strokeDasharray="2 6" />
@@ -127,7 +128,7 @@ export default function FindGemPage() {
       <section className="fg-example" id="gem-example"><button className="fg-example-toggle" onClick={() => setExample(!example)} aria-expanded={example}><span><span className="fg-eyebrow">A LITTLE CLARITY BEFORE YOU BEGIN</span><strong>What could your gemstone journey look like?</strong></span><span className="fg-plus">{example ? '−' : '+'}</span></button>{example && <div className="fg-example-content"><div><span className="fg-eyebrow">ILLUSTRATIVE EXAMPLE · NOT YOUR RESULT</span><h3>From a question<br />to a considered choice.</h3><p>Imagine someone seeking clarity in their work. They share their birth details; an astrologer reviews their chart and discusses whether any gemstone is appropriate.</p><p>If Emerald is suggested after that review, they can explore its origin, choose a metal and setting, and create their piece.</p><a className="fg-text-link" href="/#product/emerald">Explore the Emerald example <ArrowRight size={15} /></a></div><div className="fg-example-stone"><img src={gemstones.find(g => g.id === 'emerald')!.image} alt="Emerald gemstone example" /><span>PANNA · EMERALD</span><small>Traditionally associated with Mercury</small></div></div>}</section>
       <div className="fg-bottom-line"><span>YOUR INTENTION</span><i>✧</i><span>YOUR CHART</span><i>✧</i><span>YOUR GUIDANCE</span><i>✧</i><span>YOUR GEM</span></div>
     </main>
-    <footer className="fg-footer"><a href="/">ASTROLAABH</a><span>Ancient wisdom. A personal journey.</span><a href="/#gemstone-collection">Explore all gemstones <ArrowRight size={13} /></a></footer>
+    <footer className="fg-footer"><a href="/"><img src={brandLogo} alt="Astro Laabh" className="h-8 w-auto" /></a><span>Ancient wisdom. A personal journey.</span><a href="/#gemstone-collection">Explore all gemstones <ArrowRight size={13} /></a></footer>
 
     <dialog ref={dialog} className="fg-dialog" aria-label="Talk to an astrologer" onCancel={() => setConsult(false)} onClick={e => { if (e.target === e.currentTarget) setConsult(false); }}>
       <div className="fg-dialog-inner"><button className="fg-close" aria-label="Close consultation" onClick={() => setConsult(false)}><X size={20} /></button><span className="fg-eyebrow">A CONVERSATION COMES FIRST</span><MessageCircle className="fg-dialog-icon" size={36} strokeWidth={1} /><h2>Let’s find your<br /><em>way forward.</em></h2><p>Contact the AstroLaabh team to arrange a personal consultation. Ask about availability, fees, and the details needed for your chart.</p><a className="fg-primary" href={`mailto:hello@astrolaabh.com?subject=${encodeURIComponent('Personal gemstone consultation')}&body=${encodeURIComponent(summary)}`}>Prepare consultation email <ArrowRight size={16} /></a><small>This opens your email app with {intent ? 'your discovery details' : 'a consultation request'}. Review and send it when you’re ready. A booking is confirmed only by the team.</small><a className="fg-email" href="mailto:hello@astrolaabh.com">hello@astrolaabh.com</a></div>
